@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+MetroLink Sambhajinagar - Facilities
+    </title>
+    <link rel="stylesheet" href="/Home/indec.css">
+</head>
+<style>
+/* Reset & body */
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    color:#1a2b4c;
+    background:#f4f6f8;
+    scroll-behavior: smooth;
+}
+
+/* Banner */
+.banner{
+    background:#0b1d3a;
+    color:#fff;
+    padding:60px 8%;
+    text-align:center;
+}
+.banner h1{ font-size:42px; margin-bottom:10px;}
+.banner p{ font-size:18px; }
+
+/* Cards */
+.facilities-cards{
+    padding:60px 8%;
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+.card{
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    text-decoration:none;
+    color:#000;
+    transition:0.3s;
+    cursor:pointer;
+}
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+.card-content{
+    padding:25px;
+    color:#fff;
+}
+.orange{background:#f36f21;}
+.blue{background:#0b4c7a;}
+.dark{background:#222;}
+.card-content h3{ margin-bottom:15px; }
+
+/* Section Headers */
+.page-header{
+    background: linear-gradient(to right, #e9f8ff, #f6fdff);
+    padding:50px 8%;
+    text-align:center;
+}
+.page-header h1{
+    margin:0;
+    font-size:36px;
+    font-weight:600;
+}
+
+/* Content Lists */
+.content{
+    padding:40px 10%;
+}
+ul.main-list{
+    list-style:none;
+    padding:0;
+}
+ul.main-list > li{
+    position:relative;
+    padding-left:30px;
+    margin-bottom:18px;
+    font-size:16px;
+    line-height:1.6;
+}
+ul.main-list > li::before{
+    content:"";
+    width:12px;
+    height:6px;
+    background:#00a3b4;
+    border-radius:10px;
+    position:absolute;
+    left:0;
+    top:10px;
+}
+ul.sub-list{
+    list-style:none;
+    padding-left:30px;
+    margin-top:12px;
+}
+ul.sub-list li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:10px;
+    color:#444;
+}
+ul.sub-list li::before{
+    content:"";
+    width:8px;
+    height:8px;
+    background:#ff6f8f;
+    border-radius:50%;
+    position:absolute;
+    left:0;
+    top:8px;
+}
+
+/* Additional Facilities Grid */
+.facility-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+    gap:50px 30px;
+    text-align:center;
+    padding:60px 10%;
+}
+.facility-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+}
+.facility-item img{
+    width:60px;
+    height:60px;
+}
+.facility-item p{
+    font-size:16px;
+    margin:0;
+}
+</style>
+
+<body>
+    
+  <!-- Header will load here -->
+<div id="header"></div>
+<!-- Banner -->
+<div class="banner">
+    <h1>Facilities</h1>
+    <p>Passenger-centric facilities for a safe, comfortable journey</p>
+</div>
+
+<!-- Cards -->
+<section class="facilities-cards">
+    <div class="card orange" onclick="document.getElementById('women').scrollIntoView({behavior:'smooth'});">
+        <img src="/Assets/girl.png">
+        <div class="card-content">
+            <h3>Facilities for Women</h3>
+            <p>Safe & secure travel for women passengers</p>
+        </div>
+    </div>
+
+    <div class="card blue" onclick="document.getElementById('differently').scrollIntoView({behavior:'smooth'});">
+        <img src="/Assets/oldman.png">
+        <div class="card-content">
+            <h3>Differently-abled Facilities</h3>
+            <p>Universal accessibility across stations</p>
+        </div>
+    </div>
+
+    <div class="card dark" onclick="document.getElementById('additional').scrollIntoView({behavior:'smooth'});">
+        <img src="/Assets/facilities.png">
+        <div class="card-content">
+            <h3>Additional Facilities</h3>
+            <p>Extra comfort for passengers</p>
+        </div>
+    </div>
+</section>
+
+<!-- Women Section -->
+<section id="women">
+<div class="page-header">
+    <h1>Facilities for Women Passengers</h1>
+</div>
+<div class="content">
+    <ul class="main-list">
+        <li>Half coach at both the end of train is reserved for women.</li>
+        <li>Signage have been provided at platform to indicate where the reserved coach normally stops.</li>
+        <li>Reserved seats in every coach.</li>
+        <li>For Checking male passengers travelling in women's coach
+            <ul class="sub-list">
+                <li>Quick reaction teams have been deployed.</li>
+                <li>Special drives are carried out</li>
+                <li>Offenders will be penalized for 500/-</li>
+            </ul>
+        </li>
+        <li>Zero tolerance for drunkards and trouble makers.</li>
+        <li>CCTV surveillance in MMRC stations premises /Metro trains.</li>
+        <li>Patrolling of the platform after sunset hours have been intensified.</li>
+        <li>Female CISF staff has been deployed at stations for frisking.</li>
+    </ul>
+</div>
+</section>
+
+<!-- Differently-abled Section -->
+<section id="differently">
+<div class="page-header">
+    <h1>Facilities for Differently-abled Person</h1>
+</div>
+<div class="content">
+    <ul class="main-list">
+        <li>Extra Wide Automatic flap gates for wheelchairs</li>
+        <li>Provision of wheelchair at stations</li>
+        <li>Reserved spaces for wheelchair in trains</li>
+        <li>Tactile paths for visually impaired</li>
+        <li>Separate toilets</li>
+        <li>Ramps for change in the level</li>
+        <li>Handrails alongside stairs</li>
+        <li>Lifts are provided with
+            <ul class="sub-list">
+                <li>Wide access doors</li>
+                <li>Hand rails</li>
+                <li>Audio-visual indications</li>
+                <li>Telephone buttons</li>
+                <li>Call buttons in braille</li>
+            </ul>
+        </li>
+        <li>Signage at prominent locations for guidance</li>
+        <li>Seats reserved in trains</li>
+        <li>Audio/visual indication while closing of train doors</li>
+        <li>Station staff provides personal assistance</li>
+    </ul>
+</div>
+</section>
+
+<!-- Additional Facilities Section -->
+<section id="additional">
+<div class="page-header">
+    <h1>Additional Passenger Facilities</h1>
+</div>
+<div class="facility-grid">
+    <div class="facility-item">
+        <img src="https://img.icons8.com/ios/100/00a3b4/medical-doctor.png">
+        <p>First Aid Assistance</p>
+    </div>
+    <div class="facility-item">
+        <img src="https://img.icons8.com/ios/100/4dabf7/wheelchair.png">
+        <p>Differently Abled Friendly</p>
+    </div>
+    <div class="facility-item">
+        <img src="https://img.icons8.com/ios/100/2ecc71/ticket.png">
+        <p>Group Ticketing</p>
+    </div>
+    <div class="facility-item">
+        <img src="https://img.icons8.com/ios/100/f39c12/vending-machine.png">
+        <p>Ticket Vending Machine & Card Recharge</p>
+    </div>
+    <div class="facility-item">
+        <img src="https://img.icons8.com/ios/100/ff6f8f/customer-support.png">
+        <p>Customer Care</p>
+    </div>
+    <div class="facility-item">
+        <img src="https://img.icons8.com/ios/100/00a3b4/water.png">
+        <p>Drinking Water Facilities</p>
+    </div>
+</div>
+</section>
+<div id="footer"></div>
+<script src="/header/headerfooter.js"></script>    
+</body>
+
+
+<!-- <script src="header\headerfooter.js"></script> -->
+</html>

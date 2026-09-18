@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tickets · MetroLink Sambhajinagar</title>
+
+<!-- jsPDF library for PDF download -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Your main CSS -->
+<link rel="stylesheet" href="/Home/indec.css">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fdf5ec;
+        margin: 0;
+        padding: 0;
+    }
+
+    .tickets-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #2d4f2d;
+        border-left: 6px solid #faa75e;
+        padding-left: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    #ticketList {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .ticket-card {
+        background: linear-gradient(115deg, #fff9f0 0%, #ffffff 45%, #f0fae7 100%);
+        padding: 1.5rem;
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    }
+
+    .ticket-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .route {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #3c5e3c;
+    }
+
+    .meta-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        font-size: 0.95rem;
+        color: #3b4f2b;
+    }
+
+    .meta-row p {
+        background: rgba(255,235,215,0.7);
+        padding: 0.2rem 0.8rem;
+        border-radius: 30px;
+        border: 1px dashed #c9b68b;
+    }
+
+    .fare-badge {
+        background: #2c5e2c;
+        padding: 0.2rem 0.8rem;
+        border-radius: 30px;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        background: #fcd5ae;
+        color: #6b3f0e;
+        padding: 0.2rem 0.8rem;
+        border-radius: 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .passenger-preview {
+        font-size: 0.9rem;
+        color: #5d5d4c;
+        background: #f0f7ea;
+        padding: 0.2rem 0.8rem;
+        border-radius: 30px;
+        margin-top: 0.5rem;
+    }
+
+    .action-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .download-btn {
+        background: #d36f2c;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .download-btn:hover {
+        background: #cc8542;
+    }
+
+    .empty-message {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 2rem;
+        color: #835e38;
+        border: 2px dashed #ffb882;
+        border-radius: 40px;
+        background: #fff3e0;
+    }
+</style>
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="tickets-container">
+    <h2>🎟️ My Tickets</h2>
+    <div id="ticketList"></div>
+</div>
+
+<div id="footer"></div>
+
+<!-- Header and Footer JS -->
+<script src="/header/headerfooter.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("ticketList");
+    const { jsPDF } = window.jspdf;
+
+    // Fetch tickets from backend
+    fetch("/my-tickets", { credentials: "include" }) // <- use relative path!
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success || !data.tickets || data.tickets.length === 0) {
+            container.innerHTML = "<div class='empty-message'>🚇 No tickets found</div>";
+            return;
+        }
+
+        container.innerHTML = "";
+        data.tickets.forEach(ticket => {
+            const card = document.createElement("div");
+            card.className = "ticket-card";
+
+            // Ensure passengers is an array
+            const passengers = Array.isArray(ticket.passengers) ? ticket.passengers : [];
+
+            const infoDiv = document.createElement("div");
+            infoDiv.className = "ticket-info";
+            infoDiv.innerHTML = `
+                <div class="route">${ticket.from_station} → ${ticket.to_station}</div>
+                <div class="meta-row">
+                    <p>📅 ${ticket.travel_date}</p>
+                    <p class="fare-badge">₹ ${ticket.fare || "N/A"}</p>
+                    <p class="status-badge">${ticket.status || "Confirmed"}</p>
+                </div>
+                <div class="passenger-preview">👥 ${passengers.map(p => p.name || "Unknown").join(", ")}</div>
+            `;
+
+            // Action buttons
+            const actionDiv = document.createElement("div");
+            actionDiv.className = "action-group";
+            const downloadBtn = document.createElement("button");
+            downloadBtn.className = "download-btn";
+            downloadBtn.textContent = "⬇️ PDF";
+            downloadBtn.addEventListener("click", () => downloadTicket(ticket));
+            actionDiv.appendChild(downloadBtn);
+
+            // Combine card
+            card.appendChild(infoDiv);
+            card.appendChild(actionDiv);
+            container.appendChild(card);
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        container.innerHTML = "<div class='empty-message'>Error fetching tickets</div>";
+    });
+
+    // PDF download function
+    function downloadTicket(ticket) {
+        const doc = new jsPDF();
+        doc.setFillColor(255, 245, 235); // background
+        doc.rect(0, 0, 220, 300, 'F');
+        doc.setFillColor(210, 235, 200); // header
+        doc.rect(0, 0, 220, 20, 'F');
+        doc.setTextColor(30, 70, 30);
+        doc.setFontSize(18);
+        doc.text("MetroLink Sambhajinagar Ticket", 20, 18);
+
+        doc.setFontSize(12);
+        doc.setTextColor(0,0,0);
+        doc.text(`Ticket ID: ${ticket.id || 'N/A'}`, 20, 40);
+        doc.text(`Date: ${ticket.travel_date}`, 20, 50);
+        doc.text(`Route: ${ticket.from_station} → ${ticket.to_station}`, 20, 60);
+        doc.text(`Fare: ₹ ${ticket.fare || "N/A"}`, 20, 70);
+        doc.text(`Status: ${ticket.status || "Confirmed"}`, 20, 80);
+        doc.text("Passengers:", 20, 95);
+
+        let y = 105;
+        const passengers = Array.isArray(ticket.passengers) ? ticket.passengers : [];
+        passengers.forEach((p, i) => {
+            doc.text(`${i+1}. ${p.name || "Unknown"} (Age: ${p.age || "-"})`, 25, y);
+            y += 10;
+        });
+
+        doc.save(`${ticket.id || "ticket"}.pdf`);
+    }
+});
+</script>
+
+</body>
+</html>

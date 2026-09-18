@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chhatrapati Sambhajinagar Metro</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { font-family: 'Poppins', sans-serif; background-color: #fff8f0; }
+    .hindi-font { font-family: 'Tiro Devanagari Hindi', serif; }
+    
+    .metro-gradient {
+      background: linear-gradient(135deg, #FF9933 0%, #FF7F00 100%);
+    }
+    
+    .orange-gradient {
+      background: linear-gradient(180deg, #FF9933 0%, #FF8C1A 100%);
+    }
+    
+    .metro-bg {
+      background: linear-gradient(180deg, #fff8f0 0%, #ffe8d0 100%);
+    }
+    
+    .ashoka-chakra {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #FF9933;
+      border-radius: 50%;
+      position: relative;
+      animation: spin 20s linear infinite;
+    }
+    
+    .ashoka-chakra::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: #FF9933;
+      border-radius: 50%;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes scroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    .animate-scroll {
+      animation: scroll 25s linear infinite;
+      padding-right: 50px;
+    }
+    
+    .btn-metro {
+      background: linear-gradient(135deg, #FF9933 0%, #FF7F00 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-metro::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      transition: left 0.5s ease;
+    }
+    
+    .btn-metro:hover::before {
+      left: 100%;
+    }
+    
+    .btn-metro:hover {
+      background: linear-gradient(135deg, #FF7F00 0%, #FF6B00 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255,153,51,0.3);
+    }
+    
+    .input-metro {
+      border: 2px solid #f0d4b0;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    
+    .input-metro:focus {
+      border-color: #FF9933;
+      box-shadow: 0 0 0 4px rgba(255,153,51,0.15);
+      background: white;
+    }
+    
+    .glass-card {
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,153,51,0.1);
+      box-shadow: 0 4px 20px rgba(255,153,51,0.08);
+    }
+    
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(255,153,51,0.15);
+    }
+    
+    .pulse-ring {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,153,51,0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(255,153,51,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,153,51,0); }
+    }
+    
+    .step-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+    
+    .step-badge.active {
+      background: linear-gradient(135deg, #FF9933 0%, #FF7F00 100%);
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .step-badge.inactive {
+      background: #fce4cc;
+      color: #c97a1a;
+    }
+  </style>
+</head>
+<body class="h-full">
+  <div id="app-wrapper" class="h-full w-full flex flex-col overflow-auto">
+    
+    <!-- Enhanced Top Bar -->
+    <div class="orange-gradient text-white py-3 px-4 shadow-md">
+      <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center text-sm gap-4">
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-2 font-semibold">
+            <span>📞</span>
+            <span id="helpline-display">1800-xxx-xxxx</span>
+          </div>
+          <div class="hidden md:flex items-center gap-2 font-semibold">
+            <span>✉️</span>
+            <span>info@sambhajinagar-metro.gov.in</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="hindi-font cursor-pointer hover:opacity-80 transition-opacity">हिंदी</span>
+          <span class="text-orange-100">|</span>
+          <span class="cursor-pointer hover:opacity-80 transition-opacity">English</span>
+          <span class="text-orange-100">|</span>
+          <span class="cursor-pointer hover:opacity-80 transition-opacity">मराठी</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Premium Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between mb-4">
+          <!-- Logo Section -->
+          <div class="flex items-center gap-4 flex-1">
+            <div class="relative">
+              <div class="w-16 h-16 metro-gradient rounded-full flex items-center justify-center shadow-lg pulse-ring">
+                <span class="text-3xl">🚇</span>
+              </div>
+            </div>
+            <div>
+              <h1 id="metro-name-display" class="text-2xl font-bold text-gray-900">Metro Link Sambhajinagar</h1>
+              <p class="text-xs text-orange-600 hindi-font font-semibold">छत्रपती संभाजीनगर मेट्रो</p>
+            </div>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="hidden lg:flex items-center gap-3">
+            <button class="px-4 py-2 rounded-lg text-gray-700 hover:bg-orange-50 transition-all font-medium">
+              📱 Mobile App
+            </button>
+            <button class="px-4 py-2 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 transition-all font-medium">
+              🔔 Alerts
+            </button>
+          </div>
+          
+          <!-- Ashoka Chakra -->
+          <div class="ashoka-chakra hidden xl:block"></div>
+        </div>
+        
+        <!-- Navigation Bar -->
+        <nav class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-6 flex-wrap">
+            <a href="#" class="text-gray-700 hover:text-orange-600 font-semibold transition-colors text-sm">🏠 Home</a>
+            <a href="#" class="text-gray-700 hover:text-orange-600 font-semibold transition-colors text-sm">🗺️ Routes</a>
+            <a href="#" class="text-gray-700 hover:text-orange-600 font-semibold transition-colors text-sm">💳 Fares</a>
+            <a href="#" class="text-gray-700 hover:text-orange-600 font-semibold transition-colors text-sm">⏰ Timetable</a>
+            <a href="#" class="text-gray-700 hover:text-orange-600 font-semibold transition-colors text-sm">ℹ️ About</a>
+            <a href="#" class="text-gray-700 hover:text-orange-600 font-semibold transition-colors text-sm">💬 Contact</a>
+          </div>
+        </nav>
+      </div>
+      
+      <!-- Welcome Banner -->
+      <div class="bg-gradient-to-r from-orange-50 to-orange-100 border-b-4 border-orange-600 py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+          <h2 id="welcome-display" class="text-2xl md:text-3xl font-bold animate-slide-in">
+            <span class="text-orange-700">🙏 Chhatrapati Sambhajinagar Metro Welcomes You! 🙏</span>
+          </h2>
+          <p class="text-sm text-orange-600 hindi-font mt-2 font-semibold">छत्रपती संभाजीनगर मेट्रो आपका स्वागत करती है</p>
+        </div>
+      </div>
+    </header>
+    
+    <!-- News Ticker - Fixed and Visible -->
+    <div class="bg-white border-b-2 border-orange-600 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center gap-3 py-3">
+          <span class="bg-orange-600 text-white px-4 py-1 text-xs font-bold rounded-sm shrink-0 whitespace-nowrap">📢 NEWS</span>
+          <div class="overflow-hidden flex-1">
+            <div id="news-ticker" class="text-orange-700 font-medium text-sm whitespace-nowrap animate-scroll">
+              🚇 New Metro Line Opening Soon! | 🎫 Get 20% off on Smart Cards | 📱 Download our Mobile App | 🕐 First Train: 6:00 AM | Last Train: 10:00 PM |
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="flex-1 metro-bg">
+      <div class="max-w-7xl mx-auto px-4 py-12">
+        
+        <!-- Login Container -->
+        <div id="login-section" class="flex flex-col items-center justify-center">
+          
+          <!-- Phase 1: User Type Selection -->
+          <div id="phase1" class="glass-card rounded-3xl p-8 max-w-2xl w-full card-hover animate-fade-in">
+            <div class="text-center mb-8">
+              <div class="w-24 h-24 mx-auto mb-6 metro-gradient rounded-full flex items-center justify-center shadow-lg animate-slide-in">
+                <span class="text-5xl">🚇</span>
+              </div>
+              <h3 class="text-4xl font-bold text-gray-900 mb-2">Welcome to Metro Portal</h3>
+              <p class="text-gray-600 text-lg mb-6">Select your account type to access our services</p>
+              
+              <!-- Progress Indicator -->
+              <div class="flex items-center justify-center gap-3 mt-6">
+                <div class="step-badge active">1</div>
+                <div class="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full"></div>
+                <div class="step-badge inactive">2</div>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <!-- Passenger Login Button -->
+              <button onclick="selectUserType('passenger')" class="w-full btn-metro text-white py-6 px-8 rounded-2xl font-bold text-xl flex items-center justify-center gap-4 shadow-lg relative z-10">
+                <span class="text-4xl">👤</span>
+                <div class="text-left">
+                  <div>Passenger Login</div>
+                  <div class="text-sm font-normal opacity-90">Book tickets & manage journeys</div>
+                </div>
+              </button>
+              
+              <!-- Admin Login Button -->
+              <button onclick="selectUserType('admin')" class="w-full btn-metro text-white py-6 px-8 rounded-2xl font-bold text-xl flex items-center justify-center gap-4 shadow-lg relative z-10">
+                <span class="text-4xl">🔐</span>
+                <div class="text-left">
+                  <div>Admin Portal</div>
+                  <div class="text-sm font-normal opacity-90">Metro administration & operations</div>
+                </div>
+              </button>
+            </div>
+            
+            <!-- Footer Links -->
+            <div class="mt-8 space-y-3 text-center border-t pt-6">
+              <p class="text-gray-600">New to Sambhajinagar Metro?</p>
+              <div class="flex justify-center gap-4 flex-wrap">
+                <a href="#" class="text-orange-600 font-bold hover:underline">Create Account</a>
+                <span class="text-gray-400">•</span>
+                <a href="#" class="text-orange-600 font-bold hover:underline">Forgot Password?</a>
+                <span class="text-gray-400">•</span>
+                <a href="#" class="text-orange-600 font-bold hover:underline">Need Help?</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Phase 2: Login Form -->
+          <div id="phase2" class="hidden glass-card rounded-3xl p-8 max-w-2xl w-full card-hover animate-fade-in">
+            
+            <!-- Back Button -->
+            <button onclick="goBack()" class="flex items-center gap-2 text-gray-500 hover:text-orange-600 mb-6 transition-colors font-semibold text-lg">
+              <span>←</span>
+              <span>Back to Selection</span>
+            </button>
+            
+            <!-- Progress Indicator -->
+            <div class="flex items-center justify-center gap-3 mb-8">
+              <div class="step-badge inactive">1</div>
+              <div class="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full"></div>
+              <div class="step-badge active">2</div>
+            </div>
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+              <div id="login-icon" class="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl"></div>
+              <h3 id="login-title" class="text-3xl font-bold text-gray-900 mb-1"></h3>
+              <p id="login-subtitle" class="text-gray-600 text-lg"></p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-6">
+              
+              <!-- ID Field -->
+              <div>
+                <label for="login-id" class="block text-sm font-bold text-gray-700 mb-3">
+                  <span id="id-label">Email / Mobile</span>
+                  <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="login-id" required
+                  class="w-full px-5 py-4 rounded-xl input-metro outline-none text-lg"
+                  placeholder="Enter your ID">
+              </div>
+              
+              <!-- Employee ID Field (Admin Only) -->
+              <div id="employee-id-field" class="hidden">
+                <label for="employee-id" class="block text-sm font-bold text-gray-700 mb-3">
+                  Employee ID
+                  <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="employee-id"
+                  class="w-full px-5 py-4 rounded-xl input-metro outline-none text-lg"
+                  placeholder="Enter Employee ID">
+              </div>
+              
+              <!-- Password Field -->
+              <div>
+                <label for="login-password" class="block text-sm font-bold text-gray-700 mb-3">
+                  Password
+                  <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <input type="password" id="login-password" required
+                    class="w-full px-5 py-4 rounded-xl input-metro outline-none text-lg pr-14"
+                    placeholder="Enter your password">
+                  <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 text-2xl transition-colors">
+                    <span id="eye-icon">👁️</span>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Captcha -->
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-3">
+                  Security Verification
+                  <span class="text-red-500">*</span>
+                </label>
+                <div class="flex gap-3 items-center mb-3">
+                  <div id="captcha-display" class="bg-gradient-to-r from-orange-100 to-orange-200 px-6 py-3 rounded-xl font-mono text-2xl font-bold tracking-widest text-gray-800 select-none min-w-fit shadow-sm border border-orange-300"></div>
+                  <button type="button" onclick="refreshCaptcha()" class="text-gray-600 hover:text-orange-600 text-2xl transition-colors p-2 bg-orange-50 rounded-lg hover:bg-orange-100">
+                    🔄
+                  </button>
+                </div>
+                <input type="text" id="captcha-input" required
+                  class="w-full px-5 py-4 rounded-xl input-metro outline-none text-lg"
+                  placeholder="Enter the code above">
+              </div>
+              
+              <!-- Remember & Forgot -->
+              <div class="flex items-center justify-between">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" class="w-5 h-5 accent-orange-600 cursor-pointer">
+                  <span class="text-gray-700 font-medium">Remember me</span>
+                </label>
+                <a href="#" class="text-orange-600 font-bold hover:underline text-lg">Forgot Password?</a>
+              </div>
+              
+              <!-- Submit Button -->
+              <button type="submit" id="submit-btn" class="w-full btn-metro text-white py-5 px-6 rounded-xl font-bold text-lg shadow-lg relative z-10 transition-all duration-300">
+                Sign In →
+              </button>
+            </form>
+            
+            <!-- Messages -->
+            <div id="error-message" class="hidden mt-6 p-4 bg-red-50 border-2 border-red-300 rounded-xl text-red-700 text-center font-semibold animate-slide-in"></div>
+            <div id="success-message" class="hidden mt-6 p-4 bg-green-50 border-2 border-green-300 rounded-xl text-green-700 text-center font-semibold animate-slide-in"></div>
+          </div>
+          
+        </div>
+        
+        <!-- Features Grid -->
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="glass-card rounded-2xl p-6 text-center card-hover cursor-pointer group">
+            <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🗺️</div>
+            <h4 class="font-bold text-gray-900 text-lg mb-2">Route Map</h4>
+            <p class="text-gray-600 text-sm">View all metro routes</p>
+          </div>
+          
+          <div class="glass-card rounded-2xl p-6 text-center card-hover cursor-pointer group">
+            <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform">💳</div>
+            <h4 class="font-bold text-gray-900 text-lg mb-2">Smart Card</h4>
+            <p class="text-gray-600 text-sm">Get your travel card</p>
+          </div>
+          
+          <div class="glass-card rounded-2xl p-6 text-center card-hover cursor-pointer group">
+            <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🎫</div>
+            <h4 class="font-bold text-gray-900 text-lg mb-2">Book Ticket</h4>
+            <p class="text-gray-600 text-sm">Reserve your seat</p>
+          </div>
+          
+          <div class="glass-card rounded-2xl p-6 text-center card-hover cursor-pointer group">
+            <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform">⏰</div>
+            <h4 class="font-bold text-gray-900 text-lg mb-2">Timetable</h4>
+            <p class="text-gray-600 text-sm">Check timings</p>
+          </div>
+        </div>
+        
+      </div>
+    </main>
+    
+    <!-- Premium Footer -->
+    <footer class="bg-gray-900 text-white">
+      <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          
+          <!-- About -->
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 metro-gradient rounded-full flex items-center justify-center">
+                <span class="text-2xl">🚇</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">Metro Sambhajinagar</h4>
+                <p class="text-xs text-orange-400 hindi-font">मेट्रो संभाजीनगर</p>
+              </div>
+            </div>
+            <p class="text-gray-400 text-sm leading-relaxed mb-4">Connecting the historic city with modern, efficient, and eco-friendly metro rail service.</p>
+            <div class="flex gap-4">
+              <a href="#" class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center hover:bg-orange-500 transition-all transform hover:scale-110">f</a>
+              <a href="#" class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center hover:bg-orange-400 transition-all transform hover:scale-110">𝕏</a>
+              <a href="#" class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 transition-all transform hover:scale-110">▶</a>
+              <a href="#" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-500 transition-all transform hover:scale-110">📷</a>
+            </div>
+          </div>
+          
+          <!-- Important Links -->
+          <div>
+            <h4 class="font-bold text-lg mb-5 text-orange-400">Important Links</h4>
+            <ul class="space-y-3 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Route Map</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Fare Calculator</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Smart Card</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Train Schedule</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Tenders</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Careers</a></li>
+            </ul>
+          </div>
+          
+          <!-- Help & Support -->
+          <div>
+            <h4 class="font-bold text-lg mb-5 text-orange-400">Help & Support</h4>
+            <ul class="space-y-3 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ FAQ</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Feedback</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Lost & Found</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Grievance Form</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ RTI</a></li>
+              <li><a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-2">→ Terms & Privacy</a></li>
+            </ul>
+          </div>
+          
+          <!-- Contact -->
+          <div>
+            <h4 class="font-bold text-lg mb-5 text-white">Contact Us</h4>
+            <div class="space-y-4 text-gray-400 text-sm">
+              <p class="flex items-start gap-3">
+                <span class="text-lg mt-1">📍</span>
+                <span>Metro Bhavan, Station Road,<br/>Chhatrapati Sambhajinagar - 431001</span>
+              </p>
+              <p class="flex items-center gap-3">
+                <span>📞</span>
+                <span id="footer-helpline">1800-xxx-xxxx</span>
+              </p>
+              <p class="flex items-center gap-3">
+                <span>✉️</span>
+                <span>info@sambhajinagar-metro.gov.in</span>
+              </p>
+              <p class="flex items-center gap-3">
+                <span>🕐</span>
+                <span>9:00 AM - 6:00 PM</span>
+              </p>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Bottom Footer -->
+        <div class="border-t border-gray-700 pt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 mb-6">
+            <p>© 2024 Chhatrapati Sambhajinagar Metro Rail Corporation Ltd. All Rights Reserved.</p>
+            <div class="flex items-center gap-4">
+              <a href="#" class="hover:text-white transition-colors font-medium">Privacy Policy</a>
+              <span>•</span>
+              <a href="#" class="hover:text-white transition-colors font-medium">Disclaimer</a>
+              <span>•</span>
+              <a href="#" class="hover:text-white transition-colors font-medium">Sitemap</a>
+            </div>
+            <div class="flex items-center gap-2 text-orange-400 font-bold">
+              <span>🇮🇳</span>
+              <span class="hindi-font">जय हिंद</span>
+            </div>
+          </div>
+          
+          <!-- Orange Strip -->
+          <div class="h-2 flex rounded-full overflow-hidden bg-gradient-to-r from-orange-600 to-orange-400"></div>
+        </div>
+      </div>
+    </footer>
+    
+  </div>
+  
+  <script>
+    // Default Configuration
+    const defaultConfig = {
+      welcome_text: 'Chhatrapati Sambhajinagar Metro Welcomes You!',
+      metro_name: 'Metro Link Sambhajinagar',
+      helpline_number: '1800-xxx-xxxx',
+      announcement_text: '🚇 New Metro Line Opening Soon! | 🎫 Get 20% off on Smart Cards | 📱 Download our Mobile App | 🕐 First Train: 6:00 AM | Last Train: 10:00 PM |',
+      primary_color: '#FF9933',
+      secondary_color: '#FF7F00',
+      text_color: '#1f2937',
+      bg_color: '#fff8f0',
+      accent_color: '#FF6B00'
+    };
+    
+    let currentUserType = null;
+    let captchaCode = '';
+    
+    // Generate random captcha
+    function generateCaptcha() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let result = '';
+      for (let i = 0; i < 6; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+    
+    function refreshCaptcha() {
+      captchaCode = generateCaptcha();
+      const display = document.getElementById('captcha-display');
+      if (display) {
+        display.textContent = captchaCode;
+      }
+    }
+    
+    // Select user type and show login form
+    function selectUserType(type) {
+      currentUserType = type;
+      
+      document.getElementById('phase1').classList.add('hidden');
+      document.getElementById('phase2').classList.remove('hidden');
+      
+      const icon = document.getElementById('login-icon');
+      const title = document.getElementById('login-title');
+      const subtitle = document.getElementById('login-subtitle');
+      const idLabel = document.getElementById('id-label');
+      const employeeField = document.getElementById('employee-id-field');
+      const submitBtn = document.getElementById('submit-btn');
+      
+      if (type === 'passenger') {
+        icon.textContent = '👤';
+        icon.className = 'w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl bg-gradient-to-r from-orange-500 to-orange-700 shadow-lg';
+        title.textContent = 'Passenger Login';
+        subtitle.textContent = 'Access your metro account and manage journeys';
+        idLabel.textContent = 'Email / Mobile Number';
+        employeeField.classList.add('hidden');
+        submitBtn.className = 'w-full btn-metro text-white py-5 px-6 rounded-xl font-bold text-lg shadow-lg relative z-10';
+      } else {
+        icon.textContent = '🔐';
+        icon.className = 'w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl bg-gradient-to-r from-orange-600 to-orange-800 shadow-lg';
+        title.textContent = 'Admin Portal';
+        subtitle.textContent = 'Metro Administration & Operations';
+        idLabel.textContent = 'Official Email ID';
+        employeeField.classList.remove('hidden');
+        submitBtn.className = 'w-full btn-metro text-white py-5 px-6 rounded-xl font-bold text-lg shadow-lg relative z-10';
+      }
+      
+      refreshCaptcha();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Go back to phase 1
+    function goBack() {
+      document.getElementById('phase2').classList.add('hidden');
+      document.getElementById('phase1').classList.remove('hidden');
+      document.getElementById('error-message').classList.add('hidden');
+      document.getElementById('success-message').classList.add('hidden');
+      document.getElementById('login-form').reset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Toggle password visibility
+    function togglePassword() {
+      const input = document.getElementById('login-password');
+      const icon = document.getElementById('eye-icon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        icon.textContent = '👁️';
+      }
+    }
+    
+    // Handle login form submission
+    function handleLogin(event) {
+      event.preventDefault();
+      
+      const errorMsg = document.getElementById('error-message');
+      const successMsg = document.getElementById('success-message');
+      const captchaInput = document.getElementById('captcha-input').value.toUpperCase();
+      
+      errorMsg.classList.add('hidden');
+      successMsg.classList.add('hidden');
+      
+      // Validate captcha
+      if (captchaInput !== captchaCode) {
+        errorMsg.textContent = '❌ Invalid security code. Please try again.';
+        errorMsg.classList.remove('hidden');
+        refreshCaptcha();
+        document.getElementById('captcha-input').value = '';
+        return;
+      }
+      
+      // Validate admin employee ID
+      if (currentUserType === 'admin') {
+        const empId = document.getElementById('employee-id').value;
+        if (!empId) {
+          errorMsg.textContent = '❌ Employee ID is required for admin login.';
+          errorMsg.classList.remove('hidden');
+          return;
+        }
+      }
+      
+      // Simulate successful login
+      successMsg.textContent = currentUserType === 'admin' 
+        ? '✅ Admin verified! Redirecting to dashboard...'
+        : '✅ Welcome! Redirecting to your account...';
+      successMsg.classList.remove('hidden');
+      
+      // Simulate redirect after 2 seconds
+      setTimeout(() => {
+        successMsg.textContent = '🚇 Loading...';
+      }, 1500);
+    }
+    
+    // Render UI based on config
+    function renderUI(config) {
+      const welcomeDisplay = document.getElementById('welcome-display');
+      const metroNameDisplay = document.getElementById('metro-name-display');
+      const helplineDisplay = document.getElementById('helpline-display');
+      const footerHelpline = document.getElementById('footer-helpline');
+      const newsTicker = document.getElementById('news-ticker');
+      
+      if (welcomeDisplay) {
+        welcomeDisplay.innerHTML = `<span class="text-orange-700">🙏 ${config.welcome_text || defaultConfig.welcome_text} 🙏</span>`;
+      }
+      if (metroNameDisplay) {
+        metroNameDisplay.textContent = config.metro_name || defaultConfig.metro_name;
+      }
+      if (helplineDisplay) {
+        helplineDisplay.textContent = config.helpline_number || defaultConfig.helpline_number;
+      }
+      if (footerHelpline) {
+        footerHelpline.textContent = config.helpline_number || defaultConfig.helpline_number;
+      }
+      if (newsTicker) {
+        newsTicker.textContent = config.announcement_text || defaultConfig.announcement_text;
+      }
+    }
+    
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          renderUI(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => window.elementSdk.setConfig({ primary_color: value })
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => window.elementSdk.setConfig({ secondary_color: value })
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => window.elementSdk.setConfig({ text_color: value })
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => window.elementSdk.setConfig({ accent_color: value })
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['welcome_text', config.welcome_text || defaultConfig.welcome_text],
+          ['metro_name', config.metro_name || defaultConfig.metro_name],
+          ['helpline_number', config.helpline_number || defaultConfig.helpline_number],
+          ['announcement_text', config.announcement_text || defaultConfig.announcement_text]
+        ])
+      });
+    }
+    
+    // Initial render
+    renderUI(defaultConfig);
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cf5236c82326ed7',t:'MTc3MTMyOTc3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

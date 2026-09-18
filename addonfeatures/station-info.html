@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MetroLink Sambhajinagar - Know Your Station</title>
+<link rel="stylesheet" href="/Home/indec.css">
+<style>
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#c1d3da,#ffffff);
+}
+
+/* ===== HEADER TITLE ===== */
+.page-title{
+    text-align:center;
+    padding:40px 20px 20px;
+}
+
+.page-title h1{
+    color:#003366;
+    margin-bottom:10px;
+}
+
+.page-title p{
+    color:#444;
+    font-size:16px;
+}
+
+/* ===== SEARCH SECTION ===== */
+.search-section{
+    display:flex;
+    justify-content:center;
+    margin:30px 0;
+}
+
+.search-box{
+    background:white;
+    padding:15px;
+    border-radius:50px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+    display:flex;
+    width:400px;
+}
+
+.search-box select{
+    flex:1;
+    border:none;
+    outline:none;
+    font-size:15px;
+}
+
+.search-box button{
+    background:#00A8E8;
+    color:white;
+    border:none;
+    padding:8px 20px;
+    border-radius:30px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.search-box button:hover{
+    background:#0077b6;
+}
+
+/* ===== STATION CARD ===== */
+.station-card{
+    width:500px;
+    margin:30px auto;
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    display:none;
+}
+
+.station-card h2{
+    color:#00A8E8;
+    margin-bottom:20px;
+}
+
+.detail{
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+.detail span{
+    font-weight:bold;
+    color:#003366;
+}
+
+.facilities{
+    margin-top:15px;
+}
+
+.facilities ul{
+    padding-left:18px;
+}
+
+.facilities li{
+    margin-bottom:6px;
+}
+
+</style>
+</head>
+<body>
+<div id="header"></div>
+<div class="page-title">
+<h1>Know Your Station</h1>
+<p>Everything you want to know about any station.</p>
+</div>
+
+<div class="search-section">
+    <div class="search-box">
+        <select id="stationSelect">
+            <option value="">Select Station</option>
+
+            <option value="0">WALUJ MIDC</option>
+            <option value="2">AS CLUB</option>
+            <option value="4">NAGAR NAKA</option>
+            <option value="6">PANCHAVATI HOTEL</option>
+            <option value="8">DISTRICT COURT</option>
+            <option value="10">KRANTI CHOWK</option>
+            <option value="12">AKASHWANI</option>
+            <option value="14">SEVEN HILL</option>
+            <option value="16">CIDCO BUS STAND</option>
+            <option value="18">CHIKALTHANA</option>
+            <option value="20">SHENDRA MIDC</option>
+
+        </select>
+
+        <button onclick="showStation()">Search</button>
+    </div>
+</div>
+
+<div class="station-card" id="stationCard">
+<h2 id="stationName"></h2>
+
+<div class="detail"><span>Address:</span> <span id="stationAddress"></span></div>
+<div class="detail"><span>Opening Hours:</span> <span id="stationTime"></span></div>
+<div class="detail"><span>Platforms:</span> <span id="stationPlatform"></span></div>
+
+<div class="facilities">
+<span style="font-weight:bold;color:#003366;">Facilities:</span>
+<ul id="stationFacilities"></ul>
+</div>
+
+</div>
+<div id="footer"></div>
+<script src="/header/headerfooter.js"></script>
+<script>
+
+const stationData = {
+
+0:{
+name:"Waluj MIDC Metro Station",
+address:"Waluj Industrial Area, Chhatrapati Sambhajinagar",
+time:"05:30 AM – 10:30 PM",
+platform:"2 Platforms",
+facilities:["Parking","Lift","Security Desk","Bus Connectivity","Drinking Water"]
+},
+
+2:{
+name:"AS Club Metro Station",
+address:"AS Club Road, Sambhajinagar",
+time:"05:00 AM – 11:00 PM",
+platform:"2 Platforms",
+facilities:["Escalator","Lift","Ticket Counter","CCTV Surveillance"]
+},
+
+4:{
+name:"Nagar Naka Metro Station",
+address:"Nagar Naka Junction",
+time:"05:00 AM – 11:00 PM",
+platform:"2 Platforms",
+facilities:["Parking","Lift","Waiting Area","Drinking Water"]
+},
+
+6:{
+name:"Panchavati Hotel Metro Station",
+address:"Near Panchavati Hotel Circle",
+time:"05:30 AM – 10:30 PM",
+platform:"2 Platforms",
+facilities:["Escalator","Ticket Counter","Security Help Desk"]
+},
+
+8:{
+name:"District Court Metro Station",
+address:"District Court Area",
+time:"05:00 AM – 11:00 PM",
+platform:"2 Platforms",
+facilities:["Lift","CCTV Surveillance","Drinking Water","Parking"]
+},
+
+10:{
+name:"Kranti Chowk Metro Station",
+address:"Kranti Chowk Circle",
+time:"05:00 AM – 11:00 PM",
+platform:"1 Island Platform",
+facilities:["Lift","Escalator","Ticket Counter","Security Help Desk"]
+},
+
+12:{
+name:"Akashwani Metro Station",
+address:"Akashwani Chowk",
+time:"05:30 AM – 10:30 PM",
+platform:"2 Platforms",
+facilities:["Parking","Lift","ATM","CCTV Surveillance"]
+},
+
+14:{
+name:"Seven Hill Metro Station",
+address:"Seven Hill Area",
+time:"05:00 AM – 11:00 PM",
+platform:"2 Platforms",
+facilities:["Escalator","Lift","Parking","Ticket Counter"]
+},
+
+16:{
+name:"CIDCO Bus Stand Metro Station",
+address:"CIDCO Bus Stand Area",
+time:"05:00 AM – 11:00 PM",
+platform:"3 Platforms",
+facilities:["Bus Connectivity","Lift","Escalator","ATM","Restroom"]
+},
+
+18:{
+name:"Chikalthana Metro Station",
+address:"Chikalthana Industrial Area",
+time:"05:30 AM – 10:30 PM",
+platform:"2 Platforms",
+facilities:["Parking","Security Desk","Drinking Water","Lift"]
+},
+
+20:{
+name:"Shendra MIDC Metro Station",
+address:"Shendra Industrial Area",
+time:"05:30 AM – 10:30 PM",
+platform:"2 Platforms",
+facilities:["Parking","Lift","Bus Connectivity","Waiting Area"]
+}
+
+};
+function showStation(){
+
+const selected = document.getElementById("stationSelect").value;
+
+if(selected === ""){
+alert("Please select a station.");
+return;
+}
+
+const station = stationData[selected];
+
+document.getElementById("stationName").innerText = station.name;
+document.getElementById("stationAddress").innerText = station.address;
+document.getElementById("stationTime").innerText = station.time;
+document.getElementById("stationPlatform").innerText = station.platform;
+
+const facilityList = document.getElementById("stationFacilities");
+facilityList.innerHTML = "";
+
+station.facilities.forEach(function(facility){
+let li = document.createElement("li");
+li.innerText = facility;
+facilityList.appendChild(li);
+});
+
+document.getElementById("stationCard").style.display = "block";
+}
+</script>
+
+</body>
+</html>

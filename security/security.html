@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetroLink Sambhajinagar - Security</title>
+    <link rel="stylesheet" href="/Home/indec.css">
+</head>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background:#f5f7fa;
+}
+
+/* HEADER */
+.header{
+    background:#dff6ff;
+    padding:15px 20px;
+    font-size:22px;
+    font-weight:bold;
+}
+.card h4{
+    margin:0;
+    font-size:15px;
+}
+
+.card .number{
+    color:red;
+    font-size:20px;
+    font-weight:bold;
+    margin:10px 0;
+}
+
+.card p{
+    margin:3px 0;
+    font-size:13px;
+    color:#444;
+}
+
+.card a{
+    color:#007bff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+}
+
+/* HELPLINE CARDS */
+.cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap:15px;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:6px;
+    padding:15px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+} 
+
+/* FILTER BAR */
+.filters{
+    display:flex;
+    gap:10px;
+    padding:0 20px 15px;
+    flex-wrap:wrap;
+}
+.filters input, .filters select{
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+    width:100%;
+    max-width:260px;
+}
+
+/* TABLE */
+.table-container{
+    padding:20px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+th, td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    font-size:14px;
+    vertical-align:top;
+}
+th{
+    background:#1aa3a3;
+    color:#fff;
+    text-align:left;
+}
+.metro span{
+    background:#e8f0fe;
+    padding:4px 8px;
+    border-radius:12px;
+    font-size:12px;
+    margin:3px;
+    display:inline-block;
+}
+.contact{ color:red; font-weight:bold; }
+
+/* MOBILE */
+@media(max-width:600px){
+    th:nth-child(2), td:nth-child(2){
+        display:none;
+    }
+}
+</style>
+<body>
+      <!-- Header will load here -->
+<div id="header"></div>
+    <div class="header">Security</div>
+
+
+<!-- HELPLINE SECTION -->
+<div class="cards">
+
+<div class="card">
+  <h4>Chh.Sambhajinagar Police Control Room</h4>
+  <div class="number">100</div>
+  <p>Control Room · 7499938585</p>
+  <p>RPF · 139/ 138</p>
+  <p>22625020</p>
+</div>
+
+<div class="card">
+  <h4>Chh.Sambhajinagar Police Tourist Helpline</h4>
+  <div class="number">022 22621855</div>
+</div>
+
+<div class="card">
+  <h4>Women Helpline</h4>
+  <div class="number">103</div>
+  <p>022 22633333</p>
+  <p>22620111</p>
+</div>
+
+<div class="card">
+  <h4>Senior Citizen Helpline</h4>
+  <div class="number">1090</div>
+</div>
+
+<div class="card">
+  <h4>National Cyber Crime Reporting</h4>
+  <div class="number">1930</div>
+</div>
+
+<div class="card">
+  <h4>Lodge e-FIR – Chh.Sambhajinagar Police</h4>
+  <a href="https://csncity.mahapolice.gov.in/fir"
+     target="_blank">
+     Go to Portal →
+  </a>
+</div>
+
+</div>
+
+
+<!-- FILTERS -->
+<div class="filters">
+<input type="text" id="search" placeholder="🔍 Search Police Station / Area / Metro">
+<select id="metroFilter">
+<option value="">All Metro Stations</option>
+<option>WALUJ MIDC</option>
+  <option>OASIS CHOWK</option>
+  <option>AS CLUB</option>
+  <option>NAGAR NAKA</option>
+  <option>PANCHAVATI HOTEL</option>
+  <option>DISTRICT COURT</option>
+  <option>KRANTI CHOWK</option>
+  <option>AKASHWANI</option>
+  <option>SEVEN HILL</option>
+  <option>CIDCO BUS STAND</option>
+  <option>CHIKHALTHANA</option>
+  <option>SHENDRA MIDC</option>
+</select>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+<table id="policeTable">
+<thead>
+<tr>
+<th>Police Station</th>
+<th>Station</th>
+<th>Metro Station</th>
+<th>Contact</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><b>WALIJ POLICE STATION </b><br> Nagar-Pune Highway, Waluj,Chh.Sambhaji Nagar </td>
+<td>1</td>
+<td class="metro">
+<span>WALUJ MIDC</span><span>OASIS CHOWK</span><span>AS CLUB</span><span>NAGAR NAKA</span>
+</td>
+<td class="contact">022 28368352</td>
+</tr>
+
+<tr>
+<td><b>KRANTI CHOWK POLICE STATION</b><br>Shanitniketan Colony, Kranti Chowk,Chh.Sambhaji Nagar </td>
+<td>2</td>
+<td class="metro">
+<span>PANCHAVATI HOTEL</span>
+<span>DISTRICT COURT</span>
+<span>KRANTI CHOWK</span>
+<span>AKASHWANI</span>
+
+</td>
+<td class="contact">022 26817485</td>
+</tr>
+
+<tr>
+<td><b>MUKUNDWADI POLICE STATION</b><br>Mukundwadi, N 2, Cidco, Chh.Sambhaji Nagar</td>
+<td>3</td>
+<td class="metro">
+<span>SEVEN HILL </span><span>CIDCO BUS STAND</span>
+</td>
+<td class="contact">022 26504482</td>
+</tr>
+<tr>
+<td><b>CHIKHALTHANA POLICE STATION</b><br> MIDC Industrial Area of Chikalthana, Chhatrapati Sambhaji Nagar </td>
+<td>4</td>
+<td class="metro">
+<span>CHIKHALTHANA</span>
+<span>SHENDRA MIDC</span>
+
+</td>
+<td class="contact">022 26813385</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="footer"></div>
+<script>
+const search = document.getElementById("search");
+const metroFilter = document.getElementById("metroFilter");
+const rows = document.querySelectorAll("#policeTable tbody tr");
+
+function filterTable(){
+    const s = search.value.toLowerCase();
+    const m = metroFilter.value.toLowerCase();
+
+    rows.forEach(row=>{
+        const text = row.innerText.toLowerCase();
+        const metro = row.querySelector(".metro").innerText.toLowerCase();
+
+        row.style.display =
+            text.includes(s) &&
+            (m === "" || metro.includes(m))
+            ? "" : "none";
+    });
+}
+
+search.addEventListener("keyup", filterTable);
+metroFilter.addEventListener("change", filterTable);
+</script>
+<script src="../header/headerfooter.js"></script>
+</body>
+</html>

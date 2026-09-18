@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Metro Link Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-subway"></i>
+            <h3>Metro Admin</h3>
+            <p id="adminName">Loading...</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="users.html" class="nav-item" data-page="users">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="schedule.html" class="nav-item" data-page="schedule">
+                <i class="fas fa-clock"></i> Train Schedule
+            </a>
+            <a href="notices.html" class="nav-item" data-page="notices">
+                <i class="fas fa-bullhorn"></i> Notices
+            </a>
+            <a href="lost-found.html" class="nav-item" data-page="lost-found">
+                <i class="fas fa-search"></i> Lost & Found
+            </a>
+            <a href="complaints.html" class="nav-item" data-page="complaints">
+                <i class="fas fa-exclamation-triangle"></i> Complaints
+            </a>
+            <a href="faqs.html" class="nav-item" data-page="faqs">
+                <i class="fas fa-question-circle"></i> FAQs
+            </a>
+            <a href="#" class="nav-item logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1>Dashboard</h1>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <i class="fas fa-users"></i>
+                <div>
+                    <h3 id="totalUsers">1,247</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+            <div class="stat-card green">
+                <i class="fas fa-bullhorn"></i>
+                <div>
+                    <h3 id="totalNotices">23</h3>
+                    <p>Notices</p>
+                </div>
+            </div>
+            <div class="stat-card orange">
+                <i class="fas fa-search"></i>
+                <div>
+                    <h3 id="pendingLost">12</h3>
+                    <p>Pending Lost Items</p>
+                </div>
+            </div>
+            <div class="stat-card red">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <h3 id="pendingComplaints">8</h3>
+                    <p>Pending Complaints</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Users Table -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-users"></i> Recent Users</h3>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentUsersTable">
+                        <!-- Data loaded by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load mock data and initialize dashboard
+        window.onload = function() {
+            checkAuth();
+            loadDashboardData();
+        };
+    </script>
+</body>
+</html>

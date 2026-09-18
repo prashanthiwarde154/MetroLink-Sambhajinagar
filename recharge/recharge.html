@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chhtrapati Sambhajinagar Metro</title>
+  <link rel="stylesheet" href="/Home/indec.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: #1f2937;
+    }
+
+    /* ================= HERO SECTION ================= */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 8%;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+    }
+
+    .hero-text {
+      max-width: 480px;
+    }
+
+    .hero-text h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-text p {
+      font-size: 18px;
+      color: #0B0B0B;
+      margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      background: #f05420;
+      color: #ffffff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      padding: 14px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .hero-image {
+      width: 320px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+.card-image {
+  width: 500px;
+  height: 360px;
+  object-fit: contain;
+  border-radius: 12px;
+  /* background: #f0fdfa; */
+  /* box-shadow: 0 15px 35px rgba(0,0,0,0.15); */
+}
+
+
+    /* ================= STATIONS ================= */
+    .stations {
+      padding: 40px 8% 60px;
+      background: #f8fafc;
+    }
+
+    .stations h2 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .stations p {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .station-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+
+    }
+
+    .station {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+    }
+
+    .station:hover {
+      background: #f05420;
+      color: #ffffff;
+      border-color: #0ea5a4;
+    }
+
+    /* ================= COMMON SECTIONS ================= */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section {
+      padding: 50px 0;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color:#0B0B0B;
+    }
+
+    
+
+    /* ================= APPS ================= */
+    .apps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .apps img {
+      height: 35px;
+    }
+
+    /* ================= STEPS ================= */
+    .steps {
+      display: flex;
+      gap: 30px;
+      justify-content: space-between;
+    }
+
+    .step {
+      flex: 1;
+      text-align: center;
+    }
+
+    .step img {
+      width: 70px;
+      margin-bottom: 15px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* ================= QUICK GLANCE ================= */
+    .quick-glance {
+      background: #f6f9fb;
+      border-radius: 20px;
+      padding: 50px 30px;
+    }
+
+    .cards {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 25px;
+      flex: 1;
+      min-width: 220px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .card img {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    /* ================= RESPONSIVE ================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .hero {
+    padding: 40px 5%;
+  }
+
+  .hero-text h1 {
+    font-size: 38px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 4%;
+  }
+
+  .hero-text {
+    max-width: 100%;
+  }
+
+  .hero-text h1 {
+    font-size: 32px;
+  }
+
+  .hero-text p {
+    font-size: 16px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-buttons button {
+    width: 100%;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .card-image {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+  }
+
+  .station-list {
+    justify-content: center;
+  }
+
+  .apps {
+    justify-content: center;
+  }
+
+  .apps img {
+    height: 32px;
+  }
+
+  .steps {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .cards {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .station {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Header will load here -->
+<div id="header"></div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Tap. Ride. Go.</h1>
+      <p> Chhtrapati Sambhajinagar Metro Well-Come's you, your journey just got smarter!</p>
+      
+      <div class="hero-buttons">
+        <button class="btn-primary"><a href="https://prepaid.sbi.bank.in/web/#/login">RECHARGE YOUR CARD</a></button>
+        <button class="btn-outline"   ><a href="https://drive.google.com/file/d/1vNDoZ6Juj7r0P4BuWYuvLWCvf-MddxCN/view?usp=drive_link">USER GUIDE</a></button>
+        <button class="btn-primary" onclick="window.location.href='/ticket-info/my-tickets.html'">YOUR TICKETS</button>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="/Assets/img5.png" alt="NCMC Card" class="card-image">
+
+        <!-- <div class="card-placeholder">CARD IMAGE</div> -->
+    </div>
+  </section>
+
+  <!-- STATIONS -->
+  <section class="stations">
+    <h2>Get your MCSC card at these Stations</h2>
+    <p  style="color: #0B0B0B;font-size: 20px;">For more detail please refer the below table.</p>
+
+    <div class="station-list">
+      <div class="station">WALUJ MIDC</div>
+      <div class="station">OASIS CHOWK</div>
+      <div class="station">AS CLUB</div>
+      <div class="station">NAGAR NAKA</div>
+      <div class="station">PANCHAVATI HOTEL</div>
+      <div class="station">DISTRIC CORT</div>
+      <div class="station">KRANTI CHOWK</div>
+      <div class="station">AKASHWANI</div>
+      <div class="station">SEVEN HILL</div>
+      <div class="station">CIDCO BUS STAND</div>
+      <div class="station">CHIKHALTHANA</div>
+      <div class="station">SHENDRA MIDC</div>
+    
+    </div>
+  </section>
+
+  <!-- RECHARGE APPS -->
+  <section class="section">
+    <div class="container">
+      <p><strong>Recharge card with your favourite app.</strong></p>
+     <div class="apps">
+  <!-- Paytm logo -->
+  <img src="https://cdn.freelogovectors.net/wp-content/uploads/2023/09/paytm-logo-freelogovectors.net_.png" alt="Paytm Logo">
+
+  <!-- Google Pay logo -->
+  <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google Pay Logo">
+
+  <!-- PhonePe logo -->
+  <img src="https://static.cdnlogo.com/logos/p/79/phonepe.svg" alt="PhonePe Logo">
+
+  <!-- BharatPe logo -->
+  <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/BharatPe_logo.png" alt="BharatPe Logo">
+    --><img src="https://techstory.in/wp-content/uploads/2022/04/bharatpe-1-1024x683.jpg" alt="BharatPe">
+</div>
+
+    </div>
+  </section>
+
+  <!-- HOW TO LOAD -->
+  <section class="section">
+    <div class="container">
+      <h2>How to load balance onto the card?</h2>
+
+      <div class="steps">
+        <div class="step">
+          <img src="/Assets/img6.png">
+          <p>Recharge your card using any app.</p>
+        </div>
+        <div class="step">
+          <img src="/Assets/img7.png">
+          <p>Go to any metro ticket counter with your card.</p>
+        </div>
+        <div class="step">
+          <img src="/Assets/img8.png">
+          <p>Load balance by tapping at TOM and EFO counters.</p>
+        </div>
+        <div class="step">
+          <img src="/Assets/img5.png">
+          <p>It's done! Travel without hassles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK GLANCE -->
+  <section class="section">
+    <div class="container quick-glance">
+      <h2>Quick Glance at MCSC</h2>
+
+      <div class="cards">
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png">
+          <h4>Contactless Entry</h4>
+          <p>Contactless entry at stations.</p>
+        </div>
+        <div class="card">
+          <img src="/Assets/img9.png">
+          <h4>One Card for All Metro Lines</h4>
+          <p>Usable across Sambhajinagar Metro Line </p>
+        </div>
+        <div class="card">
+          <img src="/Assets/logo.png">
+          <h4>Ride Easy with MCSC</h4>
+          <p>Rechargeable and compatible stations.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/483/483361.png">
+          <h4>Best Public Transport</h4>
+          <p>Single card across metros, buses & transit systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Footer will load here -->
+<div id="footer"></div>
+
+</body>
+<script src="/header/headerfooter.js"></script>
+
+
+</html>

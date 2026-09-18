@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metro Lost & Found - Sambhajinagar</title>
+<link rel="stylesheet" href="/Home/indec.css">
+<style>
+
+/* ===== SKY BLUE + WHITE + GOLD THEME ===== */
+
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#c1d3da,#ffffff);
+    color:#333;
+    /* opacity: 0.7; */
+}
+
+/* HEADER */
+header{
+    background: linear-gradient(to right,#87CEEB,#FFD700);
+    color:#003366;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* MAIN CONTAINER */
+.container{
+    max-width:900px;
+    margin:30px auto;
+    padding:20px;
+}
+
+/* TABS */
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.tabs button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    background:white;
+    border:2px solid #87CEEB;
+    color:#003366;
+    transition:0.3s;
+}
+
+.tabs button.active{
+    background:#FFD700;
+    color:#003366;
+    border:none;
+}
+
+/* CARDS */
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    border-top:5px solid #FFD700;
+}
+
+/* INPUT FIELDS */
+input, select, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border-radius:6px;
+    border:1px solid #87CEEB;
+}
+
+/* PRIMARY BUTTON */
+button.primary{
+    background:#87CEEB;
+    color:#003366;
+    border:none;
+    padding:12px;
+    width:100%;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+button.primary:hover{
+    background:#FFD700;
+}
+
+/* REPORT ITEM */
+.report-item{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    border-left:5px solid #FFD700;
+}
+
+/* BADGES */
+.badge{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    color:white;
+}
+
+.lost{ background:#FF4C4C; }
+.found{ background:#28A745; }
+
+/* TOAST */
+.toast{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#003366;
+    color:white;
+    padding:10px 20px;
+    border-radius:20px;
+}
+
+.hidden{ display:none; }
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:15px;
+    color:#003366;
+    margin-top:40px;
+    background:#FFD700;
+}
+</style>
+</head>
+
+<body>
+
+<!-- <header>
+<h1>🚇 Metro Lost & Found</h1>
+<p>MetroLink Sambhajinagar</p>
+</header> -->
+<div id="header"></div>
+<div class="container">
+
+<div class="tabs">
+<button id="tabReport" class="active" onclick="showSection('report')">New Report</button>
+<button id="tabBrowse" onclick="showSection('browse')">Browse Reports</button>
+</div>
+
+<!-- REPORT SECTION -->
+<div id="reportSection" class="card">
+
+<form id="reportForm">
+
+<label>Report Type</label>
+<select id="report_type" required>
+<option value="lost">Lost</option>
+<option value="found">Found</option>
+</select>
+
+<label>Item Name</label>
+<input type="text" id="item_name" required>
+
+<label>Description</label>
+<textarea id="description" required></textarea>
+
+<label>Station</label>
+<input type="text" id="station" required>
+
+<label>Date</label>
+<input type="date" id="date" required>
+
+<label>Your Name</label>
+<input type="text" id="contact_name" required>
+
+<label>Email</label>
+<input type="email" id="contact_email" required>
+
+<label>Upload Image</label>
+<input type="file" id="image_input" accept="image/*">
+
+<button type="submit" class="primary">Submit Report</button>
+
+</form>
+
+<div id="successMessage" class="hidden">
+<h3>✅ Report Submitted Successfully</h3>
+<button onclick="resetForm()" class="primary">Submit Another</button>
+</div>
+
+</div>
+
+<!-- BROWSE SECTION -->
+<div id="browseSection" class="hidden">
+
+<div style="margin-bottom:15px;">
+<button onclick="filterReports('all')" class="primary">All</button>
+<button onclick="filterReports('lost')" class="primary">Lost</button>
+<button onclick="filterReports('found')" class="primary">Found</button>
+</div>
+
+<div id="reportsList"></div>
+
+</div>
+
+</div>
+
+<footer>
+MetroLink Sambhajinagar • Help Others Find Their Belongings
+</footer>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+
+let reports = JSON.parse(localStorage.getItem("metroReports")) || [];
+let currentFilter = "all";
+let imageData = "";
+
+document.getElementById("date").valueAsDate = new Date();
+
+// Section Toggle
+function showSection(section){
+    document.getElementById("reportSection").classList.toggle("hidden",section!=="report");
+    document.getElementById("browseSection").classList.toggle("hidden",section!=="browse");
+
+    document.getElementById("tabReport").classList.toggle("active",section==="report");
+    document.getElementById("tabBrowse").classList.toggle("active",section==="browse");
+
+    renderReports();
+}
+
+// Image Upload
+document.getElementById("image_input").addEventListener("change",function(e){
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event){
+        imageData = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+
+// Submit Form
+document.getElementById("reportForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const report = {
+        id: Date.now(),
+        report_type: report_type.value,
+        item_name: item_name.value,
+        description: description.value,
+        station: station.value,
+        date: date.value,
+        contact_name: contact_name.value,
+        contact_email: contact_email.value,
+        image: imageData
+    };
+
+    reports.push(report);
+    localStorage.setItem("metroReports",JSON.stringify(reports));
+
+    document.getElementById("reportForm").classList.add("hidden");
+    document.getElementById("successMessage").classList.remove("hidden");
+
+    showToast("Report Submitted Successfully!");
+});
+
+// Reset Form
+function resetForm(){
+    reportForm.reset();
+    imageData="";
+    reportForm.classList.remove("hidden");
+    successMessage.classList.add("hidden");
+}
+
+// Render Reports
+function renderReports(){
+    const list = document.getElementById("reportsList");
+    list.innerHTML="";
+
+    const filtered = currentFilter==="all" ? reports : reports.filter(r=>r.report_type===currentFilter);
+
+    if(filtered.length===0){
+        list.innerHTML="<p style='color:white;'>No Reports Found</p>";
+        return;
+    }
+
+    filtered.reverse().forEach(report=>{
+        const div=document.createElement("div");
+        div.className="report-item";
+
+        div.innerHTML=`
+        <span class="badge ${report.report_type}">
+        ${report.report_type.toUpperCase()}
+        </span>
+        <h3>${report.item_name}</h3>
+        <p>${report.description}</p>
+        <p><strong>Station:</strong> ${report.station}</p>
+        <p><strong>Date:</strong> ${report.date}</p>
+        <p><strong>Contact:</strong> ${report.contact_name} (${report.contact_email})</p>
+        ${report.image ? `<img src="${report.image}" width="100%">` : ""}
+        <button onclick="deleteReport(${report.id})" class="primary" style="background:red;margin-top:10px;">Delete</button>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+// Filter
+function filterReports(type){
+    currentFilter=type;
+    renderReports();
+}
+
+// Delete
+function deleteReport(id){
+    reports=reports.filter(r=>r.id!==id);
+    localStorage.setItem("metroReports",JSON.stringify(reports));
+    renderReports();
+    showToast("Report Deleted");
+}
+
+// Toast
+function showToast(msg){
+    const toast=document.getElementById("toast");
+    toast.innerText=msg;
+    toast.classList.remove("hidden");
+
+    setTimeout(()=>toast.classList.add("hidden"),3000);
+}
+
+renderReports();
+
+</script>
+<script src="/header/headerfooter.js"></script>
+<script src="/Home/home.js"></script>
+</body>
+</html>

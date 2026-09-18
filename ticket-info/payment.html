@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Secure Payment • RailWay</title>
+    <!-- Plain CSS, no external libraries -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f5f7fa 0%, #e9eef2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        /* main card – real payment gateway look */
+        .gateway-container {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.2), 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            transition: all 0.2s ease;
+        }
+
+        /* LOADER OVERLAY (shown initially) */
+        .loader-overlay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #1e1e24; /* deep grey base */
+            padding: 48px 24px;
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 64px;
+            height: 64px;
+            border: 6px solid #3d3d44;
+            border-top: 6px solid #f97316; /* orange */
+            border-radius: 50%;
+            animation: spin 1.1s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+            margin-bottom: 28px;
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .loader-text {
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: #f0f0f0;
+            background: #2a2a33;
+            padding: 12px 28px;
+            border-radius: 60px;
+            box-shadow: inset 0 2px 5px #0f0f12, 0 8px 12px rgba(0,0,0,0.5);
+            border-left: 3px solid #f97316;
+            border-right: 3px solid #f97316;
+        }
+
+        .loader-text span {
+            color: #f97316;
+            font-weight: 600;
+            animation: pulseGlow 1.6s infinite;
+        }
+
+        /* MAIN PAYMENT UI (hidden until loader finishes) */
+        .payment-ui {
+            display: none;
+            background: white;
+        }
+
+        /* orange/grey header */
+        .pay-header {
+            background: #1f1f26; /* deep grey */
+            padding: 24px 20px 18px 20px;
+            color: white;
+            border-bottom: 4px solid #f97316;
+        }
+
+        .pay-header h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pay-header h2 span {
+            background: #f97316;
+            font-size: 1rem;
+            padding: 4px 12px;
+            border-radius: 30px;
+            color: #1a1a1a;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .merchant-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: #cbcbcb;
+        }
+
+        .merchant-info strong {
+            color: white;
+            background: #f97316;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #1e1e1e;
+        }
+
+        /* amount card */
+        .amount-panel {
+            background: #f3f4f6;
+            margin: 16px 20px;
+            padding: 22px 20px;
+            border-radius: 24px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 8px 12px -8px rgba(0,0,0,0.2);
+            border: 1px solid #dddddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .amount-label {
+            font-weight: 500;
+            color: #3b3b3b;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .amount-value {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: #1f1f26;
+        }
+
+        .amount-value sub {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #f97316;
+            bottom: 0;
+        }
+
+        /* payment options grid — like real payment gateway */
+        .payment-options {
+            padding: 0 20px 16px 20px;
+        }
+
+        .section-title {
+            color: #2d2d34;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title i {
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: #f97316;
+            border-radius: 4px;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .method-item {
+            background: #f0f2f5;
+            border-radius: 20px;
+            padding: 12px 6px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #2c2c34;
+            border: 1px solid #d0d5db;
+            transition: all 0.15s;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.02);
+            cursor: default;
+        }
+
+        .method-item.orange {
+            background: #f97316;
+            color: white;
+            border-color: #e0630c;
+            font-weight: 600;
+        }
+
+        .method-item.grey {
+            background: #2b2b33;
+            color: white;
+            border-color: #151518;
+        }
+
+        /* upi / card section */
+        .input-group {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 6px 6px 6px 18px;
+            display: flex;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-group input {
+            border: none;
+            background: transparent;
+            padding: 14px 0;
+            font-size: 1rem;
+            width: 60%;
+            outline: none;
+            color: #1e1e24;
+        }
+
+        .input-group input::placeholder {
+            color: #7e8492;
+        }
+
+        .input-group button {
+            background: #2c2c34;
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: default;
+            border-left: 2px solid #f97316;
+        }
+
+        .card-details {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .card-field {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 18px;
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            color: #1f1f26;
+        }
+
+        /* action button orange */
+        .action-button {
+            background: #f97316;
+            border: none;
+            width: calc(100% - 40px);
+            margin: 8px 20px 18px 20px;
+            padding: 20px 0;
+            border-radius: 60px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e1e24;
+            box-shadow: 0 10px 18px -8px #f97316, 0 4px 12px rgba(249,115,22,0.4);
+            border-bottom: 4px solid #bF4f0a;
+            transition: transform 0.1s;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        .action-button:active {
+            transform: scale(0.97);
+            background: #e06512;
+        }
+
+        .secure-footer {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding: 14px 20px 22px 20px;
+            color: #5b5f6b;
+            font-size: 0.75rem;
+            border-top: 1px solid #e2e6ea;
+        }
+
+        .secure-footer span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .fake-lock {
+            background: #2e2e38;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 6px;
+            font-size: 0.6rem;
+        }
+
+        /* keyframes */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.9; text-shadow: 0 0 0 #fba; }
+            50% { opacity: 1; text-shadow: 0 0 8px #f97316; }
+            100% { opacity: 0.9; text-shadow: 0 0 0 #fba; }
+        }
+
+        /* small adjustments */
+        .rupee-symbol {
+            font-size: 2rem;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="gateway-container" id="gatewayCard">
+        <!-- LOADER view (visible first) -->
+        <div id="loaderScreen" class="loader-overlay">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">RENDERING <span>PAYMENT</span> GATEWAY...</div>
+        </div>
+
+        <!-- MAIN PAYMENT UI (hidden initially) -->
+        <div id="paymentUI" class="payment-ui">
+            <!-- orange/grey header -->
+            <div class="pay-header">
+                <h2>
+                    🔐 SecurePay
+                    <span>⚡ CSNM</span>
+                </h2>
+                <div class="merchant-info">
+                    <span>Merchant: <strong>METRO E-TICKET</strong></span>
+                    <span>🔒 256-bit</span>
+                </div>
+            </div>
+
+            <!-- amount row (dynamic) -->
+            <div class="amount-panel">
+                <span class="amount-label">Total fare</span>
+                <div class="amount-value">
+                    <span class="rupee-symbol">₹</span> <span id="payAmount"></span> <sub>.00</sub>
+                </div>
+            </div>
+
+           
+
+            <!-- main orange CTA (Pay Now) actual button calls makePayment() -->
+            <button class="action-button" id="payNowBtn">Pay Now →</button>
+
+            <!-- footer with grey/orange details -->
+            <div class="secure-footer">
+                <span>🔐 Secured by <span class="fake-lock" style="background:#f97316; color:black;">OrangeLock</span></span>
+                <span>🧾 Txn: ••••897</span>
+                <span>⚡ 3D secure</span>
+            </div>
+        </div>
+    </div>
+
+  <script>
+(function() {
+
+    const loader = document.getElementById('loaderScreen');
+    const paymentUI = document.getElementById('paymentUI');
+    const fareSpan = document.getElementById('payAmount');
+    const payBtn = document.getElementById('payNowBtn');
+
+    // -----------------------------
+    // 1️⃣ Show Fare from localStorage
+    // -----------------------------
+    const storedFare = localStorage.getItem("fare");
+    const from = localStorage.getItem("from");
+    const to = localStorage.getItem("to");
+    const passengers = JSON.parse(localStorage.getItem("passengerData") || "[]");
+
+    if (!from || !to || passengers.length === 0) {
+        alert("No ticket data found. Please book again.");
+        window.location.href = "/";
+        return;
+    }
+
+    fareSpan.innerText = storedFare || "0";
+
+    // -----------------------------
+    // 2️⃣ Loader Effect
+    // -----------------------------
+    setTimeout(() => {
+        loader.style.display = "none";
+        paymentUI.style.display = "block";
+    }, 2000);
+
+    // -----------------------------
+    // 3️⃣ REAL PAYMENT PROCESS
+    // -----------------------------
+    payBtn.addEventListener("click", async function(e) {
+        e.preventDefault();
+
+        payBtn.disabled = true;
+        payBtn.innerText = "Processing...";
+
+        try {
+
+            const response = await fetch("/process-payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+               body: JSON.stringify({
+    from: from,
+    to: to,
+    passengers: passengers,
+    fare: storedFare
+})
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                // Clear temporary booking data
+                localStorage.removeItem("from");
+                localStorage.removeItem("to");
+                localStorage.removeItem("fare");
+                localStorage.removeItem("distance");
+                localStorage.removeItem("passengerData");
+                localStorage.removeItem("passengers");
+
+                alert("Payment Successful ✅ Ticket Booked!");
+
+                window.location.href = "/ticket-info/my-tickets.html";
+
+            } else {
+                alert(data.message || "Payment Failed ❌");
+                payBtn.disabled = false;
+                payBtn.innerText = "Pay Now →";
+            }
+
+        } catch (error) {
+            console.error("Payment Error:", error);
+            alert("Server error while processing payment ❌");
+            payBtn.disabled = false;
+            payBtn.innerText = "Pay Now →";
+        }
+
+    });
+
+})();
+</script>
+
+
+</body>
+</html>

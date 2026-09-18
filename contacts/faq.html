@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ - Metro Link Sambhajinagar</title>
+<link rel="stylesheet" href="/Home/indec.css">
+
+<style>
+
+/* ================= BODY ================= */
+/* body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f5f7fa;
+} */
+
+/* ================= TITLE SECTION ================= */
+.faq-header {
+    background: linear-gradient(135deg,#0f7c8a,#b2d8df);
+    padding: 40px 20px;
+    color: #1a1a1a;
+}
+
+.faq-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+/* ================= FILTER BUTTONS ================= */
+.filter-section {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.filter-btn {
+    padding: 10px 22px;
+    margin: 8px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #0f7c8a;
+    color: white;
+    border: none;
+}
+
+/* ================= FAQ CONTAINER ================= */
+.faq-container {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 60px;
+}
+
+/* ================= FAQ ITEM ================= */
+.faq-item {
+    background: white;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* QUESTION */
+.faq-question {
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+}
+
+/* PLUS MINUS */
+.icon {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0f7c8a;
+}
+
+/* ANSWER */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    background: #f9f9f9;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.faq-answer p {
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+/* ACTIVE */
+.faq-item.active .faq-answer {
+    max-height: 200px;
+    padding: 10px 20px;
+}
+
+/* ================= ASK QUESTION SECTION ================= */
+
+.ask-section {
+    background: white;
+    width: 80%;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.ask-section h2 {
+    margin-bottom: 10px;
+    color: #0f7c8a;
+}
+
+.ask-section p {
+    margin-bottom: 30px;
+    color: #555;
+}
+
+#questionForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#questionForm input,
+#questionForm textarea {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+#questionForm textarea {
+    resize: none;
+    height: 100px;
+}
+
+#questionForm button {
+    padding: 12px;
+    border: none;
+    background: #0f7c8a;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#questionForm button:hover {
+    background: #095c66;
+}
+</style>
+</head>
+<body>
+
+<div id="header"></div>
+<!-- ================= HEADER ================= -->
+<div class="faq-header">
+    <h1>Frequently Asked Questions</h1>
+</div>
+
+<!-- ================= FILTER BUTTONS ================= -->
+<div class="filter-section">
+    <button class="filter-btn active" onclick="filterFAQ('project')">Project</button>
+    <button class="filter-btn" onclick="filterFAQ('train')">Train</button>
+    <button class="filter-btn" onclick="filterFAQ('station')">Stations</button>
+    <button class="filter-btn" onclick="filterFAQ('rules')">Rules & Regulations</button>
+    <button class="filter-btn" onclick="filterFAQ('payment')">Product & Payments</button>
+    <button class="filter-btn" onclick="filterFAQ('safety')">Safety, Security & Emergency</button>
+</div>
+
+<!-- ================= FAQ LIST ================= -->
+<div class="faq-container">
+
+    <!-- PROJECT -->
+    <div class="faq-item project">
+        <div class="faq-question">
+            How long is MML-3 (Phase 1)? How many stations are there?
+            <span class="icon">+</span>
+        </div>
+        <div class="faq-answer">
+            <p>MML-3 Phase 1 is approximately 33.5 km long and consists of 27 stations across the city.</p>
+        </div>
+    </div>
+
+    <div class="faq-item project">
+        <div class="faq-question">
+            Who will operate the MML-3?
+            <span class="icon">+</span>
+        </div>
+        <div class="faq-answer">
+            <p>The metro will be operated by Metro Link Sambhajinagar Rail Corporation under government supervision.</p>
+        </div>
+    </div>
+
+    <!-- TRAIN -->
+    <div class="faq-item train">
+        <div class="faq-question">
+            What is the headway between two trains?
+            <span class="icon">+</span>
+        </div>
+        <div class="faq-answer">
+            <p>The average headway between two trains will be 3 to 5 minutes during peak hours.</p>
+        </div>
+    </div>
+
+    <!-- STATION -->
+    <div class="faq-item station">
+        <div class="faq-question">
+            Are all stations accessible?
+            <span class="icon">+</span>
+        </div>
+        <div class="faq-answer">
+            <p>Yes, all metro stations are designed with lifts, escalators, and ramps for accessibility.</p>
+        </div>
+    </div>
+    <!-- RULES & REGULATIONS FAQ -->
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Is there any size/weight limit for luggage?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Yes. Passengers are allowed to carry luggage up to <strong>15 kg</strong> with maximum dimensions not exceeding <strong>80 cm x 50 cm x 30 cm</strong>. Oversized or excessively heavy luggage is not permitted to ensure passenger safety and comfort.</p>
+            </div>
+        </div>
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Is there any list of prohibited materials at Metro Stations?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>The following items are strictly prohibited inside metro premises:</p>
+                <ul>
+                    <li>Explosives and firecrackers</li>
+                    <li>Firearms and sharp weapons</li>
+                    <li>Flammable liquids and gases</li>
+                    <li>Toxic and hazardous chemicals</li>
+                    <li>Any item that may cause harm or panic</li>
+                </ul>
+                <p>Security personnel may inspect baggage at entry points.</p>
+            </div>
+        </div>
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Can passengers bring eatables inside the metro trains?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Passengers may carry packed food items. However, <strong>eating inside metro trains and station premises is strictly prohibited</strong> to maintain cleanliness and hygiene.</p>
+            </div>
+        </div>
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Are inflammable items, e.g., kerosene, petrol, etc., allowed in metro trains?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>No. Inflammable substances such as kerosene, petrol, diesel, LPG cylinders, and similar hazardous materials are strictly prohibited inside metro stations and trains for safety reasons.</p>
+            </div>
+        </div>
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Are pets allowed in metro trains?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Pets and animals are not allowed inside metro trains or station premises, except certified service animals assisting persons with disabilities.</p>
+            </div>
+        </div>
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Is liquor allowed in metro trains?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>No. Carrying or consuming liquor inside metro trains and stations is strictly prohibited.</p>
+            </div>
+        </div>
+
+        <div class="faq-item rules">
+            <div class="faq-question">
+                Is raw meat and fish allowed in metro trains?
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Raw meat and fish are not allowed inside metro trains due to hygiene and odor concerns. Properly sealed packaged food items may be permitted subject to security inspection.</p>
+            </div>
+        </div>
+    
+    <!-- PRODUCT & PAYMENTS FAQ -->
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        Can I purchase a ticket online?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Yes. Passengers can purchase tickets online through the official Metro Link Sambhajinagar website or mobile application. After booking, a QR code ticket will be issued which can be scanned at the AFC gates.</p>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        Can I extend my journey beyond my ticket limit?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Yes. If you travel beyond your ticketed destination, you must pay the fare difference at the destination station’s Customer Care Center before exiting the paid area.</p>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        What is the time limit for a single journey ticket & return journey ticket?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>A single journey ticket is valid for one continuous trip and must be used within <strong>75 minutes</strong> from entry. A return journey ticket is valid for the same day and must be used within the operational hours of the metro service.</p>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        What types of tickets are issued at the station?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>The following ticket types are available:</p>
+        <ul>
+            <li>Single Journey Ticket (Token/QR)</li>
+            <li>Return Journey Ticket</li>
+            <li>Smart Card (Rechargeable)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        Is there any facility for a refund if I miss the last train?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Refund requests may be considered at the Customer Care Center if the last train is missed due to operational reasons. Valid proof of ticket must be provided.</p>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        Where can I purchase single and return journey tickets?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Passengers can purchase tickets from:</p>
+        <ul>
+            <li>Ticket Vending Machines (TVM)</li>
+            <li>Customer Care Counters at metro stations</li>
+            <li>Official website or mobile app</li>
+        </ul>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        What should you do if you lose your ticket?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>If a ticket is lost, passengers must immediately report to the Customer Care Center. A penalty along with the maximum applicable fare may be charged to exit the station.</p>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        What kinds of currencies does a TVM accept?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Ticket Vending Machines accept Indian currency notes and coins. Selected machines may also support UPI, debit cards, and digital payments.</p>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        How to issue a ticket from TVM?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>To issue a ticket from TVM:</p>
+        <ul>
+            <li>Select destination station</li>
+            <li>Select number of passengers</li>
+            <li>Make payment using available options</li>
+            <li>Collect printed QR ticket or token</li>
+        </ul>
+    </div>
+</div>
+
+<div class="faq-item payment">
+    <div class="faq-question">
+        What are the criteria for children's tickets?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Children below <strong>3 feet (90 cm)</strong> in height may travel free when accompanied by an adult. Children above this height require a valid ticket.</p>
+    </div>
+</div>
+
+<!-- SAFETY, SECURITY & EMERGENCY FAQ -->
+
+<div class="faq-item safety">
+    <div class="faq-question">
+        What are the safety measures available at metro stations?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>Metro Link Sambhajinagar stations are equipped with advanced safety systems including:</p>
+        <ul>
+            <li>24/7 CCTV surveillance</li>
+            <li>Security personnel at all entry and exit points</li>
+            <li>Baggage screening machines</li>
+            <li>Fire detection and suppression systems</li>
+            <li>Emergency alarms and help points</li>
+        </ul>
+        <p>Regular safety drills are also conducted to ensure passenger protection.</p>
+    </div>
+</div>
+
+<div class="faq-item safety">
+    <div class="faq-question">
+        What are the steps taken for women safety?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>For women safety, the metro provides:</p>
+        <ul>
+            <li>Dedicated security staff including female personnel</li>
+            <li>Continuous CCTV monitoring</li>
+            <li>Emergency help buttons inside trains</li>
+            <li>Well-lit platforms and station premises</li>
+        </ul>
+        <p>Passengers can immediately contact station staff or use emergency intercom systems if needed.</p>
+    </div>
+</div>
+
+<div class="faq-item safety">
+    <div class="faq-question">
+        What if a passenger falls on the track when there are no trains?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>If a passenger falls onto the track, nearby passengers should immediately inform station staff or press the emergency alarm. Trained personnel will assist in safely rescuing the individual while ensuring train movement is halted.</p>
+    </div>
+</div>
+
+<div class="faq-item safety">
+    <div class="faq-question">
+        What happens when the platform gets overcrowded?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>During overcrowding, station staff manage passenger flow by regulating entry, making public announcements, and deploying additional security personnel to maintain order and safety.</p>
+    </div>
+</div>
+
+<div class="faq-item safety">
+    <div class="faq-question">
+        What happens if a metro train stops between stations?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>If a train stops between stations due to technical or operational reasons, announcements will be made inside the train. The issue will be resolved promptly by the control center. Passengers are advised to remain calm and not attempt to open doors or exit the train unless instructed by staff.</p>
+    </div>
+</div>
+
+<div class="faq-item safety">
+    <div class="faq-question">
+        Who has the authority to certify the safety of the project?
+        <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+        <p>The metro project is certified for safety by the authorized government body such as the Commissioner of Metro Railway Safety (CMRS) before public operations begin.</p>
+    </div>
+</div>
+
+</div>
+<!-- ================= ASK QUESTION SECTION ================= -->
+
+<div class="ask-section">
+
+    <h2>Didn't find your question?</h2>
+    <p>Ask us and we will respond shortly.</p>
+
+    <form id="questionForm">
+        
+        <input type="text" 
+               id="userName" 
+               placeholder="Enter your name" 
+               required>
+
+        <input type="email" 
+               id="userEmail" 
+               placeholder="Enter your email" 
+               required>
+
+        <textarea id="userQuestion" 
+                  placeholder="Type your question here..." 
+                  required></textarea>
+
+        <button type="submit">Submit Question</button>
+
+    </form>
+
+</div>
+<div id="footer"></div>
+
+<!-- ================= JAVASCRIPT ================= -->
+ <script src="/header/headerfooter.js"></script>
+<script>
+
+/* ================= ACCORDION FUNCTION ================= */
+document.querySelectorAll(".faq-question").forEach(question => {
+    question.addEventListener("click", () => {
+        const item = question.parentElement;
+        const icon = question.querySelector(".icon");
+
+        item.classList.toggle("active");
+
+        if (item.classList.contains("active")) {
+            icon.textContent = "−";
+        } else {
+            icon.textContent = "+";
+        }
+    });
+});
+
+/* ================= FILTER FUNCTION ================= */
+function filterFAQ(category) {
+
+    // Active button change
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+    event.target.classList.add("active");
+
+    // Show / Hide FAQ
+    document.querySelectorAll(".faq-item").forEach(item => {
+        if (category === "all") {
+            item.style.display = "block";
+        } else {
+            item.style.display = item.classList.contains(category) ? "block" : "none";
+        }
+    });
+}
+/* ================= FORM SUBMIT ALERT ================= */
+
+document.getElementById("questionForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    alert("You will get your answer shortly.");
+
+    this.reset();
+});
+</script>
+
+</body>
+</html>
