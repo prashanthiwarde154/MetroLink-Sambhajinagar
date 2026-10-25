@@ -8,6 +8,10 @@
 
 <style>
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* ================= BODY ================= */
 /* body {
     margin: 0;
@@ -41,7 +45,7 @@
     border: 1px solid #ccc;
     background: white;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     font-weight: 500;
 }
 
@@ -49,7 +53,16 @@
 .filter-btn:hover {
     background: #0f7c8a;
     color: white;
-    border: none;
+    border-color: #0f7c8a;
+}
+
+.filter-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(15,124,138,0.3);
+}
+
+.filter-btn:active {
+    transform: scale(0.95);
 }
 
 /* ================= FAQ CONTAINER ================= */
@@ -66,6 +79,12 @@
     margin-bottom: 15px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.faq-item:hover {
+    box-shadow: 0 8px 20px rgba(15,124,138,0.18);
+    transform: translateY(-2px);
 }
 
 /* QUESTION */
@@ -76,6 +95,16 @@
     justify-content: space-between;
     align-items: center;
     font-weight: 500;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.faq-question:hover {
+    color: #0f7c8a;
+    background: #f3fbfc;
+}
+
+.faq-item.active .faq-question {
+    color: #0f7c8a;
 }
 
 /* PLUS MINUS */
@@ -83,6 +112,13 @@
     font-size: 22px;
     font-weight: bold;
     color: #0f7c8a;
+    flex-shrink: 0;
+    margin-left: 15px;
+    transition: transform 0.4s ease;
+}
+
+.faq-item.active .icon {
+    transform: rotate(180deg);
 }
 
 /* ANSWER */
@@ -91,7 +127,8 @@
     overflow: hidden;
     padding: 0 20px;
     background: #f9f9f9;
-    transition: max-height 0.4s ease, padding 0.4s ease;
+    opacity: 0;
+    transition: max-height 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
 }
 
 .faq-answer p {
@@ -100,9 +137,11 @@
 }
 
 /* ACTIVE */
+/* max-height is also set by JS to fit longer answers */
 .faq-item.active .faq-answer {
     max-height: 200px;
     padding: 10px 20px;
+    opacity: 1;
 }
 
 /* ================= ASK QUESTION SECTION ================= */
@@ -115,6 +154,11 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     text-align: center;
+    transition: box-shadow 0.4s ease;
+}
+
+.ask-section:hover {
+    box-shadow: 0 14px 30px rgba(15,124,138,0.18);
 }
 
 .ask-section h2 {
@@ -139,6 +183,20 @@
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+#questionForm input:hover,
+#questionForm textarea:hover {
+    border-color: #0f7c8a;
+}
+
+#questionForm input:focus,
+#questionForm textarea:focus {
+    outline: none;
+    border-color: #0f7c8a;
+    box-shadow: 0 0 0 4px rgba(15,124,138,0.18);
+    transform: translateY(-2px);
 }
 
 #questionForm textarea {
@@ -154,11 +212,110 @@
     font-weight: 500;
     cursor: pointer;
     border-radius: 5px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 #questionForm button:hover {
     background: #095c66;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(15,124,138,0.35);
+}
+
+#questionForm button:active {
+    transform: scale(0.97);
+}
+
+/* Loading state (class added by JS) */
+#questionForm button.loading {
+    pointer-events: none;
+    opacity: 0.85;
+}
+#questionForm button.loading::after {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 10px;
+    vertical-align: -2px;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* Message under the form */
+#askMessage {
+    margin: 15px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 18px;
+    color: #2e7d32;
+}
+#askMessage.success {
+    animation: messageIn 0.4s ease both;
+}
+
+/* =====================================================
+   ANIMATION & TRANSITION LAYER (added)
+   ===================================================== */
+
+/* ---------- Header + filter buttons appear on load ---------- */
+/* uses translate (not transform) so hover effects never conflict */
+@keyframes itemIn {
+    from { opacity: 0; translate: 0 18px; }
+    to   { opacity: 1; translate: 0 0; }
+}
+.faq-header h1 {
+    opacity: 0;
+    animation: itemIn 0.7s cubic-bezier(.22,.61,.36,1) 0.1s forwards;
+}
+.filter-btn {
+    opacity: 0;
+    animation: itemIn 0.5s ease forwards;
+}
+.filter-btn:nth-child(1) { animation-delay: 0.30s; }
+.filter-btn:nth-child(2) { animation-delay: 0.38s; }
+.filter-btn:nth-child(3) { animation-delay: 0.46s; }
+.filter-btn:nth-child(4) { animation-delay: 0.54s; }
+.filter-btn:nth-child(5) { animation-delay: 0.62s; }
+.filter-btn:nth-child(6) { animation-delay: 0.70s; }
+
+/* ---------- Scroll reveal (class added by JS) ---------- */
+.reveal { opacity: 0; }
+.reveal.visible {
+    animation: revealUp 0.7s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes revealUp {
+    from { opacity: 0; translate: 0 35px; }
+    to   { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- FAQ items fade in again after a filter (class added by JS) ---------- */
+.faq-item.item-in {
+    animation: itemIn 0.5s ease both;
+}
+
+@keyframes messageIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------- Respect users who prefer less motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .reveal,
+    .faq-header h1,
+    .filter-btn {
+        opacity: 1;
+    }
 }
 </style>
 </head>
@@ -528,6 +685,8 @@
 
     </form>
 
+    <p id="askMessage"></p>
+
 </div>
 <div id="footer"></div>
 
@@ -540,13 +699,17 @@ document.querySelectorAll(".faq-question").forEach(question => {
     question.addEventListener("click", () => {
         const item = question.parentElement;
         const icon = question.querySelector(".icon");
+        const answer = item.querySelector(".faq-answer");
 
         item.classList.toggle("active");
 
         if (item.classList.contains("active")) {
             icon.textContent = "−";
+            // open to the real height of the answer (long answers were cut off at 200px)
+            answer.style.maxHeight = (answer.scrollHeight + 40) + "px";
         } else {
             icon.textContent = "+";
+            answer.style.maxHeight = "";
         }
     });
 });
@@ -560,23 +723,79 @@ function filterFAQ(category) {
     });
     event.target.classList.add("active");
 
-    // Show / Hide FAQ
+    // Show / Hide FAQ (shown items fade in one after another)
+    let shown = 0;
     document.querySelectorAll(".faq-item").forEach(item => {
-        if (category === "all") {
-            item.style.display = "block";
-        } else {
-            item.style.display = item.classList.contains(category) ? "block" : "none";
+        const show = category === "all" || item.classList.contains(category);
+        item.style.display = show ? "block" : "none";
+
+        if (show) {
+            item.classList.remove("item-in");
+            void item.offsetWidth;                 // restart animation
+            item.style.animationDelay = Math.min(shown, 8) * 0.05 + "s";
+            item.classList.add("item-in");
+            shown++;
         }
     });
 }
-/* ================= FORM SUBMIT ALERT ================= */
+/* ================= FORM SUBMIT ================= */
 
-document.getElementById("questionForm").addEventListener("submit", function(e) {
+const questionForm = document.getElementById("questionForm");
+const askMessage = document.getElementById("askMessage");
+
+questionForm.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    alert("You will get your answer shortly.");
+    const btn = questionForm.querySelector("button");
+    btn.classList.add("loading");
+    btn.disabled = true;
+    btn.textContent = "Submitting...";
 
-    this.reset();
+    setTimeout(() => {
+        btn.classList.remove("loading");
+        btn.disabled = false;
+        btn.textContent = "Submit Question";
+
+        askMessage.textContent = "You will get your answer shortly.";
+        askMessage.className = "";
+        void askMessage.offsetWidth;               // restart animation
+        askMessage.classList.add("success");
+
+        questionForm.reset();
+    }, 800);
+});
+
+/* =====================================================
+   SCROLL REVEAL ANIMATION (added)
+   Adds reveal classes automatically, no extra HTML needed
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    const elements = [];
+    document.querySelectorAll(".faq-item, .ask-section").forEach(el => {
+        el.classList.add("reveal");
+        elements.push(el);
+    });
+
+    // Fallback for very old browsers without IntersectionObserver
+    if (!("IntersectionObserver" in window)) {
+        elements.forEach(el => el.classList.add("visible"));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        // stagger the items that appear together
+        let order = 0;
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationDelay = Math.min(order, 8) * 0.06 + "s";
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);   // animate only once
+                order++;
+            }
+        });
+    }, { threshold: 0.1 });
+
+    elements.forEach(el => observer.observe(el));
 });
 </script>
 

@@ -27,6 +27,12 @@
     padding:30px;
     border-radius:10px;
     box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.info-box:hover,.form-box:hover{
+    box-shadow:0 14px 30px rgba(0,33,71,0.18);
+    transform: translateY(-4px);
 }
 
 .info-box h2,.form-box h2{
@@ -37,11 +43,22 @@
 .info-item{
     margin-bottom:20px;
     font-size:15px;
+    transition: transform 0.3s ease;
+}
+
+.info-item:hover{
+    transform: translateX(6px);
 }
 
 .info-item i{
     color:#002147;
     margin-right:10px;
+    transition: transform 0.4s ease, color 0.3s ease;
+}
+
+.info-item:hover i{
+    color:#0b7285;
+    transform: scale(1.25) rotate(-8deg);
 }
 
 input, textarea{
@@ -51,11 +68,77 @@ input, textarea{
     border-radius:6px;
     border:1px solid #ccc;
     font-size:14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+input:hover, textarea:hover{
+    border-color:#002147;
 }
 
 input:focus, textarea:focus{
     outline:none;
     border-color:#002147;
+    box-shadow:0 0 0 4px rgba(0,33,71,0.15);
+    transform: translateY(-2px);
+}
+
+/* field highlighted by validation (class added by JS) */
+input.invalid, textarea.invalid{
+    border-color:#d32f2f;
+    box-shadow:0 0 0 4px rgba(211,47,47,0.15);
+}
+
+/* Submit button */
+.form-box button{
+    background:#002147;
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    border-radius:6px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.form-box button:hover{
+    background:#0b7285;
+    transform: translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,33,71,0.3);
+}
+.form-box button:active{
+    transform: scale(0.96);
+}
+.form-box button.loading{
+    pointer-events:none;
+    opacity:0.85;
+}
+.form-box button.loading::after{
+    content:"";
+    display:inline-block;
+    width:14px;
+    height:14px;
+    margin-left:10px;
+    vertical-align:-2px;
+    border:2px solid rgba(255,255,255,0.5);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* form message (success / error) */
+#formMessage{
+    margin-top:15px;
+    font-size:14px;
+    font-weight:500;
+    min-height:18px;
+}
+#formMessage.error{
+    color:#d32f2f;
+    animation: messageIn 0.4s ease both;
+}
+#formMessage.success{
+    color:#2e7d32;
+    animation: messageIn 0.4s ease both;
 }
 
 
@@ -83,6 +166,99 @@ footer{
 @media(max-width:900px){
     .container{
         grid-template-columns:1fr;
+    }
+}
+
+/* =====================================================
+   ANIMATION & TRANSITION LAYER (added)
+   ===================================================== */
+
+/* ---------- Boxes slide in from the sides on load ---------- */
+/* uses translate (not transform) so hover effects never conflict */
+@keyframes slideInLeft{
+    from{ opacity:0; translate:-60px 0; }
+    to{ opacity:1; translate:0 0; }
+}
+@keyframes slideInRight{
+    from{ opacity:0; translate:60px 0; }
+    to{ opacity:1; translate:0 0; }
+}
+.info-box{
+    animation: slideInLeft 0.8s cubic-bezier(.22,.61,.36,1) both;
+}
+.form-box{
+    animation: slideInRight 0.8s cubic-bezier(.22,.61,.36,1) 0.15s both;
+}
+
+/* ---------- Contents appear one after another ---------- */
+@keyframes itemIn{
+    from{ opacity:0; translate:0 18px; }
+    to{ opacity:1; translate:0 0; }
+}
+.info-box h2,
+.info-item,
+.form-box h2,
+.form-box form > *{
+    opacity:0;
+    animation: itemIn 0.6s ease forwards;
+}
+.info-box h2{ animation-delay:0.4s; }
+.info-item:nth-of-type(1){ animation-delay:0.5s; }
+.info-item:nth-of-type(2){ animation-delay:0.6s; }
+.info-item:nth-of-type(3){ animation-delay:0.7s; }
+.info-item:nth-of-type(4){ animation-delay:0.8s; }
+
+.form-box h2{ animation-delay:0.5s; }
+.form-box form > *:nth-child(1){ animation-delay:0.6s; }
+.form-box form > *:nth-child(2){ animation-delay:0.68s; }
+.form-box form > *:nth-child(3){ animation-delay:0.76s; }
+.form-box form > *:nth-child(4){ animation-delay:0.84s; }
+.form-box form > *:nth-child(5){ animation-delay:0.92s; }
+
+/* ---------- Form shake on error (class added by JS) ---------- */
+@keyframes shake{
+    0%, 100%{ translate:0 0; }
+    20%{ translate:-10px 0; }
+    40%{ translate:10px 0; }
+    60%{ translate:-6px 0; }
+    80%{ translate:6px 0; }
+}
+#contactForm.shake{
+    animation: shake 0.5s ease;
+}
+
+@keyframes messageIn{
+    from{ opacity:0; transform:translateY(-8px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+@keyframes spin{
+    to{ transform:rotate(360deg); }
+}
+
+/* ---------- Map fades up when scrolled into view ---------- */
+.reveal{ opacity:0; }
+.reveal.visible{
+    animation: revealUp 0.8s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes revealUp{
+    from{ opacity:0; translate:0 40px; }
+    to{ opacity:1; translate:0 0; }
+}
+
+/* ---------- Respect users who prefer less motion ---------- */
+@media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+        scroll-behavior:auto !important;
+    }
+    .reveal,
+    .info-box h2,
+    .info-item,
+    .form-box h2,
+    .form-box form > *{
+        opacity:1;
     }
 }
 </style>
@@ -125,13 +301,15 @@ Customer Support: 9699253528 , 9322138423
 <div class="form-box">
 <h2>Feedback/Complains</h2>
 
-<form onsubmit="return validateForm()">
+<form id="contactForm">
 <input type="text" id="name" placeholder="Your Name">
 <input type="email" id="email" placeholder="Your Email">
 <input type="text" id="subject" placeholder="Subject">
 <textarea rows="5" id="message" placeholder="Your Message"></textarea>
-<button type="submit" onclick="validateForm()">Submit</button>
+<button type="submit">Submit</button>
 </form>
+
+<p id="formMessage"></p>
 
 </div>
 
@@ -149,20 +327,96 @@ Customer Support: 9699253528 , 9322138423
 <div id="footer"></div>
 <script src="/header/headerfooter.js"></script>
 <script>
-function validateForm(){
-    let name=document.getElementById("name").value;
-    let email=document.getElementById("email").value;
-    let message=document.getElementById("message").value;
+const contactForm = document.getElementById("contactForm");
+const formMessage = document.getElementById("formMessage");
+const submitBtn = contactForm.querySelector("button");
 
-    if(name==="" || email==="" || message===""){
-        alert("Please fill all required fields!");
+// Show an animated message (error or success)
+function showMessage(text, type){
+    formMessage.textContent = text;
+    formMessage.className = "";
+    void formMessage.offsetWidth;       // restart animation
+    formMessage.classList.add(type);
+}
+
+// Shake the form on error
+function shakeForm(){
+    contactForm.classList.remove("shake");
+    void contactForm.offsetWidth;       // restart animation
+    contactForm.classList.add("shake");
+}
+
+function validateForm(){
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const messageInput = document.getElementById("message");
+
+    // clear previous red highlights
+    contactForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+
+    const missing = [nameInput, emailInput, messageInput].filter(el => el.value.trim() === "");
+
+    if(missing.length > 0){
+        missing.forEach(el => el.classList.add("invalid"));
+        missing[0].focus();
+        showMessage("Please fill all required fields!", "error");
+        shakeForm();
         return false;
     }
 
-    alert("Message Sent Successfully to MetroLink Support Team!");
     return true;
 }
 
+contactForm.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    if(!validateForm()) return;
+
+    // short loading state on the button
+    submitBtn.classList.add("loading");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    setTimeout(() => {
+        submitBtn.classList.remove("loading");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
+
+        showMessage("Message Sent Successfully to MetroLink Support Team!", "success");
+        contactForm.reset();
+    }, 800);
+});
+
+// remove the red highlight as soon as the user starts typing
+contactForm.querySelectorAll("input, textarea").forEach(el => {
+    el.addEventListener("input", () => el.classList.remove("invalid"));
+});
+
+/* =====================================================
+   SCROLL REVEAL ANIMATION (added)
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    const mapBox = document.querySelector(".map");
+    if(!mapBox) return;
+
+    mapBox.classList.add("reveal");
+
+    if(!("IntersectionObserver" in window)){
+        mapBox.classList.add("visible");
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if(entry.isIntersecting){
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);   // animate only once
+            }
+        });
+    }, { threshold: 0.15 });
+
+    observer.observe(mapBox);
+});
 </script>
 
 </body>

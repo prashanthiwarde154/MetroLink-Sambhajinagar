@@ -1,241 +1,465 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MetroLink Sambhajinagar - Fare Calculator</title>
+
 <link rel="stylesheet" href="/Home/indec.css">
+
 <style>
+    * {
+        box-sizing: border-box;
+    }
 
-/* ===== BACKGROUND ===== */
-/* body{
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#87CEEB,#ffffff,#FFD700);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-} */
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #eaf7ff, #ffffff, #fff5c9);
+        color: #263238;
+    }
 
-/* ===== MAIN CARD ===== */
-.calculator{
-    width:420px;
-    /* background:white; */
-    border-radius:25px;
-    padding:30px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.2);
-        background: linear-gradient(135deg,#87CEEB,#ffffff,#FFD700);
-    /* display:flex;
-    flex-direction: column; */
-    align-self: center;
-    justify-self: center;
-    justify-content:center;
-    align-items:center;
-}
+    /* Main calculator */
+    .calculator {
+        position: relative;
+        width: min(440px, calc(100% - 30px));
+        margin: 45px auto;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 25px;
+        background: linear-gradient(145deg, #ffffff, #f0faff, #fffbea);
+        box-shadow: 0 20px 50px rgba(0, 60, 100, 0.14);
+        animation: calculatorEntrance 0.75s ease both;
+    }
 
-/* HEADER */
-.header{
-    background:#00A8E8;
-    color:white;
-    padding:12px 20px;
-    border-radius:30px;
-    text-align:center;
-    font-weight:bold;
-    font-size:18px;
-    margin-bottom:25px;
-}
+    /* Header */
+    .calculator .header {
+        padding: 17px 15px;
+        margin-bottom: 28px;
+        border-radius: 16px;
+        background: linear-gradient(120deg, #0077b6, #00a8e8, #48cae4);
+        background-size: 200% 200%;
+        color: white;
+        text-align: center;
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 20px rgba(0, 168, 232, 0.25);
+        animation: gradientFlow 5s ease infinite;
+    }
 
-/* INPUT BOX */
-.input-group{
-    margin-bottom:20px;
-}
+    /* Form fields */
+    .input-group {
+        margin-bottom: 20px;
+        animation: fadeUp 0.6s ease both;
+    }
 
-label{
-    font-size:14px;
-    color:#555;
-}
+    .input-group:nth-of-type(2) {
+        animation-delay: 0.12s;
+    }
 
-select{
-    width:100%;
-    padding:12px;
-    margin-top:5px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    font-size:15px;
-}
+    .input-group label {
+        display: block;
+        margin-bottom: 7px;
+        color: #34495e;
+        font-size: 14px;
+        font-weight: 700;
+    }
 
-/* BUTTONS */
-.buttons{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:10px;
-}
+    .input-group select {
+        width: 100%;
+        padding: 13px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 11px;
+        background: #ffffff;
+        color: #263238;
+        font: inherit;
+        font-size: 14px;
+        cursor: pointer;
+        outline: none;
+        transition:
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            transform 0.25s ease;
+    }
 
-.reset{
-    color:red;
-    cursor:pointer;
-    font-weight:bold;
-}
+    .input-group select:hover {
+        border-color: #00a8e8;
+    }
 
-.getfare{
-    background:#2d3e50;
-    color:white;
-    padding:10px 25px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-}
+    .input-group select:focus {
+        border-color: #00a8e8;
+        box-shadow: 0 0 0 4px rgba(0, 168, 232, 0.13);
+        transform: translateY(-1px);
+    }
 
-.getfare:hover{
-    background:#1f2a36;
-}
+    /* Swap stations */
+    .swap-row {
+        display: flex;
+        justify-content: center;
+        margin: -8px 0 16px;
+    }
 
-/* RESULT SECTION */
-.result{
-    margin-top:25px;
-    padding:20px;
-    background:#f3f6fa;
-    border-radius:20px;
-}
+    .swap-button {
+        width: 42px;
+        height: 42px;
+        border: 1px solid #cceeff;
+        border-radius: 50%;
+        background: #eaf8ff;
+        color: #0077b6;
+        font-size: 22px;
+        cursor: pointer;
+        transition:
+            transform 0.35s ease,
+            background 0.25s ease,
+            color 0.25s ease;
+    }
 
-.result h3{
-    color:#00A8E8;
-    margin-bottom:15px;
-}
+    .swap-button:hover {
+        transform: rotate(180deg);
+        background: #0077b6;
+        color: white;
+    }
 
-.result-box{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-}
+    /* Buttons */
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-top: 25px;
+    }
 
-.box{
-    flex:1;
-    background:white;
-    padding:15px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+    .reset {
+        padding: 10px 4px;
+        color: #e04444;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
 
-.box span{
-    display:block;
-    font-size:14px;
-    color:#555;
-}
+    .reset:hover {
+        color: #a61b1b;
+        transform: translateY(-2px);
+    }
 
-.box strong{
-    font-size:20px;
-    color:#000;
-}
+    .getfare {
+        padding: 13px 24px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #0077b6, #2d3e50);
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 5px 14px rgba(0, 80, 130, 0.18);
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
 
+    .getfare:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #00a8e8, #0077b6);
+        box-shadow: 0 9px 20px rgba(0, 119, 182, 0.25);
+    }
+
+    .getfare:active {
+        transform: scale(0.96);
+    }
+
+    .getfare:focus-visible,
+    .reset:focus-visible,
+    .swap-button:focus-visible {
+        outline: 3px solid #ff9b54;
+        outline-offset: 3px;
+    }
+
+    /* Result */
+    .result {
+        margin-top: 28px;
+        padding: 20px;
+        border: 1px solid #e0f2fe;
+        border-radius: 18px;
+        background: linear-gradient(145deg, #f4fbff, #ffffff);
+    }
+
+    .result.show {
+        animation: resultReveal 0.55s ease both;
+    }
+
+    .result h3 {
+        margin: 0 0 18px;
+        color: #0077b6;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .result-box {
+        display: flex;
+        gap: 12px;
+    }
+
+    .box {
+        flex: 1;
+        min-width: 0;
+        padding: 17px 10px;
+        border: 1px solid #edf2f7;
+        border-radius: 14px;
+        background: white;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 18px rgba(0, 119, 182, 0.1);
+    }
+
+    .box span {
+        display: block;
+        margin-bottom: 9px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .box strong {
+        display: block;
+        color: #172b4d;
+        font-size: clamp(17px, 4vw, 22px);
+        overflow-wrap: anywhere;
+    }
+
+    /* Animations */
+    @keyframes calculatorEntrance {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes resultReveal {
+        from {
+            opacity: 0;
+            transform: translateY(14px) scale(0.97);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes gradientFlow {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+        .calculator {
+            margin: 25px auto;
+            padding: 21px 17px;
+            border-radius: 20px;
+        }
+
+        .calculator .header {
+            font-size: 19px;
+        }
+
+        .result {
+            padding: 15px 12px;
+        }
+
+        .result-box {
+            gap: 9px;
+        }
+
+        .box {
+            padding: 15px 7px;
+        }
+
+        .getfare {
+            padding: 12px 18px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
 </style>
 </head>
 
 <body>
+
 <div id="header"></div>
-<div class="calculator">
 
-<div class="header">Fare Calculator</div>
+<main class="calculator">
 
-<div class="input-group">
-<label>From</label>
-<select id="from">
-<option value="">Select Station</option>
-<option value="0">WALUJ MIDC</option>
-<option value="2">AS CLUB</option>
-<option value="4">NAGAR NAKA</option>
-<option value="6">PANCHAVATI HOTEL</option>
-<option value="8">DISTRIC COURT</option>
-<option value="10">KRANTI CHOWK</option>
-<option value="12">AKASHWANI</option>
-<option value="14">SEVEN HILL</option>
-<option value="16">CIDCO BUS STAND</option>
-<option value="18">CHIKHALTHANA</option>
-<option value="20">SHENDRA MIDC</option>
-</select>
-</div>
+    <div class="header">🚇 Fare Calculator</div>
 
-<div class="input-group">
-<label>To</label>
-<select id="to">
-<option value="">Select Station</option>
-<option value="0">WALUJ MIDC</option>
-<option value="2">AS CLUB</option>
-<option value="4">NAGAR NAKA</option>
-<option value="6">PANCHAVATI HOTEL</option>
-<option value="8">DISTRIC COURT</option>
-<option value="10">KRANTI CHOWK</option>
-<option value="12">AKASHWANI</option>
-<option value="14">SEVEN HILL</option>
-<option value="16">CIDCO BUS STAND</option>
-<option value="18">CHIKHALTHANA</option>
-<option value="20">SHENDRA MIDC</option>
-</select>
-</div>
+    <div class="input-group">
+        <label for="from">From Station</label>
+        <select id="from">
+            <option value="">Select Station</option>
+            <option value="0">WALUJ MIDC</option>
+            <option value="2">AS CLUB</option>
+            <option value="4">NAGAR NAKA</option>
+            <option value="6">PANCHAVATI HOTEL</option>
+            <option value="8">DISTRIC COURT</option>
+            <option value="10">KRANTI CHOWK</option>
+            <option value="12">AKASHWANI</option>
+            <option value="14">SEVEN HILL</option>
+            <option value="16">CIDCO BUS STAND</option>
+            <option value="18">CHIKHALTHANA</option>
+            <option value="20">SHENDRA MIDC</option>
+        </select>
+    </div>
 
-<div class="buttons">
-<div class="reset" onclick="resetFare()">RESET</div>
-<button class="getfare" onclick="calculateFare()">GET FARE</button>
-</div>
+    <div class="swap-row">
+        <button type="button" class="swap-button"
+            onclick="swapStations()"
+            aria-label="Swap departure and destination stations"
+            title="Swap stations">⇅</button>
+    </div>
 
-<div class="result" id="result" style="display:none;">
-<h3>FARE & JOURNEY DETAILS</h3>
+    <div class="input-group">
+        <label for="to">To Station</label>
+        <select id="to">
+            <option value="">Select Station</option>
+            <option value="0">WALUJ MIDC</option>
+            <option value="2">AS CLUB</option>
+            <option value="4">NAGAR NAKA</option>
+            <option value="6">PANCHAVATI HOTEL</option>
+            <option value="8">DISTRIC COURT</option>
+            <option value="10">KRANTI CHOWK</option>
+            <option value="12">AKASHWANI</option>
+            <option value="14">SEVEN HILL</option>
+            <option value="16">CIDCO BUS STAND</option>
+            <option value="18">CHIKHALTHANA</option>
+            <option value="20">SHENDRA MIDC</option>
+        </select>
+    </div>
 
-<div class="result-box">
-<div class="box">
-<span>Journey Fare</span>
-<strong id="fare">₹ 0</strong>
-</div>
+    <div class="buttons">
+        <div class="reset" role="button" tabindex="0"
+            onclick="resetFare()"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();resetFare();}">
+            ↺ RESET
+        </div>
 
-<div class="box">
-<span>Distance</span>
-<strong id="distance">0 km</strong>
-</div>
-</div>
+        <button type="button" class="getfare" onclick="calculateFare()">
+            GET FARE →
+        </button>
+    </div>
 
-</div>
+    <div class="result" id="result" style="display:none;" aria-live="polite">
+        <h3>FARE & JOURNEY DETAILS</h3>
 
-</div>
+        <div class="result-box">
+            <div class="box">
+                <span>Journey Fare</span>
+                <strong id="fare">₹ 0</strong>
+            </div>
+
+            <div class="box">
+                <span>Distance</span>
+                <strong id="distance">0 km</strong>
+            </div>
+        </div>
+    </div>
+
+</main>
+
 <div id="footer"></div>
+
 <script src="/header/headerfooter.js"></script>
+
 <script>
+    function calculateFare() {
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+        const result = document.getElementById("result");
 
-function calculateFare(){
+        if (from === "" || to === "") {
+            alert("Please select both stations.");
+            return;
+        }
 
-    let from = document.getElementById("from").value;
-    let to = document.getElementById("to").value;
+        if (from === to) {
+            alert("Source and destination cannot be the same.");
+            return;
+        }
 
-    if(from === "" || to === ""){
-        alert("Please select both stations");
-        return;
+        const distance = Math.abs(Number(to) - Number(from));
+
+        // Retained from your original fare-calculation logic.
+        const fare = 10 + (distance * 5);
+
+        document.getElementById("fare").innerText = "₹ " + fare;
+        document.getElementById("distance").innerText = distance + " km";
+
+        result.style.display = "block";
+
+        // Restart the reveal animation when calculating again.
+        result.classList.remove("show");
+        void result.offsetWidth;
+        result.classList.add("show");
     }
 
-    if(from === to){
-        alert("Source and destination cannot be same");
-        return;
+    function resetFare() {
+        document.getElementById("from").value = "";
+        document.getElementById("to").value = "";
+
+        const result = document.getElementById("result");
+        result.classList.remove("show");
+        result.style.display = "none";
+
+        document.getElementById("fare").innerText = "₹ 0";
+        document.getElementById("distance").innerText = "0 km";
     }
 
-    let distance = Math.abs(to - from);
+    function swapStations() {
+        const from = document.getElementById("from");
+        const to = document.getElementById("to");
 
-    // Simple fare logic
-    let fare = 10 + (distance * 5);
+        const previousFrom = from.value;
+        from.value = to.value;
+        to.value = previousFrom;
 
-    document.getElementById("fare").innerText = "₹ " + fare;
-    document.getElementById("distance").innerText = distance + " km";
-
-    document.getElementById("result").style.display = "block";
-}
-
-function resetFare(){
-    document.getElementById("from").value="";
-    document.getElementById("to").value="";
-    document.getElementById("result").style.display="none";
-}
-
+        // Recalculate only if both stations are selected and different.
+        if (from.value !== "" && to.value !== "" && from.value !== to.value) {
+            calculateFare();
+        } else {
+            document.getElementById("result").style.display = "none";
+        }
+    }
 </script>
 
 </body>

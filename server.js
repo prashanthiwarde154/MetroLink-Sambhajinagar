@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql2");
 const path = require("path");
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: "metro_secret_key",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false }
@@ -24,10 +25,10 @@ app.use(session({
 
 /* ================= DATABASE ================= */
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "chiku",
-    database: "metrolink_db"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 db.connect(err => {
@@ -255,6 +256,11 @@ app.get("/ticket-preview.html", (req, res) => {
 });
 
 /* ================= SERVER ================= */
-app.listen(5000, () => {
-    console.log("🚀 Server running at http://localhost:5000");
+// app.listen(5000, () => {
+//     console.log("🚀 Server running at http://localhost:5000");
+// });
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });

@@ -1,112 +1,325 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>First & Last Mile Connectivity</title>
 
-    <!-- Mobile Responsive Meta Tag -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Home/indec.css">
+
     <style>
-        /* * {
-            margin: 0;
-            padding: 0;
+        * {
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #ffffff, #5c5e5e);
-            padding: 15px;
-        } */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f7fb, #e8edf5);
+            color: #263238;
+            overflow-x: hidden;
+        }
 
-        h2 {
+        /* Intro section */
+        .connectivity-intro {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 35px 25px;
+            background: linear-gradient(135deg, #ffffff, #fff3ec);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 47, 108, 0.08);
+            animation: fadeSlideUp 0.8s ease both;
+        }
+
+        .connectivity-intro h1 {
+            margin: 0 0 18px;
+            color: #002f6c;
+            font-size: clamp(25px, 4vw, 36px);
             text-align: center;
-            color: white;
-            margin-bottom: 20px;
+        }
+
+        .connectivity-intro p {
+            max-width: 780px;
+            margin: 12px auto;
+            color: #4b5563;
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Services section */
+        #services {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 20px 35px;
+        }
+
+        #services h2 {
+            margin-bottom: 30px;
+            color: #002f6c;
+            font-size: clamp(25px, 4vw, 34px);
+            text-align: center;
+            animation: fadeSlideUp 0.7s ease both;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
         }
 
         .card {
-            background-color: white;
-            padding: 20px;
+            position: relative;
+            padding: 28px 23px;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid rgba(0, 47, 108, 0.07);
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(0, 47, 108, 0.07);
+            transition:
+                transform 0.35s ease,
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+            animation: fadeSlideUp 0.7s ease both;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #fc630b, #ff9b54);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-9px);
+            border-color: rgba(252, 99, 11, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 47, 108, 0.13);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Stagger the card entrance */
+        .services-grid .card:nth-child(1) {
+            animation-delay: 0.12s;
+        }
+
+        .services-grid .card:nth-child(2) {
+            animation-delay: 0.25s;
+        }
+
+        .services-grid .card:nth-child(3) {
+            animation-delay: 0.38s;
+        }
+
+        .service-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
             margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background: #fff0e8;
+            border-radius: 17px;
+            font-size: 32px;
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease;
+        }
+
+        .card:hover .service-icon {
+            transform: rotate(-6deg) scale(1.1);
+            background: #ffe0ce;
         }
 
         .card h3 {
+            margin: 0 0 12px;
             color: #fb5f3c;
-            margin-bottom: 10px;
+            font-size: 21px;
         }
 
         .card p {
-            margin-bottom: 15px;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        button {
-            width: 100%;
-            background-color: #fc630b;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
+            min-height: 75px;
+            margin: 0 0 22px;
+            color: #59636f;
             font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* Animated buttons */
+        .card button {
+            position: relative;
+            width: 100%;
+            padding: 13px 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fc630b, #f4511e);
+            color: #ffffff;
+            border: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                box-shadow 0.25s ease;
         }
 
-        button:hover {
-            background-color: #002f6c;
+        .card button:hover {
+            background: linear-gradient(135deg, #002f6c, #0755a0);
+            box-shadow: 0 6px 16px rgba(0, 47, 108, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* Responsive Design */
-        @media (min-width: 768px) {
-            body {
-                max-width: 600px;
-                margin: auto;
+        .card button:active {
+            transform: scale(0.97);
+        }
+
+        .card button:focus-visible {
+            outline: 3px solid #002f6c;
+            outline-offset: 4px;
+        }
+
+        /* Entrance animation */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
+        /* Tablet */
+        @media (max-width: 850px) {
+            .services-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 560px) {
+            .connectivity-intro {
+                margin: 20px 14px;
+                padding: 26px 18px;
+                border-radius: 16px;
+            }
+
+            #services {
+                margin-top: 30px;
+                padding-right: 14px;
+                padding-left: 14px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .card {
+                padding: 24px 20px;
+            }
+
+            .card p {
+                min-height: auto;
+            }
+        }
+
+        /* Accessibility: respect reduced-motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
-    
 </head>
+
 <body>
     <div id="header"></div>
-    <div class="card">
-        <p>
-            First and Last Mile Connectivity helps passengers travel easily 
-            from their home to metro/bus station and from station to final destination.
-        </p>
-        <p>
-            It reduces traffic, saves time, and improves public transport usage.
-        </p>
-    </div>
 
-    <section id="services">
-        <h2>Our Services</h2>
+    <main>
+        <section class="connectivity-intro">
+            <h1>First & Last Mile Connectivity</h1>
 
-        <div class="card">
-            <h3>Taxi Services</h3>
-            <p>Book taxi for quick pickup and drop to nearest metro or bus station.</p>
-            <button onclick="alert('Taxi Booking Service Coming Soon!')">Book Taxi</button>
-        </div>
+            <p>
+                First and Last Mile Connectivity helps passengers travel easily
+                from their homes to metro or bus stations and from stations
+                to their final destinations.
+            </p>
 
-        <div class="card">
-            <h3>Bus Services</h3>
-            <p>Local buses connect residential areas with major transport hubs.</p>
-            <button onclick="alert('Bus Service Information Coming Soon!')">Check Bus</button>
-        </div>
+            <p>
+                It reduces traffic, saves time, and makes public transportation
+                more convenient and accessible.
+            </p>
+        </section>
 
-        <div class="card">
-            <h3>Shared Auto & E-Rickshaw</h3>
-            <p>Affordable and eco-friendly options for short distance travel.</p>
-            <button onclick="alert('Auto Service Details Coming Soon!')">View Details</button>
-        </div>
+        <section id="services">
+            <h2>Our Services</h2>
 
-    </section>
+            <div class="services-grid">
+
+                <article class="card">
+                    <div class="service-icon" aria-hidden="true">🚕</div>
+                    <h3>Taxi Services</h3>
+                    <p>
+                        Book a taxi for convenient pickup and drop-off
+                        at the nearest metro or bus station.
+                    </p>
+                    <button type="button"
+                        onclick="alert('Taxi Booking Service Coming Soon!')">
+                        Book Taxi
+                    </button>
+                </article>
+
+                <article class="card">
+                    <div class="service-icon" aria-hidden="true">🚌</div>
+                    <h3>Bus Services</h3>
+                    <p>
+                        Discover local bus connections between residential
+                        areas and major public transport hubs.
+                    </p>
+                    <button type="button"
+                        onclick="alert('Bus Service Information Coming Soon!')">
+                        Check Bus
+                    </button>
+                </article>
+
+                <article class="card">
+                    <div class="service-icon" aria-hidden="true">🛺</div>
+                    <h3>Shared Auto & E-Rickshaw</h3>
+                    <p>
+                        Explore affordable and eco-friendly options
+                        for short-distance travel.
+                    </p>
+                    <button type="button"
+                        onclick="alert('Auto Service Details Coming Soon!')">
+                        View Details
+                    </button>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
     <div id="footer"></div>
-<script src="/Home/headerfooter.js"></script>
-</body>
 
+    <script src="/Home/headerfooter.js"></script>
+</body>
 </html>

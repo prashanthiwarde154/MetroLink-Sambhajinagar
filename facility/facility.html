@@ -7,8 +7,11 @@
 MetroLink Sambhajinagar - Facilities
     </title>
     <link rel="stylesheet" href="/Home/indec.css">
-</head>
 <style>
+html{
+    scroll-behavior: smooth;
+}
+
 /* Reset & body */
 body{
     margin:0;
@@ -52,6 +55,10 @@ body{
     width:100%;
     height:220px;
     object-fit:cover;
+    transition: transform 0.5s ease;
+}
+.card:hover img{
+    transform: scale(1.1);
 }
 .card-content{
     padding:25px;
@@ -72,6 +79,21 @@ body{
     margin:0;
     font-size:36px;
     font-weight:600;
+}
+/* accent bar under each section title (grows when it scrolls into view) */
+.page-header h1::after{
+    content:"";
+    display:block;
+    width:70px;
+    height:4px;
+    margin:14px auto 0;
+    border-radius:4px;
+    background:#00a3b4;
+    transform: scaleX(0);
+    transition: transform 0.8s ease 0.3s;
+}
+.page-header.visible h1::after{
+    transform: scaleX(1);
 }
 
 /* Content Lists */
@@ -98,6 +120,11 @@ ul.main-list > li::before{
     position:absolute;
     left:0;
     top:10px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+ul.main-list > li:hover::before{
+    width:20px;
+    background:#f36f21;
 }
 ul.sub-list{
     list-style:none;
@@ -119,6 +146,10 @@ ul.sub-list li::before{
     position:absolute;
     left:0;
     top:8px;
+    transition: transform 0.3s ease;
+}
+ul.sub-list li:hover::before{
+    transform: scale(1.5);
 }
 
 /* Additional Facilities Grid */
@@ -134,16 +165,73 @@ ul.sub-list li::before{
     flex-direction:column;
     align-items:center;
     gap:15px;
+    transition: transform 0.3s ease;
+}
+.facility-item:hover{
+    transform: translateY(-6px);
 }
 .facility-item img{
     width:60px;
     height:60px;
+    transition: transform 0.4s ease;
+}
+.facility-item:hover img{
+    transform: scale(1.2) rotate(-6deg);
 }
 .facility-item p{
     font-size:16px;
     margin:0;
 }
+
+/* =====================================================
+   ANIMATION & TRANSITION LAYER (added)
+   ===================================================== */
+
+/* ---------- Banner text appears on load ---------- */
+/* uses translate (not transform) so hover effects never conflict */
+@keyframes itemIn{
+    from{ opacity:0; translate:0 25px; }
+    to{ opacity:1; translate:0 0; }
+}
+.banner h1,
+.banner p{
+    opacity:0;
+    animation: itemIn 0.8s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.banner h1{ animation-delay:0.15s; }
+.banner p{ animation-delay:0.35s; }
+
+/* ---------- Scroll reveal (class added by JS) ---------- */
+.reveal{ opacity:0; }
+.reveal.visible{
+    animation: revealUp 0.8s cubic-bezier(.22,.61,.36,1) both;
+}
+.reveal-left.visible{ animation-name: revealLeft; }
+@keyframes revealUp{
+    from{ opacity:0; translate:0 40px; }
+    to{ opacity:1; translate:0 0; }
+}
+@keyframes revealLeft{
+    from{ opacity:0; translate:-40px 0; }
+    to{ opacity:1; translate:0 0; }
+}
+
+/* ---------- Respect users who prefer less motion ---------- */
+@media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+        scroll-behavior:auto !important;
+    }
+    .reveal,
+    .banner h1,
+    .banner p{
+        opacity:1;
+    }
+}
 </style>
+</head>
 
 <body>
     
@@ -271,9 +359,54 @@ ul.sub-list li::before{
 </div>
 </section>
 <div id="footer"></div>
-<script src="/header/headerfooter.js"></script>    
+<script src="/header/headerfooter.js"></script>
+
+<script>
+/* =====================================================
+   SCROLL REVEAL ANIMATION (added)
+   Adds reveal classes automatically, no extra HTML needed
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const groups = [
+    { sel: ".facilities-cards .card", cls: "" },
+    { sel: ".page-header", cls: "" },
+    { sel: "ul.main-list > li", cls: "reveal-left" },
+    { sel: "ul.sub-list > li", cls: "reveal-left" },
+    { sel: ".facility-item", cls: "" }
+  ];
+
+  const elements = [];
+  groups.forEach(({ sel, cls }) => {
+    document.querySelectorAll(sel).forEach((el) => {
+      el.classList.add("reveal");
+      if (cls) el.classList.add(cls);
+      // stagger siblings (cards, list items, icons)
+      const index = [...el.parentElement.children].indexOf(el);
+      el.style.animationDelay = Math.min(index, 6) * 0.08 + "s";
+      elements.push(el);
+    });
+  });
+
+  // Fallback for very old browsers without IntersectionObserver
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach((el) => el.classList.add("visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // animate only once
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  elements.forEach((el) => observer.observe(el));
+});
+</script>
 </body>
-
-
-<!-- <script src="header\headerfooter.js"></script> -->
 </html>

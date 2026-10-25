@@ -1,98 +1,589 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f05420" />
   <title>Ticket Preview | MCSC</title>
 
   <style>
+    :root {
+      --primary: #f05420;
+      --primary-dark: #d94312;
+      --primary-light: #fff0e9;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e9edf3;
+      --surface: #ffffff;
+      --background: #f5f7fb;
+      --success: #15803d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
+      min-height: 100vh;
+      padding: 36px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-family: "Segoe UI", Arial, sans-serif;
-      background: #f4f6f8;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 10% 10%, #ffe4d6 0, transparent 36%),
+        radial-gradient(ellipse at 90% 90%, #e4ebff 0, transparent 35%),
+        var(--background);
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
     }
 
     .ticket-container {
-      max-width: 420px;
-      margin: 40px auto;
-      background: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 430px;
+      position: relative;
+      isolation: isolate;
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      box-shadow:
+        0 24px 70px rgba(30, 41, 59, 0.11),
+        0 4px 12px rgba(30, 41, 59, 0.04);
+      overflow: hidden;
+      animation: ticketEnter 0.85s cubic-bezier(.2, .8, .2, 1) both;
+      transition: box-shadow 0.35s ease, transform 0.35s ease;
+    }
+
+    .ticket-container:hover {
+      box-shadow:
+        0 30px 80px rgba(30, 41, 59, 0.14),
+        0 5px 15px rgba(30, 41, 59, 0.05);
+    }
+
+    /* Animated header */
+
+    .ticket-header {
+      position: relative;
+      isolation: isolate;
+      padding: 27px 22px 30px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(
+        130deg,
+        #e94818 0%,
+        #f05420 48%,
+        #ff8148 100%
+      );
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
       overflow: hidden;
     }
 
-    .ticket-header {
-      background: #f05420;
-      color: #fff;
-      padding: 16px;
-      text-align: center;
-      font-weight: 600;
+    .ticket-header::before,
+    .ticket-header::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      border-radius: 50%;
+      pointer-events: none;
     }
 
-    .ticket-body {
-      padding: 20px;
+    .ticket-header::before {
+      width: 180px;
+      height: 180px;
+      top: -105px;
+      right: -35px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow:
+        0 0 0 18px rgba(255, 255, 255, 0.05),
+        0 0 0 36px rgba(255, 255, 255, 0.04);
+      animation: floatCircle 7s ease-in-out infinite;
     }
+
+    .ticket-header::after {
+      width: 115px;
+      height: 115px;
+      bottom: -85px;
+      left: -25px;
+      background: rgba(255, 255, 255, 0.10);
+      animation: floatCircle 9s ease-in-out infinite reverse;
+    }
+
+    .brand-mark {
+      width: 45px;
+      height: 45px;
+      margin: 0 auto 12px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.17);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      animation: markPop 0.7s 0.25s backwards;
+    }
+
+    .brand-mark svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .ticket-header h1 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 750;
+      letter-spacing: 0.3px;
+      animation: fadeUp 0.65s 0.18s backwards;
+    }
+
+    .ticket-header p {
+      margin: 7px 0 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 12px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      animation: fadeUp 0.65s 0.3s backwards;
+    }
+
+    /* Ticket content */
+
+    .ticket-body {
+      padding: 25px 23px 22px;
+    }
+
+    .ticket-body > * {
+      animation: fadeUp 0.6s both;
+    }
+
+    .ticket-body > :nth-child(1) { animation-delay: 0.18s; }
+    .ticket-body > :nth-child(2) { animation-delay: 0.25s; }
+    .ticket-body > :nth-child(3) { animation-delay: 0.32s; }
+    .ticket-body > :nth-child(4) { animation-delay: 0.39s; }
+    .ticket-body > :nth-child(5) { animation-delay: 0.46s; }
+    .ticket-body > :nth-child(6) { animation-delay: 0.53s; }
 
     .row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 14px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      font-size: 13px;
+    }
+
+    .row strong {
+      font-weight: 650;
+      color: #334155;
     }
 
     .row span {
-      color: #555;
+      color: var(--muted);
+      text-align: right;
+      overflow-wrap: anywhere;
     }
 
+    #ticketId {
+      color: var(--primary);
+      font-weight: 750;
+      letter-spacing: 0.4px;
+    }
+
+    /* Passenger details */
+
+    #passengerSection {
+      padding: 17px 15px;
+      margin: 21px 0;
+      background: #fafbfe;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    #passengerSection:hover {
+      background: #fffaf7;
+      border-color: #f9c7b3;
+      transform: translateY(-2px);
+    }
+
+    #passengerSection h3 {
+      margin: 0 0 15px;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: #334155;
+    }
+
+    #passengerFields:empty {
+      display: none;
+    }
+
+    #passengerFields .row:last-child,
+    #passengerFields > :last-child {
+      margin-bottom: 0;
+    }
+
+    /* Route */
+
     .route {
-      font-size: 16px;
-      font-weight: 600;
+      position: relative;
+      margin: 24px 0;
+      padding: 24px 12px;
+      border: 1px dashed #f7b49c;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #fff8f4, #fffdfb);
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 750;
       text-align: center;
-      margin: 20px 0;
+      overflow-wrap: anywhere;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .route::before {
+      content: "YOUR JOURNEY";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .route::after {
+      content: "";
+      display: block;
+      width: 45px;
+      height: 3px;
+      margin: 14px auto 0;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #f05420, #ffb08e);
+      transform-origin: center;
+      animation: routeLine 1s 0.6s both;
+    }
+
+    /* Distance and fare */
+
+    #distanceText {
+      font-weight: 650;
+      color: #475569;
     }
 
     .fare {
-      font-size: 22px;
-      font-weight: 700;
+      position: relative;
+      padding: 21px 12px;
+      margin: 22px 0;
       text-align: center;
-      margin: 15px 0;
-      color: #0f172a;
+      color: var(--text);
+      background: linear-gradient(135deg, #fff5ef, #fffaf6);
+      border: 1px solid #ffe2d3;
+      border-radius: 15px;
+      font-size: 13px;
+      font-weight: 600;
+      overflow: hidden;
     }
+
+    .fare::before {
+      content: "TOTAL FARE";
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      font-weight: 800;
+    }
+
+    #fareText {
+      display: inline-block;
+      color: var(--primary);
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      animation: fareReveal 0.8s 0.5s backwards;
+    }
+
+    .ticket-body > .row:last-child {
+      margin: 0;
+      padding: 13px 0 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .ticket-body > .row:last-child span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border-radius: 99px;
+      background: #fff3df;
+      color: #a16207;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .ticket-body > .row:last-child span::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e6a32b;
+      animation: statusPulse 1.8s infinite;
+    }
+
+    /* Ticket perforation */
+
+    .ticket-separator {
+      position: relative;
+      height: 1px;
+      margin: 0 0;
+      border-top: 2px dashed #e4e8ef;
+    }
+
+    .ticket-separator::before,
+    .ticket-separator::after {
+      content: "";
+      position: absolute;
+      top: -12px;
+      width: 23px;
+      height: 23px;
+      border-radius: 50%;
+      background: var(--background);
+      border: 1px solid rgba(226, 232, 240, 0.55);
+    }
+
+    .ticket-separator::before {
+      left: -12px;
+    }
+
+    .ticket-separator::after {
+      right: -12px;
+    }
+
+    /* Action buttons */
 
     .ticket-actions {
       display: flex;
       gap: 12px;
-      padding: 16px;
+      padding: 22px 23px 25px;
     }
 
     .ticket-actions button {
+      position: relative;
       flex: 1;
-      padding: 12px;
-      border-radius: 6px;
-      border: none;
-      font-weight: 600;
+      min-height: 48px;
+      padding: 13px 10px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-size: 13px;
+      font-weight: 750;
       cursor: pointer;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
     }
 
     .cancel-btn {
-      background: #e5e7eb;
+      color: #475569;
+      background: #f1f4f8;
+      border-color: #e7ebf1 !important;
+    }
+
+    .cancel-btn:hover {
+      background: #e6ebf2;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(30, 41, 59, 0.07);
     }
 
     .confirm-btn {
-      background: #f05420;
       color: #fff;
+      background: linear-gradient(120deg, #f05420, #fa713b);
+      background-size: 150% 150%;
+      box-shadow: 0 5px 13px rgba(240, 84, 32, 0.23);
+    }
+
+    .confirm-btn:hover {
+      background-position: 100% 50%;
+      transform: translateY(-3px);
+      box-shadow: 0 9px 22px rgba(240, 84, 32, 0.32);
+    }
+
+    .ticket-actions button:active {
+      transform: scale(0.97);
+    }
+
+    .ticket-actions button:focus-visible {
+      outline: 3px solid rgba(240, 84, 32, 0.35);
+      outline-offset: 3px;
+    }
+
+    /* Animations */
+
+    @keyframes ticketEnter {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+        filter: blur(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes markPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.65) rotate(-10deg);
+      }
+      70% {
+        transform: scale(1.08) rotate(3deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes floatCircle {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-10px, 12px); }
+    }
+
+    @keyframes routeLine {
+      from {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      to {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes fareReveal {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.92);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes statusPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(230, 163, 43, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 5px rgba(230, 163, 43, 0);
+      }
+    }
+
+    /* Mobile */
+
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 12px;
+        align-items: flex-start;
+      }
+
+      .ticket-container {
+        margin: 8px auto;
+        border-radius: 19px;
+      }
+
+      .ticket-header {
+        padding: 24px 18px 27px;
+      }
+
+      .ticket-body {
+        padding: 22px 18px 20px;
+      }
+
+      .ticket-actions {
+        padding: 19px 18px 22px;
+        gap: 10px;
+      }
+
+      .ticket-actions button {
+        font-size: 12px;
+      }
+
+      .route {
+        font-size: 15px;
+      }
+
+      #fareText {
+        font-size: 28px;
+      }
+    }
+
+    /* Accessibility */
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="ticket-container">
-    <div class="ticket-header">
-      MCSC • Ticket Preview
-    </div>
+  <main class="ticket-container" aria-label="Ticket preview">
 
-    <div class="ticket-body">
+    <header class="ticket-header">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+          <path d="M7 15V9h3a2 2 0 0 1 0 4H7"></path>
+          <path d="M15 9v6m0-3h3"></path>
+        </svg>
+      </div>
+
+      <h1>MCSC Ticket Preview</h1>
+      <p>Your journey, made simple</p>
+    </header>
+
+    <section class="ticket-body">
+
       <div class="row">
         <strong>Ticket ID</strong>
         <span id="ticketId">----</span>
@@ -102,12 +593,13 @@
         <strong>Date</strong>
         <span id="ticketDate">----</span>
       </div>
-      
-          <div id="passengerSection">
-            <h3>Passenger Details</h3>
-            <div id="passengerFields"></div>
-          </div>
-      <div class="route" id="routeText">
+
+      <section id="passengerSection">
+        <h3>Passenger Details</h3>
+        <div id="passengerFields"></div>
+      </section>
+
+      <div class="route" id="routeText" aria-label="Journey route">
         ---- → ----
       </div>
 
@@ -124,20 +616,25 @@
         <strong>Status</strong>
         <span>Pending</span>
       </div>
-    </div>
 
+    </section>
 
+    <div class="ticket-separator" aria-hidden="true"></div>
 
-    <div class="ticket-actions">
-      <button class="cancel-btn" id="cancelBtn">Cancel</button>
+    <footer class="ticket-actions">
+      <button class="cancel-btn" id="cancelBtn" type="button">
+        Cancel
+      </button>
+
       <button class="confirm-btn" id="confirmBtn" type="button">
-  Confirm Journey
-</button>
-      <!-- <button id="confirmJourneyBtn" type="button">Confirm Journey</button> -->
-      <!-- <button class="confirm-btn" id="confirmBtn">Confirm Journey</button> -->
-    </div>
-  </div>
+        Confirm Journey
+      </button>
+    </footer>
 
-<script src="/ticket-info/ticket-preview.js"></script>
+  </main>
+
+  <!-- Keep your existing ticket logic -->
+  <script src="/ticket-info/ticket-preview.js"></script>
+
 </body>
 </html>

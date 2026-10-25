@@ -1,278 +1,1120 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MetroLink Sambhajinagar - Know Your Station</title>
-<link rel="stylesheet" href="/Home/indec.css">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#003366">
 
-/* ===== BODY ===== */
-body{
-    margin:0;
-    font-family:'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#c1d3da,#ffffff);
-}
+    <title>MetroLink Sambhajinagar - Know Your Station</title>
 
-/* ===== HEADER TITLE ===== */
-.page-title{
-    text-align:center;
-    padding:40px 20px 20px;
-}
+    <link rel="stylesheet" href="/Home/indec.css">
 
-.page-title h1{
-    color:#003366;
-    margin-bottom:10px;
-}
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #00A8E8;
+            --secondary-dark: #0077b6;
+            --orange: #ff8c42;
+            --background: #f1f7fb;
+            --text: #243447;
+            --muted: #64748b;
+            --white: #ffffff;
+            --border: #e2eaf2;
+            --shadow: 0 15px 40px rgba(0, 51, 102, 0.10);
+        }
 
-.page-title p{
-    color:#444;
-    font-size:16px;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-/* ===== SEARCH SECTION ===== */
-.search-section{
-    display:flex;
-    justify-content:center;
-    margin:30px 0;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-.search-box{
-    background:white;
-    padding:15px;
-    border-radius:50px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    display:flex;
-    width:400px;
-}
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 8% 15%, rgba(0, 168, 232, 0.09), transparent 28%),
+                radial-gradient(circle at 90% 70%, rgba(255, 140, 66, 0.08), transparent 25%),
+                linear-gradient(135deg, #edf5fa, #ffffff 55%, #f1f8fc);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-.search-box select{
-    flex:1;
-    border:none;
-    outline:none;
-    font-size:15px;
-}
+        button,
+        select {
+            font: inherit;
+        }
 
-.search-box button{
-    background:#00A8E8;
-    color:white;
-    border:none;
-    padding:8px 20px;
-    border-radius:30px;
-    cursor:pointer;
-    font-weight:bold;
-}
+        /* ===== PAGE INTRODUCTION ===== */
 
-.search-box button:hover{
-    background:#0077b6;
-}
+        .page-title {
+            position: relative;
+            text-align: center;
+            padding: 58px 20px 24px;
+            animation: fadeDown 0.75s ease both;
+        }
 
-/* ===== STATION CARD ===== */
-.station-card{
-    width:500px;
-    margin:30px auto;
-    background:white;
-    border-radius:25px;
-    padding:30px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
-    display:none;
-}
+        .title-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            background: rgba(0, 168, 232, 0.10);
+            border: 1px solid rgba(0, 168, 232, 0.16);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
 
-.station-card h2{
-    color:#00A8E8;
-    margin-bottom:20px;
-}
+        .title-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 66, 0.14);
+        }
 
-.detail{
-    margin-bottom:15px;
-    font-size:15px;
-}
+        .page-title h1 {
+            margin: 0 0 12px;
+            color: var(--primary);
+            font-size: clamp(30px, 5vw, 46px);
+            font-weight: 800;
+            letter-spacing: -1.3px;
+        }
 
-.detail span{
-    font-weight:bold;
-    color:#003366;
-}
+        .page-title h1 span {
+            color: var(--secondary);
+        }
 
-.facilities{
-    margin-top:15px;
-}
+        .page-title p {
+            max-width: 550px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.8;
+        }
 
-.facilities ul{
-    padding-left:18px;
-}
+        /* ===== DECORATIVE METRO LINE ===== */
 
-.facilities li{
-    margin-bottom:6px;
-}
+        .metro-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 240px;
+            margin: 25px auto 0;
+        }
 
-</style>
+        .metro-decoration .line {
+            height: 3px;
+            flex: 1;
+            border-radius: 10px;
+            background: linear-gradient(90deg, transparent, var(--secondary));
+        }
+
+        .metro-decoration .line:last-child {
+            background: linear-gradient(90deg, var(--secondary), transparent);
+        }
+
+        .metro-decoration .station-dot {
+            width: 12px;
+            height: 12px;
+            border: 3px solid var(--secondary);
+            border-radius: 50%;
+            background: white;
+        }
+
+        .metro-decoration .station-dot.active {
+            border-color: var(--orange);
+            background: var(--orange);
+            box-shadow: 0 0 0 5px rgba(255, 140, 66, 0.12);
+        }
+
+        /* ===== SEARCH SECTION ===== */
+
+        .search-section {
+            display: flex;
+            justify-content: center;
+            padding: 20px 20px 25px;
+            animation: fadeUp 0.8s ease 0.12s both;
+        }
+
+        .search-wrapper {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .search-heading {
+            margin-bottom: 12px;
+            color: var(--primary);
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 10px;
+            background: var(--white);
+            border: 1px solid rgba(0, 51, 102, 0.07);
+            border-radius: 22px;
+            box-shadow: 0 14px 35px rgba(0, 51, 102, 0.10);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease,
+                        transform 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: rgba(0, 168, 232, 0.55);
+            box-shadow: 0 16px 40px rgba(0, 168, 232, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            display: grid;
+            flex: 0 0 44px;
+            width: 44px;
+            height: 44px;
+            place-items: center;
+            color: var(--secondary-dark);
+            background: #eaf8fe;
+            border-radius: 14px;
+        }
+
+        .search-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .select-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .select-wrapper label {
+            display: block;
+            margin: 0 0 4px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .search-box select {
+            width: 100%;
+            padding: 5px 5px 5px 0;
+            color: var(--primary);
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .search-box select:focus-visible {
+            outline: 2px solid var(--secondary);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .search-box button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 48px;
+            padding: 0 22px;
+            color: white;
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            border: none;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 7px 16px rgba(0, 119, 182, 0.20);
+            transition: transform 0.25s ease, box-shadow 0.25s ease,
+                        background 0.25s ease;
+        }
+
+        .search-box button svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .search-box button:hover {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--primary));
+            box-shadow: 0 10px 22px rgba(0, 51, 102, 0.23);
+            transform: translateY(-2px);
+        }
+
+        .search-box button:active {
+            transform: scale(0.97);
+        }
+
+        .search-box button:focus-visible {
+            outline: 3px solid rgba(0, 168, 232, 0.35);
+            outline-offset: 3px;
+        }
+
+        .search-hint {
+            margin: 12px 0 0;
+            color: var(--muted);
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* ===== STATUS MESSAGE ===== */
+
+        .status-message {
+            display: none;
+            width: min(650px, calc(100% - 40px));
+            margin: 0 auto 20px;
+            padding: 13px 16px;
+            color: #8a3d12;
+            background: #fff4eb;
+            border: 1px solid #ffddc5;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .status-message.visible {
+            display: block;
+            animation: fadeUp 0.3s ease both;
+        }
+
+        /* ===== STATION DETAILS CARD ===== */
+
+        .station-card {
+            display: none;
+            width: min(650px, calc(100% - 40px));
+            margin: 10px auto 65px;
+            padding: 0;
+            overflow: hidden;
+            background: var(--white);
+            border: 1px solid rgba(0, 51, 102, 0.07);
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+        }
+
+        .station-card.visible {
+            display: block;
+            animation: cardReveal 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .station-card-header {
+            position: relative;
+            padding: 28px 30px;
+            overflow: hidden;
+            color: white;
+            background: linear-gradient(120deg, #003366, #00558d 65%, #008ac2);
+        }
+
+        .station-card-header::after {
+            position: absolute;
+            top: -65px;
+            right: -40px;
+            width: 190px;
+            height: 190px;
+            border: 28px solid rgba(255, 255, 255, 0.07);
+            border-radius: 50%;
+            content: "";
+            pointer-events: none;
+        }
+
+        .station-overline {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 11px;
+            color: #bdeeff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .station-overline svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .station-card h2 {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            color: white;
+            font-size: clamp(23px, 4vw, 30px);
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+        }
+
+        .station-card-header p {
+            position: relative;
+            z-index: 1;
+            margin: 10px 0 0;
+            color: #d8effb;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .station-card-body {
+            padding: 26px 30px 30px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .detail {
+            min-width: 0;
+            padding: 17px;
+            background: #f7fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 16px;
+            transition: transform 0.25s ease, border-color 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .detail:hover {
+            border-color: #c7eafa;
+            box-shadow: 0 7px 18px rgba(0, 51, 102, 0.06);
+            transform: translateY(-3px);
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .detail-label svg {
+            flex: 0 0 18px;
+            width: 18px;
+            height: 18px;
+            color: var(--secondary-dark);
+        }
+
+        .detail-value {
+            display: block;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        /* ===== FACILITIES ===== */
+
+        .facilities {
+            margin-top: 22px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0faff, #f9fcff);
+            border: 1px solid #dceff9;
+            border-radius: 18px;
+        }
+
+        .facilities-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 17px;
+            color: var(--primary);
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .facilities-heading svg {
+            width: 21px;
+            height: 21px;
+            color: var(--secondary-dark);
+        }
+
+        .facilities ul {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .facilities li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            min-width: 0;
+            color: #344b60;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .facility-check {
+            display: inline-grid;
+            flex: 0 0 19px;
+            width: 19px;
+            height: 19px;
+            place-items: center;
+            margin-top: 1px;
+            color: #087d54;
+            background: #dff8ec;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .station-card-footer {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 13px 15px;
+            color: #75501b;
+            background: #fff8e9;
+            border: 1px solid #f8e8c3;
+            border-radius: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .station-card-footer svg {
+            flex: 0 0 17px;
+            width: 17px;
+            height: 17px;
+            margin-top: 1px;
+        }
+
+        /* ===== BOTTOM INFORMATION ===== */
+
+        .bottom-note {
+            max-width: 650px;
+            margin: 0 auto 55px;
+            padding: 0 20px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* ===== ANIMATIONS ===== */
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(22px) scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+
+        @media (max-width: 600px) {
+            .page-title {
+                padding: 40px 18px 20px;
+            }
+
+            .page-title h1 {
+                letter-spacing: -0.7px;
+            }
+
+            .page-title p {
+                font-size: 14px;
+            }
+
+            .search-section {
+                padding: 18px 15px 24px;
+            }
+
+            .search-box {
+                gap: 9px;
+                padding: 8px;
+                border-radius: 18px;
+            }
+
+            .search-icon {
+                flex-basis: 36px;
+                width: 36px;
+                height: 40px;
+            }
+
+            .search-box select {
+                font-size: 13px;
+            }
+
+            .search-box button {
+                gap: 6px;
+                min-height: 44px;
+                padding: 0 13px;
+                font-size: 13px;
+                border-radius: 12px;
+            }
+
+            .station-card {
+                width: calc(100% - 28px);
+                margin-bottom: 45px;
+                border-radius: 21px;
+            }
+
+            .station-card-header {
+                padding: 24px 21px;
+            }
+
+            .station-card-body {
+                padding: 20px 16px 22px;
+            }
+
+            .details-grid {
+                gap: 10px;
+            }
+
+            .detail {
+                padding: 13px 11px;
+                border-radius: 13px;
+            }
+
+            .detail-value {
+                font-size: 13px;
+            }
+
+            .facilities {
+                padding: 16px 13px;
+            }
+
+            .facilities ul {
+                gap: 11px 8px;
+            }
+
+            .facilities li {
+                gap: 6px;
+                font-size: 12px;
+            }
+
+            .facility-check {
+                flex-basis: 17px;
+                width: 17px;
+                height: 17px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .search-icon {
+                display: none;
+            }
+
+            .search-box button {
+                padding: 0 10px;
+            }
+
+            .details-grid,
+            .facilities ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div id="header"></div>
-<div class="page-title">
-<h1>Know Your Station</h1>
-<p>Everything you want to know about any station.</p>
-</div>
+    <div id="header"></div>
 
-<div class="search-section">
-    <div class="search-box">
-        <select id="stationSelect">
-            <option value="">Select Station</option>
+    <main>
+        <section class="page-title">
+            <div class="title-label">
+                <span class="title-dot"></span>
+                Your Metro Guide
+            </div>
 
-            <option value="0">WALUJ MIDC</option>
-            <option value="2">AS CLUB</option>
-            <option value="4">NAGAR NAKA</option>
-            <option value="6">PANCHAVATI HOTEL</option>
-            <option value="8">DISTRICT COURT</option>
-            <option value="10">KRANTI CHOWK</option>
-            <option value="12">AKASHWANI</option>
-            <option value="14">SEVEN HILL</option>
-            <option value="16">CIDCO BUS STAND</option>
-            <option value="18">CHIKALTHANA</option>
-            <option value="20">SHENDRA MIDC</option>
+            <h1>Know Your <span>Station</span></h1>
 
-        </select>
+            <p>
+                Find station timings, addresses, platform information and
+                available facilities — all in one place.
+            </p>
 
-        <button onclick="showStation()">Search</button>
-    </div>
-</div>
+            <div class="metro-decoration" aria-hidden="true">
+                <span class="line"></span>
+                <span class="station-dot"></span>
+                <span class="station-dot active"></span>
+                <span class="station-dot"></span>
+                <span class="line"></span>
+            </div>
+        </section>
 
-<div class="station-card" id="stationCard">
-<h2 id="stationName"></h2>
+        <section class="search-section" aria-label="Find a metro station">
+            <div class="search-wrapper">
+                <p class="search-heading">Where would you like to go?</p>
 
-<div class="detail"><span>Address:</span> <span id="stationAddress"></span></div>
-<div class="detail"><span>Opening Hours:</span> <span id="stationTime"></span></div>
-<div class="detail"><span>Platforms:</span> <span id="stationPlatform"></span></div>
+                <form class="search-box" id="stationSearchForm">
+                    <div class="search-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="10.8" cy="10.8" r="7.3"></circle>
+                            <path d="m16.2 16.2 4.3 4.3"></path>
+                        </svg>
+                    </div>
 
-<div class="facilities">
-<span style="font-weight:bold;color:#003366;">Facilities:</span>
-<ul id="stationFacilities"></ul>
-</div>
+                    <div class="select-wrapper">
+                        <label for="stationSelect">Select your station</label>
 
-</div>
-<div id="footer"></div>
-<script src="/header/headerfooter.js"></script>
-<script>
+                        <select id="stationSelect" required>
+                            <option value="">Choose a station</option>
+                            <option value="0">WALUJ MIDC</option>
+                            <option value="2">AS CLUB</option>
+                            <option value="4">NAGAR NAKA</option>
+                            <option value="6">PANCHAVATI HOTEL</option>
+                            <option value="8">DISTRICT COURT</option>
+                            <option value="10">KRANTI CHOWK</option>
+                            <option value="12">AKASHWANI</option>
+                            <option value="14">SEVEN HILL</option>
+                            <option value="16">CIDCO BUS STAND</option>
+                            <option value="18">CHIKALTHANA</option>
+                            <option value="20">SHENDRA MIDC</option>
+                        </select>
+                    </div>
 
-const stationData = {
+                    <button type="submit">
+                        Search
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </form>
 
-0:{
-name:"Waluj MIDC Metro Station",
-address:"Waluj Industrial Area, Chhatrapati Sambhajinagar",
-time:"05:30 AM – 10:30 PM",
-platform:"2 Platforms",
-facilities:["Parking","Lift","Security Desk","Bus Connectivity","Drinking Water"]
-},
+                <p class="search-hint">
+                    Select a station to view its available information.
+                </p>
+            </div>
+        </section>
 
-2:{
-name:"AS Club Metro Station",
-address:"AS Club Road, Sambhajinagar",
-time:"05:00 AM – 11:00 PM",
-platform:"2 Platforms",
-facilities:["Escalator","Lift","Ticket Counter","CCTV Surveillance"]
-},
+        <div
+            id="statusMessage"
+            class="status-message"
+            role="alert"
+            aria-live="polite"
+        ></div>
 
-4:{
-name:"Nagar Naka Metro Station",
-address:"Nagar Naka Junction",
-time:"05:00 AM – 11:00 PM",
-platform:"2 Platforms",
-facilities:["Parking","Lift","Waiting Area","Drinking Water"]
-},
+        <section
+            class="station-card"
+            id="stationCard"
+            aria-labelledby="stationName"
+            aria-live="polite"
+        >
+            <div class="station-card-header">
+                <div class="station-overline">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <path d="M3 21h18"></path>
+                        <path d="M5 21V7l8-4v18"></path>
+                        <path d="M19 21V11l-6-4"></path>
+                        <path d="M9 9v.01M9 13v.01M9 17v.01"></path>
+                    </svg>
+                    Station Information
+                </div>
 
-6:{
-name:"Panchavati Hotel Metro Station",
-address:"Near Panchavati Hotel Circle",
-time:"05:30 AM – 10:30 PM",
-platform:"2 Platforms",
-facilities:["Escalator","Ticket Counter","Security Help Desk"]
-},
+                <h2 id="stationName"></h2>
+                <p>Everything you need to know before your journey.</p>
+            </div>
 
-8:{
-name:"District Court Metro Station",
-address:"District Court Area",
-time:"05:00 AM – 11:00 PM",
-platform:"2 Platforms",
-facilities:["Lift","CCTV Surveillance","Drinking Water","Parking"]
-},
+            <div class="station-card-body">
+                <div class="details-grid">
+                    <div class="detail">
+                        <div class="detail-label">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round"
+                                 aria-hidden="true">
+                                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="2.5"></circle>
+                            </svg>
+                            Address
+                        </div>
+                        <span class="detail-value" id="stationAddress"></span>
+                    </div>
 
-10:{
-name:"Kranti Chowk Metro Station",
-address:"Kranti Chowk Circle",
-time:"05:00 AM – 11:00 PM",
-platform:"1 Island Platform",
-facilities:["Lift","Escalator","Ticket Counter","Security Help Desk"]
-},
+                    <div class="detail">
+                        <div class="detail-label">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round"
+                                 aria-hidden="true">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M12 7v5l3 2"></path>
+                            </svg>
+                            Operating Hours
+                        </div>
+                        <span class="detail-value" id="stationTime"></span>
+                    </div>
 
-12:{
-name:"Akashwani Metro Station",
-address:"Akashwani Chowk",
-time:"05:30 AM – 10:30 PM",
-platform:"2 Platforms",
-facilities:["Parking","Lift","ATM","CCTV Surveillance"]
-},
+                    <div class="detail">
+                        <div class="detail-label">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round"
+                                 aria-hidden="true">
+                                <path d="M3 21h18"></path>
+                                <path d="M5 21V5h14v16"></path>
+                                <path d="M9 9h2m2 0h2M9 13h2m2 0h2"></path>
+                            </svg>
+                            Platforms
+                        </div>
+                        <span class="detail-value" id="stationPlatform"></span>
+                    </div>
 
-14:{
-name:"Seven Hill Metro Station",
-address:"Seven Hill Area",
-time:"05:00 AM – 11:00 PM",
-platform:"2 Platforms",
-facilities:["Escalator","Lift","Parking","Ticket Counter"]
-},
+                    <div class="detail">
+                        <div class="detail-label">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round"
+                                 aria-hidden="true">
+                                <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                            Station Facilities
+                        </div>
+                        <span class="detail-value" id="facilityCount">0 facilities listed</span>
+                    </div>
+                </div>
 
-16:{
-name:"CIDCO Bus Stand Metro Station",
-address:"CIDCO Bus Stand Area",
-time:"05:00 AM – 11:00 PM",
-platform:"3 Platforms",
-facilities:["Bus Connectivity","Lift","Escalator","ATM","Restroom"]
-},
+                <div class="facilities">
+                    <div class="facilities-heading">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"></path>
+                        </svg>
+                        Available Facilities
+                    </div>
 
-18:{
-name:"Chikalthana Metro Station",
-address:"Chikalthana Industrial Area",
-time:"05:30 AM – 10:30 PM",
-platform:"2 Platforms",
-facilities:["Parking","Security Desk","Drinking Water","Lift"]
-},
+                    <ul id="stationFacilities"></ul>
+                </div>
 
-20:{
-name:"Shendra MIDC Metro Station",
-address:"Shendra Industrial Area",
-time:"05:30 AM – 10:30 PM",
-platform:"2 Platforms",
-facilities:["Parking","Lift","Bus Connectivity","Waiting Area"]
-}
+                <div class="station-card-footer">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 11v5"></path>
+                        <path d="M12 7h.01"></path>
+                    </svg>
 
-};
-function showStation(){
+                    <span>
+                        Please verify station timings and facilities with
+                        official metro information before travelling.
+                    </span>
+                </div>
+            </div>
+        </section>
 
-const selected = document.getElementById("stationSelect").value;
+        <p class="bottom-note">
+            MetroLink Sambhajinagar · Your journey, made simpler.
+        </p>
+    </main>
 
-if(selected === ""){
-alert("Please select a station.");
-return;
-}
+    <div id="footer"></div>
 
-const station = stationData[selected];
+    <script src="/header/headerfooter.js"></script>
 
-document.getElementById("stationName").innerText = station.name;
-document.getElementById("stationAddress").innerText = station.address;
-document.getElementById("stationTime").innerText = station.time;
-document.getElementById("stationPlatform").innerText = station.platform;
+    <script>
+        "use strict";
 
-const facilityList = document.getElementById("stationFacilities");
-facilityList.innerHTML = "";
+        const stationData = {
+            0: {
+                name: "Waluj MIDC Metro Station",
+                address: "Waluj Industrial Area, Chhatrapati Sambhajinagar",
+                time: "05:30 AM – 10:30 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Parking",
+                    "Lift",
+                    "Security Desk",
+                    "Bus Connectivity",
+                    "Drinking Water"
+                ]
+            },
 
-station.facilities.forEach(function(facility){
-let li = document.createElement("li");
-li.innerText = facility;
-facilityList.appendChild(li);
-});
+            2: {
+                name: "AS Club Metro Station",
+                address: "AS Club Road, Sambhajinagar",
+                time: "05:00 AM – 11:00 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Escalator",
+                    "Lift",
+                    "Ticket Counter",
+                    "CCTV Surveillance"
+                ]
+            },
 
-document.getElementById("stationCard").style.display = "block";
-}
-</script>
+            4: {
+                name: "Nagar Naka Metro Station",
+                address: "Nagar Naka Junction",
+                time: "05:00 AM – 11:00 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Parking",
+                    "Lift",
+                    "Waiting Area",
+                    "Drinking Water"
+                ]
+            },
 
+            6: {
+                name: "Panchavati Hotel Metro Station",
+                address: "Near Panchavati Hotel Circle",
+                time: "05:30 AM – 10:30 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Escalator",
+                    "Ticket Counter",
+                    "Security Help Desk"
+                ]
+            },
+
+            8: {
+                name: "District Court Metro Station",
+                address: "District Court Area",
+                time: "05:00 AM – 11:00 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Lift",
+                    "CCTV Surveillance",
+                    "Drinking Water",
+                    "Parking"
+                ]
+            },
+
+            10: {
+                name: "Kranti Chowk Metro Station",
+                address: "Kranti Chowk Circle",
+                time: "05:00 AM – 11:00 PM",
+                platform: "1 Island Platform",
+                facilities: [
+                    "Lift",
+                    "Escalator",
+                    "Ticket Counter",
+                    "Security Help Desk"
+                ]
+            },
+
+            12: {
+                name: "Akashwani Metro Station",
+                address: "Akashwani Chowk",
+                time: "05:30 AM – 10:30 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Parking",
+                    "Lift",
+                    "ATM",
+                    "CCTV Surveillance"
+                ]
+            },
+
+            14: {
+                name: "Seven Hill Metro Station",
+                address: "Seven Hill Area",
+                time: "05:00 AM – 11:00 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Escalator",
+                    "Lift",
+                    "Parking",
+                    "Ticket Counter"
+                ]
+            },
+
+            16: {
+                name: "CIDCO Bus Stand Metro Station",
+                address: "CIDCO Bus Stand Area",
+                time: "05:00 AM – 11:00 PM",
+                platform: "3 Platforms",
+                facilities: [
+                    "Bus Connectivity",
+                    "Lift",
+                    "Escalator",
+                    "ATM",
+                    "Restroom"
+                ]
+            },
+
+            18: {
+                name: "Chikalthana Metro Station",
+                address: "Chikalthana Industrial Area",
+                time: "05:30 AM – 10:30 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Parking",
+                    "Security Desk",
+                    "Drinking Water",
+                    "Lift"
+                ]
+            },
+
+            20: {
+                name: "Shendra MIDC Metro Station",
+                address: "Shendra Industrial Area",
+                time: "05:30 AM – 10:30 PM",
+                platform: "2 Platforms",
+                facilities: [
+                    "Parking",
+                    "Lift",
+                    "Bus Connectivity",
+                    "Waiting Area"
+                ]
+            }
+        };
+
+        const searchForm = document.getElementById("stationSearchForm");
+        const stationSelect = document.getElementById("stationSelect");
+        const stationCard = document.getElementById("stationCard");
+        const statusMessage = document.getElementById("statusMessage");
+
+        function showMessage(message) {
+            statusMessage.textContent = message;
+            statusMessage.classList.add("visible");
+        }
+
+        function hideMessage() {
+            statusMessage.textContent = "";
+            statusMessage.classList.remove("visible");
+        }
+
+        function showStation() {
+            const selected = stationSelect.value;
+
+            if (selected === "") {
+                stationCard.classList.remove("visible");
+                stationCard.style.display = "none";
+                showMessage("Please select a station before searching.");
+                stationSelect.focus();
+                return;
+            }
+
+            const station = stationData[selected];
+
+            if (!station) {
+                stationCard.classList.remove("visible");
+                stationCard.style.display = "none";
+                showMessage("Station information could not be found. Please select another station.");
+                return;
+            }
+
+            hideMessage();
+
+            document.getElementById("stationName").textContent = station.name;
+            document.getElementById("stationAddress").textContent = station.address;
+            document.getElementById("stationTime").textContent = station.time;
+            document.getElementById("stationPlatform").textContent = station.platform;
+            document.getElementById("facilityCount").textContent =
+                station.facilities.length + " facilities listed";
+
+            const facilityList = document.getElementById("stationFacilities");
+
+            // Clear previous station facilities.
+            facilityList.replaceChildren();
+
+            station.facilities.forEach(function (facility) {
+                const listItem = document.createElement("li");
+                const check = document.createElement("span");
+                const label = document.createElement("span");
+
+                check.className = "facility-check";
+                check.textContent = "✓";
+                check.setAttribute("aria-hidden", "true");
+
+                label.textContent = facility;
+
+                listItem.append(check, label);
+                facilityList.appendChild(listItem);
+            });
+
+            // Restart the reveal animation when another station is selected.
+            stationCard.classList.remove("visible");
+            stationCard.style.display = "block";
+
+            // Force a layout update so the animation restarts reliably.
+            void stationCard.offsetWidth;
+
+            stationCard.classList.add("visible");
+
+            // Bring the station details into view on smaller screens.
+            stationCard.scrollIntoView({
+                behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                    ? "auto"
+                    : "smooth",
+                block: "start"
+            });
+        }
+
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            showStation();
+        });
+
+        stationSelect.addEventListener("change", hideMessage);
+    </script>
 </body>
 </html>

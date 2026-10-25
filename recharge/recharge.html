@@ -11,6 +11,10 @@
       font-family: "Segoe UI", Arial, sans-serif;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       background: #ffffff;
@@ -24,6 +28,7 @@
       justify-content: space-between;
       padding: 60px 8%;
       background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+      overflow: hidden;
     }
 
     .hero-text {
@@ -56,6 +61,13 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #d9440f;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(240, 84, 32, 0.35);
     }
 
     .btn-outline {
@@ -67,6 +79,19 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline:hover {
+      border-color: #f05420;
+      background: #fff4ef;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+    }
+
+    .btn-primary:active,
+    .btn-outline:active {
+      transform: scale(0.96);
     }
 
     .hero-image {
@@ -118,12 +143,15 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .station:hover {
       background: #f05420;
       color: #ffffff;
       border-color: #0ea5a4;
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 8px 18px rgba(240, 84, 32, 0.3);
     }
 
     /* ================= COMMON SECTIONS ================= */
@@ -155,6 +183,12 @@
 
     .apps img {
       height: 35px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .apps img:hover {
+      transform: translateY(-4px) scale(1.12);
+      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.2));
     }
 
     /* ================= STEPS ================= */
@@ -172,6 +206,11 @@
     .step img {
       width: 70px;
       margin-bottom: 15px;
+      transition: transform 0.4s ease;
+    }
+
+    .step:hover img {
+      transform: translateY(-8px) scale(1.1);
     }
 
     .step p {
@@ -201,11 +240,22 @@
       min-width: 220px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
     }
 
     .card img {
       width: 80px;
       margin-bottom: 20px;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.12) rotate(-4deg);
     }
 
     /* ================= RESPONSIVE ================= */
@@ -304,6 +354,64 @@
     padding: 6px 14px;
   }
 }
+
+    /* =====================================================
+       ANIMATION & TRANSITION LAYER (added)
+       ===================================================== */
+
+    /* ---------- Hero text appears one line after another on load ---------- */
+    /* uses translate (not transform) so hover effects never conflict */
+    @keyframes itemIn {
+      from { opacity: 0; translate: 0 25px; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+    .hero-text > * {
+      opacity: 0;
+      animation: itemIn 0.7s cubic-bezier(.22,.61,.36,1) forwards;
+    }
+    .hero-text > *:nth-child(1) { animation-delay: 0.15s; }
+    .hero-text > *:nth-child(2) { animation-delay: 0.30s; }
+    .hero-text > *:nth-child(3) { animation-delay: 0.45s; }
+
+    /* ---------- Hero image slides in from the right, then floats ---------- */
+    @keyframes heroImageIn {
+      from { opacity: 0; translate: 80px 0; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+    @keyframes floatY {
+      0%, 100% { translate: 0 0; }
+      50%      { translate: 0 -12px; }
+    }
+    .hero-image {
+      animation: heroImageIn 0.9s cubic-bezier(.22,.61,.36,1) 0.3s both;
+    }
+    .card-image {
+      animation: floatY 4s ease-in-out 1.2s infinite;
+    }
+
+    /* ---------- Scroll reveal (class added by JS) ---------- */
+    .reveal { opacity: 0; }
+    .reveal.visible {
+      animation: revealUp 0.8s cubic-bezier(.22,.61,.36,1) both;
+    }
+    @keyframes revealUp {
+      from { opacity: 0; translate: 0 40px; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
+    /* ---------- Respect users who prefer less motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal,
+      .hero-text > * {
+        opacity: 1;
+      }
+    }
 
   </style>
 </head>
@@ -434,8 +542,58 @@
   <!-- Footer will load here -->
 <div id="footer"></div>
 
-</body>
 <script src="/header/headerfooter.js"></script>
 
+<script>
+  /* =====================================================
+     SCROLL REVEAL ANIMATION (added)
+     Adds reveal classes automatically, no extra HTML needed
+     ===================================================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    const selectors = [
+      ".stations h2",
+      ".stations > p",
+      ".station",
+      ".section .container > p",
+      ".apps img",
+      ".section h2",
+      ".step",
+      ".quick-glance .card"
+    ];
 
+    const elements = [];
+    selectors.forEach((sel) => {
+      document.querySelectorAll(sel).forEach((el) => {
+        if (el.classList.contains("reveal")) return;
+        el.classList.add("reveal");
+        // stagger siblings (station chips, steps, cards...)
+        const index = [...el.parentElement.children].indexOf(el);
+        el.style.animationDelay = Math.min(index, 11) * 0.06 + "s";
+        elements.push(el);
+      });
+    });
+
+    // Fallback for very old browsers without IntersectionObserver
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((el) => el.classList.add("visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target); // animate only once
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+  });
+</script>
+
+</body>
 </html>

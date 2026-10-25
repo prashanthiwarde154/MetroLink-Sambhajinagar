@@ -1,277 +1,299 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MetroLink Sambhajinagar</title>
-<link rel="stylesheet" href="/Home/indec.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MetroLink Sambhajinagar</title>
+    <link rel="stylesheet" href="/Home/indec.css" />
+  </head>
 
-<body>
+  <body>
+    <!-- ================= TOP BAR ================= -->
+    <div id="header"></div>
 
-<!-- ================= TOP BAR ================= -->
-<div id="header"></div>
+    <!-- YOUR FULL BODY CONTENT REMAINS SAME (trip planner, cards, services, etc.) -->
+    <!-- I did NOT touch it because it was already correct -->
 
-<!-- YOUR FULL BODY CONTENT REMAINS SAME (trip planner, cards, services, etc.) -->
-<!-- I did NOT touch it because it was already correct -->
+    <!-- Main body section -->
+    <div class="home-container">
+      <!-- LEFT: Trip Planner -->
+      <div class="trip-planner">
+        <h2>TRIP PLANNER</h2>
 
- <!-- Main body section -->
-<div class="home-container">
-
-    <!-- LEFT: Trip Planner -->
-    <div class="trip-planner">
-      <h2>TRIP PLANNER</h2>
-
-      <div class="trip-type">
-        <button class="active" id="oneWayBtn">One way</button>
-        <button id="roundTripBtn">Round Trip</button>
-      </div>
+        <div class="trip-type">
+          <button class="active" id="oneWayBtn">One way</button>
+          <button id="roundTripBtn">Round Trip</button>
+        </div>
 
         <label><b> Select locality or station</b></label>
         <datalist id="stationList">
-          <option value="WALUJ MIDC">
-          <option value="OASIS CHOWK">
-          <option value="AS CLUB">
-          <option value="NAGAR NAKA">
-          <option value="PANCHAVATI HOTEL">
-          <option value="DISTRIC COURT">
-          <option value="KRANTI CHOWK">
-          <option value="AKASHWANI">
-          <option value="SEVEN HILL">
-          <option value="CIDCO BUS STAND">
-          <option value="CHIKHALTHANA">
-          <option value="SHENDRA MIDC">
+          <option value="WALUJ MIDC"></option>
+          <option value="OASIS CHOWK"></option>
+          <option value="AS CLUB"></option>
+          <option value="NAGAR NAKA"></option>
+          <option value="PANCHAVATI HOTEL"></option>
+          <option value="DISTRIC COURT"></option>
+          <option value="KRANTI CHOWK"></option>
+          <option value="AKASHWANI"></option>
+          <option value="SEVEN HILL"></option>
+          <option value="CIDCO BUS STAND"></option>
+          <option value="CHIKHALTHANA"></option>
+          <option value="SHENDRA MIDC"></option>
         </datalist>
-      <div class="input-box">
-        <span><b>From</b></span>
-      <input
-          type="text"
-          id="fromStation"
-          list="stationList"
-        placeholder="Search From Locality or Station">
+        <div class="input-box">
+          <span><b>From</b></span>
+          <input
+            type="text"
+            id="fromStation"
+            list="stationList"
+            placeholder="Search From Locality or Station"
+          />
+        </div>
+
+        <div class="input-box">
+          <span><b>To</b></span>
+          <input
+            type="text"
+            id="toStation"
+            list="stationList"
+            placeholder="Search To Locality or Station"
+          />
+        </div>
+
+        <div class="input-box">
+          <span><b>Passengers</b></span>
+          <input type="number" id="passengers" min="1" value="1" />
+        </div>
+
+        <div class="planner-buttons">
+          <button class="reset" id="resetBtn">RESET</button>
+          <button class="plan-btn" id="planJourneyBtn">PLAN JOURNEY</button>
+        </div>
       </div>
 
-      <div class="input-box">
-        <span><b>To</b></span>
-        <input
-          type="text"
-          id="toStation"
-          list="stationList"
-          placeholder="Search To Locality or Station">
-      </div>
-
-      <div class="input-box">
-        <span><b>Passengers</b></span>
-        <input type="number" id="passengers" min="1" value="1">
-      </div>
-
-      <div class="planner-buttons">
-        <button class="reset" id="resetBtn">RESET</button>
-        <button class="plan-btn" id="planJourneyBtn" >PLAN JOURNEY</button>
-      </div>
+      <section class="amenities-fade-section">
+        <div class="fade-container">
+          <img src="/Assets/img1.png" class="fade-img" />
+          <img src="/Assets/img2.png" class="fade-img" />
+          <img src="/Assets/img3.png" class="fade-img" />
+          <img src="/Assets/img4.png" class="fade-img" />
+        </div>
+      </section>
     </div>
 
-
-
-
-
-
-    <section class="amenities-fade-section">
-      <div class="fade-container">
-        <img src="/Assets/img1.png" class="fade-img">
-        <img src="/Assets/img2.png" class="fade-img">
-        <img src="/Assets/img3.png" class="fade-img">
-        <img src="/Assets/img4.png" class="fade-img"> 
-     </div>
-    </section>
-
-
-</div>
-
-
-
-
-<!-- BOTTOM CARDS -->
-<div class="cards-section">
-
-    <!-- Tickets & Recharge -->
-    <div class="card purple-card" onclick="window.location.href='/recharge/recharge.html'"  >
+    <!-- BOTTOM CARDS -->
+    <div class="cards-section">
+      <!-- Tickets & Recharge -->
+      <div
+        class="card purple-card"
+        onclick="window.location.href = '/recharge/recharge.html'"
+      >
         <h3>TICKETS & RECHARGE</h3>
-        <p>Smart Card | QR Ticket </p>
-    </div>
+        <p>Smart Card | QR Ticket</p>
+      </div>
 
-    <!-- Lost & Found -->
-    <div class="card blue-card" onclick="window.location.href='/addonfeatures/lost%26found.html'">
+      <!-- Lost & Found -->
+      <div
+        class="card blue-card"
+        onclick="window.location.href = '/addonfeatures/lost%26found.html'"
+      >
         <h3>LOST & FOUND</h3>
         <p>Report or find lost item</p>
-    </div>
+      </div>
 
-    <!-- Notices & Alerts -->
-    <div class="card notice-card">
+      <!-- Notices & Alerts -->
+      <div class="card notice-card">
         <h3>NOTICES & ALERTS ↗</h3>
 
         <p>
-            On the occasion of the Navy Marathon scheduled on 23.11.2025, three 
-            special early-morning trains will be operated between Aarey – JVLR 
-            and Cuffe Parade stations.
+          On the occasion of the Navy Marathon scheduled on 23.11.2025, three
+          special early-morning trains will be operated between Aarey – JVLR and
+          Cuffe Parade stations.
         </p>
 
         <div class="notice-nav">
-            <button>◀</button>
-            <button>▶</button>
+          <button>◀</button>
+          <button>▶</button>
         </div>
+      </div>
     </div>
+    <!-- ===================== COMPREHENSIVE SERVICES SECTION ===================== -->
+    <section class="services-section">
+      <h3 class="services-subtitle">MetroLink Sambhajinagar’s Line 1</h3>
+      <h1 class="services-title">Comprehensive Services</h1>
 
-</div>
-<!-- ===================== COMPREHENSIVE SERVICES SECTION ===================== -->
-<section class="services-section">
-    <h3 class="services-subtitle">MetroLink Sambhajinagar’s Line 1</h3>
-    <h1 class="services-title">Comprehensive Services</h1>
-
-    <div class="services-container">
-
+      <div class="services-container">
         <!-- LEFT SIDE CARDS -->
         <div class="services-left">
-
-            <div class="service-card" onclick="window.location.href='/addonfeatures/fare-calculator.html'">
-                <div class="icon-box blue"><i class="fa-solid fa-calculator"></i></div>
-                <h3>Fare Calculator</h3>
+          <div
+            class="service-card"
+            onclick="
+              window.location.href = '/addonfeatures/fare-calculator.html'
+            "
+          >
+            <div class="icon-box blue">
+              <i class="fa-solid fa-calculator"></i>
             </div>
+            <h3>Fare Calculator</h3>
+          </div>
 
-            <div class="service-card" onclick="window.location.href='/addonfeatures/station-info.html'">
-                <div class="icon-box green"><i class="fa-solid fa-train-subway"></i></div>
-                <h3>Know Your Station</h3>
-                <p>Everything you want to know about any station.</p>
+          <div
+            class="service-card"
+            onclick="window.location.href = '/addonfeatures/station-info.html'"
+          >
+            <div class="icon-box green">
+              <i class="fa-solid fa-train-subway"></i>
             </div>
+            <h3>Know Your Station</h3>
+            <p>Everything you want to know about any station.</p>
+          </div>
 
-            <div class="service-card" onclick="window.location.href='/facility/facility.html'">
-                <div class="icon-box green2"><i class="fa-solid fa-wheelchair"></i></div>
-                <h3>Facilities</h3>
-                <p>Facility for Women, Differently Abled & Parking</p>
+          <div
+            class="service-card"
+            onclick="window.location.href = '/facility/facility.html'"
+          >
+            <div class="icon-box green2">
+              <i class="fa-solid fa-wheelchair"></i>
             </div>
+            <h3>Facilities</h3>
+            <p>Facility for Women, Differently Abled & Parking</p>
+          </div>
 
-            <div class="service-card" onclick="window.location.href='/addonfeatures/nearby.html'">
-                <div class="icon-box purple"><i class="fa-solid fa-location-dot"></i></div>
-                <h3>Nearby Places Across Stations</h3>
+          <div
+            class="service-card"
+            onclick="window.location.href = '/addonfeatures/nearby.html'"
+          >
+            <div class="icon-box purple">
+              <i class="fa-solid fa-location-dot"></i>
             </div>
+            <h3>Nearby Places Across Stations</h3>
+          </div>
 
-            <div class="service-card" onclick="window.location.href='/addonfeatures/first-last-metro-time.html'">
-                <div class="icon-box teal"><i class="fa-solid fa-clock"></i></div>
-                <h3>First & Last Metro Time</h3>
-                <p>First metro at 05:55 AM • Last at 10:30 PM</p>
-            </div>
+          <div
+            class="service-card"
+            onclick="
+              window.location.href = '/addonfeatures/first-last-metro-time.html'
+            "
+          >
+            <div class="icon-box teal"><i class="fa-solid fa-clock"></i></div>
+            <h3>First & Last Metro Time</h3>
+            <p>First metro at 05:55 AM • Last at 10:30 PM</p>
+          </div>
 
-            <div class="service-card" onclick="window.location.href='/addonfeatures/connectivity.html'">
-                <div class="icon-box pink"><i class="fa-solid fa-bus"></i></div>
-                <h3>First & Last Mile Connectivity</h3>
-                <p>Taxi, Bus & other public transport services</p>
-            </div>
-
+          <div
+            class="service-card"
+            onclick="window.location.href = '/addonfeatures/connectivity.html'"
+          >
+            <div class="icon-box pink"><i class="fa-solid fa-bus"></i></div>
+            <h3>First & Last Mile Connectivity</h3>
+            <p>Taxi, Bus & other public transport services</p>
+          </div>
         </div>
 
         <!-- RIGHT SIDE MAP -->
         <div class="services-map-box">
-            <!-- <p class="temp-map-text">Temporary Map Data — Later</p> -->
-            <!-- <img src="/Assets/img14.png" alt="Metro Map" class="services-map"> -->
+          <!-- <p class="temp-map-text">Temporary Map Data — Later</p> -->
+          <!-- <img src="/Assets/img14.png" alt="Metro Map" class="services-map"> -->
 
-            <div class="map-buttons">
-                <span class="line-tag">LINE 1</span>
-                <button class="map-interact-btn">INTERACT WITH MAP →</button>
-            </div>
+          <div class="map-buttons">
+            <span class="line-tag">LINE 1</span>
+            <button class="map-interact-btn">INTERACT WITH MAP →</button>
+          </div>
         </div>
+      </div>
+    </section>
+    <!-- ===================== END OF COMPREHENSIVE SERVICES SECTION ===================== -->
+    <!-- ===================== PART 3: EXPERIENCE SECTION ===================== -->
+    <section class="experience-section">
+      <p class="exp-top-text">Experience the perfect blend of</p>
+      <h1 class="exp-heading">
+        Speed, <span class="yellow">Convenience</span>, &
+        <span class="green">Sustainability</span>.
+      </h1>
 
-    </div>
-</section>
-<!-- ===================== END OF COMPREHENSIVE SERVICES SECTION ===================== -->
-<!-- ===================== PART 3: EXPERIENCE SECTION ===================== -->
-<section class="experience-section">
-
-    <p class="exp-top-text">Experience the perfect blend of</p>
-    <h1 class="exp-heading">
-        Speed, <span class="yellow">Convenience</span>, & <span class="green">Sustainability</span>.
-    </h1>
-
-    <div class="exp-cards">
-
+      <div class="exp-cards">
         <!-- CARD 1 -->
         <div class="exp-card exp-orange">
-            <div class="exp-text-box">
-                <h2>Smooth Rides, Stress-Free Commutes</h2>
-                <p>Experience Seamless Journeys, Every Day.</p>
-            </div>
-            <img src="/Assets/img10.png" alt="student image" class="exp-img">
+          <div class="exp-text-box">
+            <h2>Smooth Rides, Stress-Free Commutes</h2>
+            <p>Experience Seamless Journeys, Every Day.</p>
+          </div>
+          <img src="/Assets/img10.png" alt="student image" class="exp-img" />
         </div>
 
         <!-- CARD 2 -->
         <div class="exp-card exp-pink">
-            <div class="exp-text-box">
-                <h2>Seamless ticket<br>booking experience</h2>
-                <p>Utilize our interactive maps to effortlessly plan your route</p>
-            </div>
-            <img src="/Assets/img11.png" alt="lady image" class="exp-img">
+          <div class="exp-text-box">
+            <h2>Seamless ticket<br />booking experience</h2>
+            <p>Utilize our interactive maps to effortlessly plan your route</p>
+          </div>
+          <img src="/Assets/img11.png" alt="lady image" class="exp-img" />
         </div>
 
         <!-- CARD 3 -->
         <div class="exp-card exp-blue">
-            <div class="exp-text-box">
-                <h2>Accessibility for all</h2>
-                <p>Our stations and trains are designed to be accessible for everyone, including passengers with disabilities.</p>
-            </div>
-            <img src="/Assets/img12.png" alt="wheelchair man" class="exp-img">
+          <div class="exp-text-box">
+            <h2>Accessibility for all</h2>
+            <p>
+              Our stations and trains are designed to be accessible for
+              everyone, including passengers with disabilities.
+            </p>
+          </div>
+          <img src="/Assets/img12.png" alt="wheelchair man" class="exp-img" />
         </div>
-
-    </div>
-</section>
-<!-- ===================== END OF EXPERIENCE SECTION ===================== -->
-<!-- Main container for explore -->
-<div class="main-container">
-
-    <!-- LEFT SIDE -->
-    <div class="left-content">
+      </div>
+    </section>
+    <!-- ===================== END OF EXPERIENCE SECTION ===================== -->
+    <!-- Main container for explore -->
+    <div class="main-container">
+      <!-- LEFT SIDE -->
+      <div class="left-content">
         <h5>Must-Visit Places</h5>
-        <h1>Journey Through<br> Sambhajinagar's Gems &<br> Top Destinations</h1>
+        <h1>
+          Journey Through<br />
+          Sambhajinagar's Gems &<br />
+          Top Destinations
+        </h1>
 
         <p>
-            Explore the vibrant and historic attractions that make 
-            Sambhajinagar truly unique. From ancient monuments to 
-            modern city landmarks, discover the beauty around every corner.
+          Explore the vibrant and historic attractions that make Sambhajinagar
+          truly unique. From ancient monuments to modern city landmarks,
+          discover the beauty around every corner.
         </p>
 
-        <a href="/addonfeatures/tourist.html" class="explore-btn">EXPLORE NOW</a>
+        <a href="/addonfeatures/tourist.html" class="explore-btn"
+          >EXPLORE NOW</a
+        >
+      </div>
+
+      <!-- RIGHT SIDE IMAGES -->
+      <div class="right-images">
+        <img
+          src="https://imgcld.yatra.com/ytimages/image/upload/v1434525777/Bibi_Ka_Maqbara.jpg"
+        />
+        <img
+          src="https://tse2.mm.bing.net/th/id/OIP.9udv4F6O63YHEsFXNDdG6QHaE0?pid=Api&h=220&P=0"
+        />
+        <img
+          src="https://tse2.mm.bing.net/th/id/OIP.pMrbMQvw1nUDZOLNDK7wHQHaE4?pid=Api&h=220&P=0"
+        />
+        <img
+          src="https://eindiatourism.in/wp-content/uploads/2023/05/640px-Soneri_Mahal_Sunset.jpg"
+        />
+        <img
+          src="https://tripxl.com/blog/wp-content/uploads/2024/10/Himayat-Bagh.jpg"
+        />
+        <img
+          src="https://www.tripsavvy.com/thmb/tTPVCtmmRr8gxd7oowt4m57Egd4=/3000x2000/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-583958200-03a09c835d52423eb2d29dc624412908.jpg"
+        />
+      </div>
+    </div>
+    <div class="promo-banner">
+      <img src="/Assets/generated-image-1.png" alt="Metro App Launching Soon" />
     </div>
 
-    <!-- RIGHT SIDE IMAGES -->
-    <div class="right-images">
-        <img src="https://imgcld.yatra.com/ytimages/image/upload/v1434525777/Bibi_Ka_Maqbara.jpg">
-        <img src="https://tse2.mm.bing.net/th/id/OIP.9udv4F6O63YHEsFXNDdG6QHaE0?pid=Api&h=220&P=0">
-        <img src="https://tse2.mm.bing.net/th/id/OIP.pMrbMQvw1nUDZOLNDK7wHQHaE4?pid=Api&h=220&P=0">
-        <img src="https://eindiatourism.in/wp-content/uploads/2023/05/640px-Soneri_Mahal_Sunset.jpg">
-        <img src="https://tripxl.com/blog/wp-content/uploads/2024/10/Himayat-Bagh.jpg">
-        <img src="https://www.tripsavvy.com/thmb/tTPVCtmmRr8gxd7oowt4m57Egd4=/3000x2000/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-583958200-03a09c835d52423eb2d29dc624412908.jpg">
-    </div>
-
-</div>
-<div class="promo-banner">
-    <img src="/Assets/generated-image-1.png" alt="Metro App Launching Soon">
-</div>
-
-<div id="footer"></div>
-<script src="/header/headerfooter.js"></script>
-<script src="/Home/home.js"></script>
-</body>
+    <div id="footer"></div>
+    <script src="/header/headerfooter.js"></script>
+    <script src="/Home/home.js"></script>
+  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

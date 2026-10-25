@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MetroLink Sambhajinagar - Security</title>
     <link rel="stylesheet" href="/Home/indec.css">
-</head>
 <style>
+html{
+    scroll-behavior:smooth;
+}
 body{
     font-family: Arial, sans-serif;
     margin: 0;
@@ -19,6 +21,19 @@ body{
     padding:15px 20px;
     font-size:22px;
     font-weight:bold;
+    position:relative;
+    animation: headerIn 0.7s cubic-bezier(.22,.61,.36,1) both;
+}
+.header::after{
+    content:"";
+    position:absolute;
+    left:20px;
+    bottom:0;
+    height:3px;
+    width:0;
+    background:#1aa3a3;
+    border-radius:3px;
+    animation: lineGrow 0.8s ease 0.5s forwards;
 }
 .card h4{
     margin:0;
@@ -30,6 +45,8 @@ body{
     font-size:20px;
     font-weight:bold;
     margin:10px 0;
+    transition: transform 0.3s ease;
+    transform-origin:left center;
 }
 
 .card p{
@@ -43,6 +60,12 @@ body{
     text-decoration:none;
     font-size:14px;
     font-weight:600;
+    display:inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.card a:hover{
+    transform: translateX(6px);
+    color:#0056b3;
 }
 
 /* HELPLINE CARDS */
@@ -58,7 +81,15 @@ body{
     border-radius:6px;
     padding:15px;
     box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 } 
+.card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+}
+.card:hover .number{
+    transform: scale(1.1);
+}
 
 /* FILTER BAR */
 .filters{
@@ -74,6 +105,16 @@ body{
     font-size:14px;
     width:100%;
     max-width:260px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.filters input:hover, .filters select:hover{
+    border-color:#1aa3a3;
+}
+.filters input:focus, .filters select:focus{
+    outline:none;
+    border-color:#1aa3a3;
+    box-shadow:0 0 0 4px rgba(26,163,163,0.18);
+    transform: translateY(-2px);
 }
 
 /* TABLE */
@@ -97,6 +138,12 @@ th{
     color:#fff;
     text-align:left;
 }
+tbody tr{
+    transition: background 0.3s ease;
+}
+tbody tr:hover{
+    background:#f0fbfb;
+}
 .metro span{
     background:#e8f0fe;
     padding:4px 8px;
@@ -104,6 +151,12 @@ th{
     font-size:12px;
     margin:3px;
     display:inline-block;
+    transition: all 0.3s ease;
+}
+.metro span:hover{
+    background:#1aa3a3;
+    color:#fff;
+    transform: translateY(-2px);
 }
 .contact{ color:red; font-weight:bold; }
 
@@ -113,7 +166,52 @@ th{
         display:none;
     }
 }
+
+/* =====================================================
+   ANIMATION & TRANSITION LAYER (added)
+   ===================================================== */
+
+/* ---------- Page title on load ---------- */
+@keyframes headerIn{
+    from{ opacity:0; translate:-30px 0; }
+    to{ opacity:1; translate:0 0; }
+}
+@keyframes lineGrow{
+    to{ width:90px; }
+}
+
+/* ---------- Scroll reveal (class added by JS) ---------- */
+/* uses translate (not transform) so hover effects never conflict */
+.reveal{ opacity:0; }
+.reveal.visible{
+    animation: revealUp 0.8s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes revealUp{
+    from{ opacity:0; translate:0 40px; }
+    to{ opacity:1; translate:0 0; }
+}
+
+/* ---------- Table row fade-in when a filter shows it again ---------- */
+@keyframes rowIn{
+    from{ opacity:0; translate:0 12px; }
+    to{ opacity:1; translate:0 0; }
+}
+#policeTable tbody tr.row-in{
+    animation: rowIn 0.45s ease both;
+}
+
+/* ---------- Respect users who prefer less motion ---------- */
+@media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+        scroll-behavior:auto !important;
+    }
+    .reveal{ opacity:1; }
+}
 </style>
+</head>
 <body>
       <!-- Header will load here -->
 <div id="header"></div>
@@ -254,10 +352,19 @@ function filterTable(){
         const text = row.innerText.toLowerCase();
         const metro = row.querySelector(".metro").innerText.toLowerCase();
 
-        row.style.display =
+        const show =
             text.includes(s) &&
-            (m === "" || metro.includes(m))
-            ? "" : "none";
+            (m === "" || metro.includes(m));
+
+        const wasHidden = row.style.display === "none";
+        row.style.display = show ? "" : "none";
+
+        // fade the row in again when a filter brings it back
+        if (show && wasHidden) {
+            row.classList.remove("row-in");
+            void row.offsetWidth;      // restart animation
+            row.classList.add("row-in");
+        }
     });
 }
 
@@ -265,5 +372,50 @@ search.addEventListener("keyup", filterTable);
 metroFilter.addEventListener("change", filterTable);
 </script>
 <script src="../header/headerfooter.js"></script>
+
+<script>
+/* =====================================================
+   SCROLL REVEAL ANIMATION (added)
+   Adds reveal classes automatically, no extra HTML needed
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const selectors = [
+    ".cards .card",
+    ".filters",
+    "#policeTable tbody tr"
+  ];
+
+  const elements = [];
+  selectors.forEach((sel) => {
+    document.querySelectorAll(sel).forEach((el) => {
+      el.classList.add("reveal");
+      // stagger siblings (helpline cards, table rows)
+      const index = [...el.parentElement.children].indexOf(el);
+      el.style.animationDelay = Math.min(index, 7) * 0.08 + "s";
+      elements.push(el);
+    });
+  });
+
+  // Fallback for very old browsers without IntersectionObserver
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach((el) => el.classList.add("visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // animate only once
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  elements.forEach((el) => observer.observe(el));
+});
+</script>
 </body>
 </html>

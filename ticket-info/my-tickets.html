@@ -12,6 +12,10 @@
 <link rel="stylesheet" href="/Home/indec.css">
 
 <style>
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         font-family: 'Poppins', sans-serif;
         background: #fdf5ec;
@@ -49,6 +53,12 @@
         justify-content: space-between;
         align-items: flex-start;
         box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ticket-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 30px rgba(45,79,45,0.2);
     }
 
     .ticket-info {
@@ -76,6 +86,12 @@
         padding: 0.2rem 0.8rem;
         border-radius: 30px;
         border: 1px dashed #c9b68b;
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .meta-row p:hover {
+        transform: translateY(-2px) scale(1.05);
+        background: rgba(255,220,190,0.95);
     }
 
     .fare-badge {
@@ -118,10 +134,26 @@
         border: none;
         cursor: pointer;
         font-weight: 600;
+        transition: all 0.3s ease;
     }
 
     .download-btn:hover {
         background: #cc8542;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(211,111,44,0.35);
+    }
+
+    .download-btn:active {
+        transform: scale(0.95);
+    }
+
+    .download-btn:disabled {
+        pointer-events: none;
+        opacity: 0.85;
+    }
+
+    .download-btn.done {
+        background: #2c5e2c;
     }
 
     .empty-message {
@@ -132,6 +164,72 @@
         border: 2px dashed #ffb882;
         border-radius: 40px;
         background: #fff3e0;
+    }
+
+    /* =====================================================
+       ANIMATION & TRANSITION LAYER (added)
+       ===================================================== */
+
+    /* ---------- Page load: container rises, title slides in ---------- */
+    /* uses translate (not transform) so hover effects never conflict */
+    @keyframes containerIn {
+        from { opacity: 0; translate: 0 30px; }
+        to   { opacity: 1; translate: 0 0; }
+    }
+    @keyframes titleIn {
+        from { opacity: 0; translate: -30px 0; }
+        to   { opacity: 1; translate: 0 0; }
+    }
+    .tickets-container {
+        animation: containerIn 0.8s cubic-bezier(.22,.61,.36,1) both;
+    }
+    .tickets-container h2 {
+        opacity: 0;
+        animation: titleIn 0.7s cubic-bezier(.22,.61,.36,1) 0.25s forwards;
+    }
+
+    /* ---------- Ticket cards slide in one after another (delay set by JS) ---------- */
+    @keyframes cardIn {
+        from { opacity: 0; translate: 0 30px; }
+        to   { opacity: 1; translate: 0 0; }
+    }
+    .ticket-card {
+        animation: cardIn 0.6s cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    /* ---------- Empty / error message pops in ---------- */
+    @keyframes popIn {
+        from { opacity: 0; scale: 0.9; }
+        to   { opacity: 1; scale: 1; }
+    }
+    .empty-message {
+        animation: popIn 0.5s ease both;
+    }
+
+    /* ---------- Loading skeleton while tickets are being fetched ---------- */
+    @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    .skeleton-card {
+        height: 130px;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #f4ebe0 25%, #fff8ef 50%, #f4ebe0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s linear infinite;
+    }
+
+    /* ---------- Respect users who prefer less motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+        .tickets-container h2 {
+            opacity: 1;
+        }
     }
 </style>
 </head>
@@ -154,6 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("ticketList");
     const { jsPDF } = window.jspdf;
 
+    // Loading skeleton (shimmer) until the tickets arrive
+    container.innerHTML = "<div class='skeleton-card'></div><div class='skeleton-card'></div><div class='skeleton-card'></div>";
+
     // Fetch tickets from backend
     fetch("/my-tickets", { credentials: "include" }) // <- use relative path!
     .then(res => res.json())
@@ -164,9 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         container.innerHTML = "";
-        data.tickets.forEach(ticket => {
+        data.tickets.forEach((ticket, index) => {
             const card = document.createElement("div");
             card.className = "ticket-card";
+            // stagger the cards
+            card.style.animationDelay = Math.min(index, 6) * 0.1 + "s";
 
             // Ensure passengers is an array
             const passengers = Array.isArray(ticket.passengers) ? ticket.passengers : [];
@@ -189,7 +292,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const downloadBtn = document.createElement("button");
             downloadBtn.className = "download-btn";
             downloadBtn.textContent = "⬇️ PDF";
-            downloadBtn.addEventListener("click", () => downloadTicket(ticket));
+            downloadBtn.addEventListener("click", () => {
+                // short "preparing" state, then "saved" confirmation
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = "⏳ Preparing...";
+
+                setTimeout(() => {
+                    downloadTicket(ticket);
+                    downloadBtn.classList.add("done");
+                    downloadBtn.textContent = "✅ Saved";
+
+                    setTimeout(() => {
+                        downloadBtn.classList.remove("done");
+                        downloadBtn.textContent = "⬇️ PDF";
+                        downloadBtn.disabled = false;
+                    }, 1500);
+                }, 400);
+            });
             actionDiv.appendChild(downloadBtn);
 
             // Combine card

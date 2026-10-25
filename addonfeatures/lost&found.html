@@ -1,349 +1,724 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metro Lost & Found - Sambhajinagar</title>
+
 <link rel="stylesheet" href="/Home/indec.css">
+
 <style>
-
-/* ===== SKY BLUE + WHITE + GOLD THEME ===== */
-
-body{
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#c1d3da,#ffffff);
-    color:#333;
-    /* opacity: 0.7; */
+* {
+    box-sizing: border-box;
 }
 
-/* HEADER */
-header{
-    background: linear-gradient(to right,#87CEEB,#FFD700);
-    color:#003366;
-    padding:25px;
-    text-align:center;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #c1d3da, #ffffff, #fff9d9);
+    background-size: 200% 200%;
+    animation: backgroundFlow 12s ease infinite;
+    color: #333;
 }
 
-/* MAIN CONTAINER */
-.container{
-    max-width:900px;
-    margin:30px auto;
-    padding:20px;
+/* Main container */
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 35px auto;
+    padding: 20px;
+    animation: pageEntrance 0.7s ease both;
 }
 
-/* TABS */
-.tabs{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
-.tabs button{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    font-weight:bold;
-    cursor:pointer;
-    background:white;
-    border:2px solid #87CEEB;
-    color:#003366;
-    transition:0.3s;
+.tabs button {
+    flex: 1;
+    padding: 14px;
+    border: 2px solid #87CEEB;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #003366;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.25s ease,
+        box-shadow 0.3s ease;
 }
 
-.tabs button.active{
-    background:#FFD700;
-    color:#003366;
-    border:none;
+.tabs button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 51, 102, 0.1);
 }
 
-/* CARDS */
-.card{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.1);
-    border-top:5px solid #FFD700;
+.tabs button.active {
+    background: linear-gradient(135deg, #87CEEB, #FFD700);
+    color: #003366;
+    border-color: transparent;
+    box-shadow: 0 5px 16px rgba(0, 51, 102, 0.12);
 }
 
-/* INPUT FIELDS */
-input, select, textarea{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    margin-bottom:15px;
-    border-radius:6px;
-    border:1px solid #87CEEB;
+/* Main cards */
+.card {
+    padding: 28px;
+    border: 1px solid rgba(135, 206, 235, 0.35);
+    border-top: 5px solid #FFD700;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 51, 102, 0.09);
+    animation: cardEntrance 0.55s ease both;
 }
 
-/* PRIMARY BUTTON */
-button.primary{
-    background:#87CEEB;
-    color:#003366;
-    border:none;
-    padding:12px;
-    width:100%;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
+/* Form labels */
+#reportForm label {
+    display: block;
+    margin: 15px 0 7px;
+    color: #003366;
+    font-size: 14px;
+    font-weight: 700;
 }
 
-button.primary:hover{
-    background:#FFD700;
+#reportForm input,
+#reportForm select,
+#reportForm textarea {
+    display: block;
+    width: 100%;
+    padding: 13px 14px;
+    margin: 0 0 17px;
+    border: 1px solid #c7dfeb;
+    border-radius: 10px;
+    background: #fbfdff;
+    color: #333;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease;
 }
 
-/* REPORT ITEM */
-.report-item{
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:15px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.1);
-    border-left:5px solid #FFD700;
+#reportForm textarea {
+    min-height: 110px;
+    resize: vertical;
 }
 
-/* BADGES */
-.badge{
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:12px;
-    color:white;
+#reportForm input:focus,
+#reportForm select:focus,
+#reportForm textarea:focus {
+    border-color: #00A8E8;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(135, 206, 235, 0.2);
+    transform: translateY(-1px);
 }
 
-.lost{ background:#FF4C4C; }
-.found{ background:#28A745; }
-
-/* TOAST */
-.toast{
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#003366;
-    color:white;
-    padding:10px 20px;
-    border-radius:20px;
+#reportForm input[type="file"] {
+    padding: 10px;
+    background: #f5fbff;
 }
 
-.hidden{ display:none; }
+/* Primary buttons */
+button.primary {
+    width: 100%;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #87CEEB, #58b7df);
+    color: #003366;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
 
-/* FOOTER */
-footer{
-    text-align:center;
-    padding:15px;
-    color:#003366;
-    margin-top:40px;
-    background:#FFD700;
+button.primary:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #FFD700, #ffe873);
+    box-shadow: 0 7px 17px rgba(0, 51, 102, 0.12);
+}
+
+button.primary:active {
+    transform: scale(0.98);
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+    outline: 3px solid #003366;
+    outline-offset: 3px;
+}
+
+/* Browse filter buttons */
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.filter-buttons button {
+    flex: 1;
+    padding: 11px;
+    border: 1px solid #87CEEB;
+    border-radius: 9px;
+    background: white;
+    color: #003366;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.filter-buttons button:hover,
+.filter-buttons button.active {
+    background: #FFD700;
+    border-color: #FFD700;
+    transform: translateY(-2px);
+}
+
+/* Report items */
+.report-item {
+    margin-bottom: 18px;
+    padding: 22px;
+    overflow-wrap: anywhere;
+    border: 1px solid #e2edf3;
+    border-left: 5px solid #FFD700;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+    animation: reportEntrance 0.45s ease both;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.report-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 51, 102, 0.1);
+}
+
+.report-item h3 {
+    margin: 14px 0 10px;
+    color: #003366;
+}
+
+.report-item p {
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.report-item img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+/* Lost and found badges */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    animation: badgePop 0.4s ease both;
+}
+
+.badge.lost {
+    background: #e94b4b;
+}
+
+.badge.found {
+    background: #239b56;
+}
+
+/* Delete button */
+.report-item button.delete-button {
+    width: auto;
+    margin-top: 10px;
+    padding: 10px 18px;
+    background: #e94b4b;
+    color: white;
+}
+
+.report-item button.delete-button:hover {
+    background: #bd2525;
+}
+
+/* Success message */
+#successMessage {
+    text-align: center;
+    animation: cardEntrance 0.5s ease both;
+}
+
+#successMessage h3 {
+    color: #239b56;
+    margin: 10px 0 24px;
+}
+
+/* Toast notification */
+.toast {
+    position: fixed;
+    z-index: 9999;
+    bottom: 25px;
+    left: 50%;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    padding: 14px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    background: #003366;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
+
+/* Footer */
+footer {
+    margin-top: 35px;
+    padding: 20px 15px;
+    background: linear-gradient(135deg, #87CEEB, #FFD700);
+    color: #003366;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes pageEntrance {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(15px) scale(0.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes reportEntrance {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes badgePop {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes backgroundFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px auto;
+        padding: 12px;
+    }
+
+    .card {
+        padding: 20px 16px;
+    }
+
+    .tabs {
+        gap: 8px;
+    }
+
+    .tabs button {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    .filter-buttons {
+        gap: 7px;
+    }
+
+    .filter-buttons button {
+        padding: 10px 5px;
+        font-size: 13px;
+    }
+
+    .report-item {
+        padding: 17px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- <header>
-<h1>🚇 Metro Lost & Found</h1>
-<p>MetroLink Sambhajinagar</p>
-</header> -->
 <div id="header"></div>
-<div class="container">
 
-<div class="tabs">
-<button id="tabReport" class="active" onclick="showSection('report')">New Report</button>
-<button id="tabBrowse" onclick="showSection('browse')">Browse Reports</button>
-</div>
+<main class="container">
 
-<!-- REPORT SECTION -->
-<div id="reportSection" class="card">
+    <div class="tabs">
+        <button type="button" id="tabReport" class="active"
+            onclick="showSection('report')">📝 New Report</button>
 
-<form id="reportForm">
+        <button type="button" id="tabBrowse"
+            onclick="showSection('browse')">🔎 Browse Reports</button>
+    </div>
 
-<label>Report Type</label>
-<select id="report_type" required>
-<option value="lost">Lost</option>
-<option value="found">Found</option>
-</select>
+    <section id="reportSection" class="card">
+        <form id="reportForm">
 
-<label>Item Name</label>
-<input type="text" id="item_name" required>
+            <label for="report_type">Report Type</label>
+            <select id="report_type" required>
+                <option value="lost">Lost</option>
+                <option value="found">Found</option>
+            </select>
 
-<label>Description</label>
-<textarea id="description" required></textarea>
+            <label for="item_name">Item Name</label>
+            <input type="text" id="item_name" maxlength="100"
+                placeholder="e.g. Black backpack" required>
 
-<label>Station</label>
-<input type="text" id="station" required>
+            <label for="description">Description</label>
+            <textarea id="description" maxlength="1000"
+                placeholder="Describe the item..." required></textarea>
 
-<label>Date</label>
-<input type="date" id="date" required>
+            <label for="station">Station</label>
+            <input type="text" id="station" maxlength="100"
+                placeholder="Station where item was lost or found" required>
 
-<label>Your Name</label>
-<input type="text" id="contact_name" required>
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
 
-<label>Email</label>
-<input type="email" id="contact_email" required>
+            <label for="contact_name">Your Name</label>
+            <input type="text" id="contact_name" maxlength="100"
+                placeholder="Enter your name" required>
 
-<label>Upload Image</label>
-<input type="file" id="image_input" accept="image/*">
+            <label for="contact_email">Email</label>
+            <input type="email" id="contact_email" maxlength="254"
+                placeholder="you@example.com" required>
 
-<button type="submit" class="primary">Submit Report</button>
+            <label for="image_input">Upload Image (optional)</label>
+            <input type="file" id="image_input" accept="image/*">
 
-</form>
+            <button type="submit" class="primary">Submit Report →</button>
+        </form>
 
-<div id="successMessage" class="hidden">
-<h3>✅ Report Submitted Successfully</h3>
-<button onclick="resetForm()" class="primary">Submit Another</button>
-</div>
+        <div id="successMessage" class="hidden">
+            <h3>✅ Report Submitted Successfully!</h3>
+            <button type="button" onclick="resetForm()" class="primary">
+                Submit Another Report
+            </button>
+        </div>
+    </section>
 
-</div>
+    <section id="browseSection" class="hidden">
+        <div class="filter-buttons">
+            <button type="button" data-filter="all" class="active"
+                onclick="filterReports('all')">All</button>
+            <button type="button" data-filter="lost"
+                onclick="filterReports('lost')">Lost</button>
+            <button type="button" data-filter="found"
+                onclick="filterReports('found')">Found</button>
+        </div>
 
-<!-- BROWSE SECTION -->
-<div id="browseSection" class="hidden">
+        <div id="reportsList"></div>
+    </section>
 
-<div style="margin-bottom:15px;">
-<button onclick="filterReports('all')" class="primary">All</button>
-<button onclick="filterReports('lost')" class="primary">Lost</button>
-<button onclick="filterReports('found')" class="primary">Found</button>
-</div>
-
-<div id="reportsList"></div>
-
-</div>
-
-</div>
+</main>
 
 <footer>
-MetroLink Sambhajinagar • Help Others Find Their Belongings
+    MetroLink Sambhajinagar • Help Others Find Their Belongings
 </footer>
 
-<div id="toast" class="toast hidden"></div>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
 <script>
-
 let reports = JSON.parse(localStorage.getItem("metroReports")) || [];
 let currentFilter = "all";
 let imageData = "";
+let toastTimer;
 
-document.getElementById("date").valueAsDate = new Date();
+const reportForm = document.getElementById("reportForm");
+const successMessage = document.getElementById("successMessage");
+const dateInput = document.getElementById("date");
+const imageInput = document.getElementById("image_input");
 
-// Section Toggle
-function showSection(section){
-    document.getElementById("reportSection").classList.toggle("hidden",section!=="report");
-    document.getElementById("browseSection").classList.toggle("hidden",section!=="browse");
+dateInput.valueAsDate = new Date();
 
-    document.getElementById("tabReport").classList.toggle("active",section==="report");
-    document.getElementById("tabBrowse").classList.toggle("active",section==="browse");
+/* Switch sections */
+function showSection(section) {
+    document.getElementById("reportSection")
+        .classList.toggle("hidden", section !== "report");
+
+    document.getElementById("browseSection")
+        .classList.toggle("hidden", section !== "browse");
+
+    document.getElementById("tabReport")
+        .classList.toggle("active", section === "report");
+
+    document.getElementById("tabBrowse")
+        .classList.toggle("active", section === "browse");
 
     renderReports();
 }
 
-// Image Upload
-document.getElementById("image_input").addEventListener("change",function(e){
-    const file = e.target.files[0];
-    if(!file) return;
+/* Image upload */
+imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+    imageData = "";
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        showToast("Please choose an image file.");
+        this.value = "";
+        return;
+    }
+
+    // Limit images to 2 MB to reduce localStorage quota problems.
+    if (file.size > 2 * 1024 * 1024) {
+        showToast("Please choose an image smaller than 2 MB.");
+        this.value = "";
+        return;
+    }
 
     const reader = new FileReader();
-    reader.onload = function(event){
+
+    reader.onload = function (event) {
         imageData = event.target.result;
+        showToast("Image ready to upload.");
     };
+
+    reader.onerror = function () {
+        showToast("Could not read the image.");
+    };
+
     reader.readAsDataURL(file);
 });
 
-// Submit Form
-document.getElementById("reportForm").addEventListener("submit",function(e){
-    e.preventDefault();
+/* Submit report */
+reportForm.addEventListener("submit", function (event) {
+    event.preventDefault();
 
     const report = {
         id: Date.now(),
-        report_type: report_type.value,
-        item_name: item_name.value,
-        description: description.value,
-        station: station.value,
-        date: date.value,
-        contact_name: contact_name.value,
-        contact_email: contact_email.value,
+        report_type: document.getElementById("report_type").value,
+        item_name: document.getElementById("item_name").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        station: document.getElementById("station").value.trim(),
+        date: dateInput.value,
+        contact_name: document.getElementById("contact_name").value.trim(),
+        contact_email: document.getElementById("contact_email").value.trim(),
         image: imageData
     };
 
     reports.push(report);
-    localStorage.setItem("metroReports",JSON.stringify(reports));
 
-    document.getElementById("reportForm").classList.add("hidden");
-    document.getElementById("successMessage").classList.remove("hidden");
+    try {
+        localStorage.setItem("metroReports", JSON.stringify(reports));
+    } catch (error) {
+        reports.pop();
+        showToast("Storage is full. Try a smaller image.");
+        return;
+    }
 
-    showToast("Report Submitted Successfully!");
+    reportForm.classList.add("hidden");
+    successMessage.classList.remove("hidden");
+
+    showToast("Report submitted successfully!");
 });
 
-// Reset Form
-function resetForm(){
+/* Reset form */
+function resetForm() {
     reportForm.reset();
-    imageData="";
+    imageData = "";
+    dateInput.valueAsDate = new Date();
+
     reportForm.classList.remove("hidden");
     successMessage.classList.add("hidden");
 }
 
-// Render Reports
-function renderReports(){
+/* Safely create text elements for user-submitted content */
+function addTextElement(parent, tag, text, className) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+
+    if (className) element.className = className;
+
+    parent.appendChild(element);
+    return element;
+}
+
+/* Display reports */
+function renderReports() {
     const list = document.getElementById("reportsList");
-    list.innerHTML="";
+    list.replaceChildren();
 
-    const filtered = currentFilter==="all" ? reports : reports.filter(r=>r.report_type===currentFilter);
+    const filtered = reports
+        .filter(report =>
+            currentFilter === "all" ||
+            report.report_type === currentFilter
+        )
+        .slice()
+        .reverse();
 
-    if(filtered.length===0){
-        list.innerHTML="<p style='color:white;'>No Reports Found</p>";
+    if (filtered.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "report-item";
+        empty.textContent = "No reports found. Try another filter or submit a report.";
+        list.appendChild(empty);
         return;
     }
 
-    filtered.reverse().forEach(report=>{
-        const div=document.createElement("div");
-        div.className="report-item";
+    filtered.forEach(report => {
+        const card = document.createElement("article");
+        card.className = "report-item";
 
-        div.innerHTML=`
-        <span class="badge ${report.report_type}">
-        ${report.report_type.toUpperCase()}
-        </span>
-        <h3>${report.item_name}</h3>
-        <p>${report.description}</p>
-        <p><strong>Station:</strong> ${report.station}</p>
-        <p><strong>Date:</strong> ${report.date}</p>
-        <p><strong>Contact:</strong> ${report.contact_name} (${report.contact_email})</p>
-        ${report.image ? `<img src="${report.image}" width="100%">` : ""}
-        <button onclick="deleteReport(${report.id})" class="primary" style="background:red;margin-top:10px;">Delete</button>
-        `;
+        addTextElement(
+            card,
+            "span",
+            String(report.report_type || "lost").toUpperCase(),
+            "badge " + (report.report_type === "found" ? "found" : "lost")
+        );
 
-        list.appendChild(div);
+        addTextElement(card, "h3", report.item_name || "Unnamed item");
+        addTextElement(card, "p", report.description || "");
+
+        const station = document.createElement("p");
+        const stationLabel = document.createElement("strong");
+        stationLabel.textContent = "Station: ";
+        station.appendChild(stationLabel);
+        station.appendChild(document.createTextNode(report.station || ""));
+        card.appendChild(station);
+
+        const date = document.createElement("p");
+        const dateLabel = document.createElement("strong");
+        dateLabel.textContent = "Date: ";
+        date.appendChild(dateLabel);
+        date.appendChild(document.createTextNode(report.date || ""));
+        card.appendChild(date);
+
+        const contact = document.createElement("p");
+        const contactLabel = document.createElement("strong");
+        contactLabel.textContent = "Contact: ";
+        contact.appendChild(contactLabel);
+        contact.appendChild(document.createTextNode(
+            (report.contact_name || "") +
+            " (" + (report.contact_email || "") + ")"
+        ));
+        card.appendChild(contact);
+
+        if (report.image && report.image.startsWith("data:image/")) {
+            const img = document.createElement("img");
+            img.src = report.image;
+            img.alt = "Image of " + (report.item_name || "reported item");
+            img.loading = "lazy";
+            card.appendChild(img);
+        }
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "primary delete-button";
+        deleteButton.textContent = "🗑 Delete";
+        deleteButton.addEventListener("click", () => deleteReport(report.id));
+        card.appendChild(deleteButton);
+
+        list.appendChild(card);
     });
 }
 
-// Filter
-function filterReports(type){
-    currentFilter=type;
+/* Filter reports */
+function filterReports(type) {
+    currentFilter = type;
+
+    document.querySelectorAll(".filter-buttons button").forEach(button => {
+        button.classList.toggle("active", button.dataset.filter === type);
+    });
+
     renderReports();
 }
 
-// Delete
-function deleteReport(id){
-    reports=reports.filter(r=>r.id!==id);
-    localStorage.setItem("metroReports",JSON.stringify(reports));
+/* Delete report */
+function deleteReport(id) {
+    reports = reports.filter(report => report.id !== id);
+
+    try {
+        localStorage.setItem("metroReports", JSON.stringify(reports));
+    } catch (error) {
+        showToast("Could not update saved reports.");
+        return;
+    }
+
     renderReports();
-    showToast("Report Deleted");
+    showToast("Report deleted.");
 }
 
-// Toast
-function showToast(msg){
-    const toast=document.getElementById("toast");
-    toast.innerText=msg;
+/* Toast animation */
+function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    clearTimeout(toastTimer);
+
+    toast.textContent = message;
     toast.classList.remove("hidden");
 
-    setTimeout(()=>toast.classList.add("hidden"),3000);
+    // Allow the browser to apply the initial state before animating.
+    requestAnimationFrame(() => toast.classList.add("visible"));
+
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("visible");
+
+        setTimeout(() => {
+            if (!toast.classList.contains("visible")) {
+                toast.classList.add("hidden");
+            }
+        }, 300);
+    }, 2800);
 }
 
 renderReports();
-
 </script>
+
 <script src="/header/headerfooter.js"></script>
 <script src="/Home/home.js"></script>
+
 </body>
 </html>
