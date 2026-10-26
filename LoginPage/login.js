@@ -37,7 +37,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 
     setLoading(true);
 
-    fetch("http://localhost:5000/login", {
+    fetch("/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

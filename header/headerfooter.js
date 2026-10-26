@@ -216,9 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay?.addEventListener("click", closeProfile);
 
   // ================= LOGIN CHECK =================
-  fetch("http://localhost:5000/check-login", {
-    credentials: "include"
+  
+  fetch("/check-login", {
+      credentials: "include"
   })
+
   .then(res => res.json())
   .then(data => {
 
