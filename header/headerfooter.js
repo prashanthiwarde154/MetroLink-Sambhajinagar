@@ -254,7 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ================= LOGOUT =================
   logoutBtn?.addEventListener("click", () => {
-    fetch("http://localhost:5000/logout", {
+    fetch("/logout", {
+    credentials: "include"
+})
       credentials: "include"
     })
     .then(() => {
@@ -264,9 +266,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(console.error);
   });
   // if user logied in successfull then the admin login link must be hidden
-  fetch("http://localhost:5000/check-admin-login", {
+  fetch("/check-admin-login", {
     credentials: "include"
-  })
+})
   .then(res => res.json())
   .then(data => {
     if (data.loggedIn) {
@@ -279,4 +281,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Nott working properly
 
 
-});

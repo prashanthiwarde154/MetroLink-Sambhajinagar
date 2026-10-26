@@ -99,7 +99,7 @@ document.getElementById("signupForm").addEventListener("submit", function (e) {
     message.className = "";
     setLoading(true);
 
-    fetch("http://localhost:5000/signup", {
+    fetch("/signup", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
