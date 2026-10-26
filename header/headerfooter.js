@@ -252,32 +252,23 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/LoginPage/login.html";
   });
 
-  // ================= LOGOUT =================
-  logoutBtn?.addEventListener("click", () => {
-    fetch("/logout", {
-    credentials: "include"
-})
+// ================= LOGOUT =================
+logoutBtn?.addEventListener("click", async () => {
+  try {
+    const res = await fetch("/logout", {
+      method: "POST",
       credentials: "include"
-    })
-    .then(() => {
-      alert("Logged out successfully");
-      window.location.href = "/Home/index.html";
-    })
-    .catch(console.error);
-  });
-  // if user logied in successfull then the admin login link must be hidden
-  fetch("/check-admin-login", {
-    credentials: "include"
-})
-  .then(res => res.json())
-  .then(data => {
-    if (data.loggedIn) {
-      adminBtn && (adminBtn.style.display = "none");
-    } else {
-      adminBtn && (adminBtn.style.display = "inline-block");
+    });
+
+    if (!res.ok) {
+      throw new Error("Logout failed: " + res.status);
     }
-  })
-  .catch(console.error);
-  // Nott working properly
 
-
+    alert("Logged out successfully");
+    window.location.href = "/Home/index.html";
+  } catch (error) {
+    console.error("Logout error:", error);
+    alert("Unable to log out. Please try again.");
+  }
+});
+});
